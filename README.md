@@ -122,14 +122,25 @@ npm run build
 
 Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已登录浏览器里开启浏览器控制）。**最小权限、可随时撤销、绝不写进仓库**：
 
-1. Cloudflare 面板 → **My Profile → API Tokens → Create Token** → Custom Token → **Get started**
+1. Cloudflare 面板右上角头像 → **My Profile → API Tokens → Create Token → Create Custom Token → Get started**
    - Token name：`pages-deploy-fantastic-umbrella`
-   - Permissions：**Account / Cloudflare Pages / Edit**（官方 CI 文档指定的权限）
-   - Continue to summary → Create Token → 复制 token（只显示一次）
-2. GitHub 仓库 → **Settings → Secrets and variables → Actions → New repository secret**，加两个值：
-   - `CLOUDFLARE_API_TOKEN` = 上一步的 token
-   - `CLOUDFLARE_ACCOUNT_ID` = Cloudflare 面板首页 URL 里那串 32 位账号 ID
+   - Permissions：**Account / Cloudflare Pages / Edit**（Account-level，官方 CI 文档指定的权限）
+   - Account Resources：Include / All accounts（或只选 `13add9388b385c07b6484bff948ef043`）
+   - **Client IP Address Filtering：留空**，不要填任何 IP
+   - Token expiration：可留空（No expiration）
+   - Continue to summary → Create Token → 复制完整值（`cfut_` 开头，**只显示一次**）
+2. GitHub 仓库 → **Settings → Secrets and variables → Actions → New repository secret**
+   - `CLOUDFLARE_API_TOKEN` = 上一步的完整值（也可直接贴给我，由我用仓库公钥加密写入，不落盘）
+   - `CLOUDFLARE_ACCOUNT_ID` = `13add9388b385c07b6484bff948ef043`（**已写入，无需再配**）
 3. 告诉我「加好了」，我触发一次部署并逐页验收 `https://fantastic-umbrella.pages.dev`（项目名若被占用，Cloudflare 会自动加随机后缀，以实际 URL 为准）。
+
+**三个已实测踩过的坑（2026-11-14）**：
+
+- **必须建 User API Token，不要建 Account API Token**。从 *Manage Account → Account API Tokens* 创建的是 account-owned token（`cfat_` 前缀），官方兼容矩阵里 **Pages = ❌ 不支持**，用它跑 `wrangler pages deploy` 会失败。正确入口是 *My Profile → API Tokens*（`cfut_` 前缀）。
+- **不要设置 Client IP Address Filtering**。GitHub Actions 的出站 IP 来自 8,350 个动态 IPv4 CIDR（`api.github.com/meta` 实测），且每次运行都可能不同；任何单 IP 白名单都会让 CI 部署被拒绝。
+- 官方模板里**没有** "Edit Cloudflare Pages"，只能走 Custom Token 手动添加 `Account / Cloudflare Pages / Edit` 权限。
+
+拿到 token 后先用 `curl https://api.cloudflare.com/client/v4/user/tokens/verify -H "Authorization: Bearer <token>"` 确认返回 `status: active` 再写入 Secret。
 
 仓库已带 `.github/workflows/deploy-pages.yml`：push 到 `main` 即自动 `npm ci → npm run build → wrangler pages deploy dist`，之后改一句文案 `git push` 就发布。两个 Secret 未配置时 workflow 会安全跳过，不产生失败记录。
 
