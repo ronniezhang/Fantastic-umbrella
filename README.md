@@ -1,6 +1,6 @@
 # fantasticumbrella.com — Astro 静态前台
 
-B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPress（GoDaddy Managed WordPress）**，本仓库只负责生成静态站，尚未切流，也未绑定主域名。
+B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPress（GoDaddy Managed WordPress）**；静态站已在 Cloudflare Pages 预览域名运行（GitHub Actions 自动构建发布），但**尚未切流、未绑定主域名**。
 
 日期：2026-11-14
 
@@ -18,7 +18,8 @@ B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPr
 | 图片 | 12 个 `https://fantasticumbrella.com/wp-content/...` 绝对外链，仍依赖线上 WP |
 | 301 | `public/_redirects`（Cloudflare Pages 格式）+ `dist/.htaccess`（Apache 格式），各 19 条 |
 | SEO | canonical / description / Organization JSON-LD 全站覆盖；7 组 Title/Meta 在 `src/data/seo.json` |
-| 预览地址 | `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` |
+| 预览地址 | **https://fantastic-umbrella-e13.pages.dev/**（Cloudflare Pages）；备用临时链接 `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` |
+| 自动部署 | GitHub Actions `deploy-pages.yml`：push `main` 或 `workflow_dispatch` → `npm ci → npm run build → wrangler pages deploy dist --project-name=fantastic-umbrella` |
 
 **注意**：`astro.config.mjs` 里 `site` 仍写主域名，因此 canonical 与 sitemap 都指向 `fantasticumbrella.com`。预览阶段这是有意的（避免预览站被当作正式站点收录），切流后无需改动。
 
@@ -132,15 +133,16 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 2. GitHub 仓库 → **Settings → Secrets and variables → Actions → New repository secret**
    - `CLOUDFLARE_API_TOKEN` = 上一步的完整值（也可直接贴给我，由我用仓库公钥加密写入，不落盘）
    - `CLOUDFLARE_ACCOUNT_ID` = `13add9388b385c07b6484bff948ef043`（**已写入，无需再配**）
-3. 告诉我「加好了」，我触发一次部署并逐页验收 `https://fantastic-umbrella.pages.dev`（项目名若被占用，Cloudflare 会自动加随机后缀，以实际 URL 为准）。
+3. **已配置完成（2026-11-14）**：两个 Secret 均已写入，GitHub Actions run `43555572828` 全部步骤 success，站点运行在 `https://fantastic-umbrella-e13.pages.dev/`（`fantastic-umbrella.pages.dev` 被占用，Cloudflare 自动加 `-e13` 后缀）。
 
-**三个已实测踩过的坑（2026-11-14）**：
+**实测结论与坑（2026-11-14）**：
 
-- **必须建 User API Token，不要建 Account API Token**。从 *Manage Account → Account API Tokens* 创建的是 account-owned token（`cfat_` 前缀），官方兼容矩阵里 **Pages = ❌ 不支持**，用它跑 `wrangler pages deploy` 会失败。正确入口是 *My Profile → API Tokens*（`cfut_` 前缀）。
-- **不要设置 Client IP Address Filtering**。GitHub Actions 的出站 IP 来自 8,350 个动态 IPv4 CIDR（`api.github.com/meta` 实测），且每次运行都可能不同；任何单 IP 白名单都会让 CI 部署被拒绝。
+- **真正的致命项只有 Client IP Address Filtering**。设了单 IP 白名单的 token 会被 Cloudflare 以 `403 / 9109 Cannot use the access token from location: <ip>` 拒绝；GitHub Actions 出站 IP 来自 8,350 个动态 IPv4 CIDR（`api.github.com/meta` 实测），不可能白名单。去掉该限制后 `/accounts/{id}`、`/accounts/{id}/pages/projects` 均返回 200。
+- **更正此前判断**：官方兼容矩阵虽把 Pages 标为 ❌（针对 account-owned token），但实测 `cfat_` 前缀的 Account API Token 在无 IP 限制时**可以成功创建项目并完成 `wrangler pages deploy`**。它用 `/accounts/{account_id}/tokens/verify` 验证（`/user/tokens/verify` 会 401）。长期仍建议换成最小权限的 **User API Token**（`cfut_`，My Profile → API Tokens）——当前 token 权限接近全账号，且已在对话里明文出现过。
+- **wrangler 4.86 在非交互 CI 不会自动新建项目**：首次部署报 `Project not found [code: 8000007]`。需先调 `POST /accounts/{account_id}/pages/projects`，body 最小为 `{"name":"fantastic-umbrella","production_branch":"main"}`（省略 `source` 即 Direct Upload），之后 workflow 才能上传。
 - 官方模板里**没有** "Edit Cloudflare Pages"，只能走 Custom Token 手动添加 `Account / Cloudflare Pages / Edit` 权限。
 
-拿到 token 后先用 `curl https://api.cloudflare.com/client/v4/user/tokens/verify -H "Authorization: Bearer <token>"` 确认返回 `status: active` 再写入 Secret。
+拿到 token 后先验证再写入 Secret：User token 用 `/user/tokens/verify`，Account token 用 `/accounts/{account_id}/tokens/verify`，确认返回 `status: active`。
 
 仓库已带 `.github/workflows/deploy-pages.yml`：push 到 `main` 即自动 `npm ci → npm run build → wrangler pages deploy dist`，之后改一句文案 `git push` 就发布。两个 Secret 未配置时 workflow 会安全跳过，不产生失败记录。
 
@@ -163,13 +165,24 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 ---
 
-## 7. 预览部署
+## 7. 预览部署（Cloudflare Pages）
 
-预览站由 WorkBuddy 的临时发布链接提供，只用于验收视觉与内容，**不是生产托管**，不承接主域名流量。预览副本 `astro-preview/robots.txt` 为 `Disallow: /`，禁止收录。
+**正式预览地址：https://fantastic-umbrella-e13.pages.dev/**
 
-预览地址：https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU
+由 GitHub Actions `deploy-pages.yml` 自动构建并 Direct Upload 到 Cloudflare Pages 项目 `fantastic-umbrella`。`git push` 到 `main` 即自动发布，也可在 Actions 页手动 Run workflow。只承接预览流量，**主域名 DNS 未改、未绑定自定义域名**。
 
-2026-11-14 实测：首页 200 / 9.4 KB / 首字节 0.33s，6 个 B2B 页与产品页均 200，robots 为 `Disallow: /`，canonical 仍指向主域名，图片经 `fantasticumbrella.com/wp-content/` 绝对地址可正常加载。此链接为临时预览，非生产托管；重新发布时会覆盖同一链接。
+2026-11-14 实测（run `43555572828` 全步骤 success）：
+
+| 检查 | 结果 |
+| --- | --- |
+| 首页 | 200 / 9.4 KB / 1 个内联脚本 / canonical 指向主域名 |
+| 6 个 B2B 页 + 产品页 | 全部 200 |
+| robots / sitemap | `Disallow: /`；`sitemap.xml` 200 |
+| 19 条 301 | **18 条生效**；唯一未生效的是中文路径 `/我的购物车/`（编码后未匹配），切流前需人工复核 |
+| 图片 | 12 个 `wp-content` 绝对外链仍返回 200（依赖线上 WP，去 WP 前必须本地化） |
+| 表单 | 渲染正常，提交仍提示 `not connected`（端点未接通，切流硬门槛） |
+
+预览期 `robots.txt` 由 workflow 覆写为 `Disallow: /`，**切流绑主域名时必须删掉 workflow 里那一步**恢复正式 robots。备用临时链接 `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` 仍可访问，但它不是生产托管。
 
 ---
 
