@@ -18,7 +18,7 @@ B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPr
 | 图片 | 12 个 `https://fantasticumbrella.com/wp-content/...` 绝对外链，仍依赖线上 WP |
 | 301 | `public/_redirects`（Cloudflare Pages 格式）+ `dist/.htaccess`（Apache 格式），各 19 条 |
 | SEO | canonical / description / Organization JSON-LD 全站覆盖；7 组 Title/Meta 在 `src/data/seo.json` |
-| 预览地址 | 见文末「预览部署」 |
+| 预览地址 | `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` |
 
 **注意**：`astro.config.mjs` 里 `site` 仍写主域名，因此 canonical 与 sitemap 都指向 `fantasticumbrella.com`。预览阶段这是有意的（避免预览站被当作正式站点收录），切流后无需改动。
 
@@ -108,7 +108,9 @@ git push -u origin main
 
 预览站由 WorkBuddy 的临时发布链接提供，只用于验收视觉与内容，**不是生产托管**，不承接主域名流量。预览副本 `astro-preview/robots.txt` 为 `Disallow: /`，禁止收录。
 
-预览地址：见会话交付信息。
+预览地址：https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU
+
+2026-11-14 实测：首页 200 / 9.4 KB / 首字节 0.33s，6 个 B2B 页与产品页均 200，robots 为 `Disallow: /`，canonical 仍指向主域名，图片经 `fantasticumbrella.com/wp-content/` 绝对地址可正常加载。此链接为临时预览，非生产托管；重新发布时会覆盖同一链接。
 
 ---
 
