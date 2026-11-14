@@ -10,7 +10,8 @@
     "postbuild": "node scripts/make-htaccess.mjs",
     "htaccess": "node scripts/make-htaccess.mjs",
     "preview": "astro preview",
-    "preview:stage": "node scripts/make-preview.mjs"
+    "preview:stage": "node scripts/make-preview.mjs",
+    "verify:enquiry": "node scripts/verify-enquiry.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0"

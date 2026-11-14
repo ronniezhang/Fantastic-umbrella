@@ -201,6 +201,20 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 密钥全部放在 Pages 环境变量里，**不会下发到浏览器**。三种通道可单独用，也可同时开做冗余；只要有一个投递成功就返回成功，全部失败返回 502 让用户改发邮件，绝不「假装收到」。
 
+### 最快接通：只需 3 步（2026-11-14 22:06 收口）
+
+Zoho 侧已全部完成（域名验证 / MX / SPF / DKIM / DMARC / 收发双向实测），**剩下的 3 步都需要账号或密钥，AI 无法凭空代做**：
+
+| # | 动作 | 谁做 | 要点 |
+| --- | --- | --- | --- |
+| 1 | 注册 Resend → Domains → 加 `notify.fantasticumbrella.com` → 按后台给的值在 GoDaddy 加 SPF TXT + DKIM CNAME → 点 Verify | 用户 | **不要验证主域**（主域 SPF 已被 Zoho 占用）；只加子域记录，**不动 A / NS / MX / 现有 TXT** |
+| 2 | 创建只含「发送邮件」权限的 API key，在 Cloudflare Pages 项目 Settings → Environment variables 填 3 个变量（Production + Preview 都要），`RESEND_API_KEY` 勾 Encrypt | 用户 | `ENQUIRY_TO=sales@fantasticumbrella.com`；`ENQUIRY_FROM=Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` |
+| 3 | 重新部署（push 或 Retry deployment）→ 跑 `npm run verify:enquiry` → 收一封真实询盘 | AI 可代跑 | 看到 `200 ok` 且邮件落在收件箱即完成；脚本同时检查端点存活、同源防护与 Contact 页接线 |
+
+**为什么 Resend 必须走子域**：主域 SPF 只能有一条且已归属 Zoho，两个发信源各要一条会冲突、认证随机失败；子域验证还能隔离人工邮件与网站通知的发信信誉。当前主域 DMARC `p=none sp=none`，子域不受影响；**将来收紧到 `reject` 前必须先完成第 1 步**，否则询盘通知可能被拒收。
+
+**今晚已自动完成**（不依赖任何密钥）：一键邮件兜底升级为**携带全部已填字段的预填邮件**（指向已验证的 `sales@`）、端点 503/502 返回明确地址与 `fallback` 字段、`npm run verify:enquiry` 一键验收脚本、CI 端点存活自检。即使密钥还没填，客户点一下就能把完整询盘发到销售邮箱，不会静默丢单。
+
 ### 环境变量（Pages 项目 → Settings → Environment variables，Production + Preview 都要填）
 
 | 变量 | 用途 | 是否必填 |
@@ -219,7 +233,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 1. 注册 [Resend](https://resend.com)（免费额度 100 封/天、3000 封/月），拿 `RESEND_API_KEY`。
 2. 测试期可用默认 `onboarding@resend.dev`，但**只能发给 Resend 注册邮箱**；正式用建议在 Resend 验证**发信子域** `notify.fantasticumbrella.com`（而不是主域），按后台提示加 SPF TXT + DKIM CNAME。**原因**：一个域名只能有一条 SPF TXT，主域那条要留给企业邮箱（MX 服务商），两个服务商各要一条就会冲突；子域独立验证还能把网站通知的发信信誉与人工邮件隔离。只加发信验证的 TXT/CNAME，**不动 A 记录、不动 NS、不影响网站托管**。详细 DNS 清单见上级目录 `fantasticumbrella_询盘邮件链路选型与落地清单_2026-11-14.md`。
-3. 填 `ENQUIRY_TO` = 真实收件邮箱（先核实 `sales@fantasticumbrella.com` 是否确实收得到信，见第 6 节第 5 条）。
+3. 填 `ENQUIRY_TO=sales@fantasticumbrella.com`。**该地址已于 2026-11-14 实测可用**：MX ×3 生效，Gmail 原始邮件头 `spf=pass` / `dkim=pass` / `dmarc=pass`（DKIM 选择器 `fantastic`），Hotmail / Gmail 来信进 Zoho 收件箱、`sales@` 发往 Gmail 也进收件箱。
 4. 重新部署 → 在 Contact 页提交一封真实询盘 → 确认收到、确认「回复」按钮落到客户邮箱（端点已设 `reply_to`）。
 
 ### 通道 B：发到企业微信 / 飞书 / Slack 群（不用域名验证，最快）
@@ -238,11 +252,21 @@ curl -s -X POST https://fantastic-umbrella-e13.pages.dev/api/enquiry \
   -d '{"full_name":"Test","company":"Test Co","email":"test@example.com","country":"DE","product_interest":"Golf umbrella","estimated_quantity":"500 pcs","message":"Endpoint check","_form_time":0}'
 ```
 
-未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后返回 `200 {"ok":true}`。也可以用 `node ../test_enquiry_endpoint.mjs` 跑本地逻辑自测（上级工作目录，12 个用例）。
+未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后返回 `200 {"ok":true}`。
 
-**兜底降级**：任何一种失败（503 未配置、502 投递全挂、404 端点不存在、访客断网）都会在表单下方显示原因，并附一个一键 `mailto:sales@fantasticumbrella.com` 链接，客户仍能联系到销售，不会只看到一句报错就离开。因此预览期即使还没填密钥，表单也不会静默吞掉线索。
+**一键验收**（推荐，明天填完变量后跑一次即可）：
 
-**线上状态（2026-11-14 13:10）**：`functions/` 已被 Wrangler 自动打包随 `pages deploy` 上线，端点不是 404/405，实测 `POST /api/enquiry` 返回 JSON。CI 的「Verify enquiry endpoint is live」步骤要求响应必须含 `ok` 字段（防止 405/HTML fallback 假绿），run `43560263612` 全步骤 success。**当前唯一未完成的是填投递通道的环境变量**，未配置时提交会明确返回 503。
+```bash
+npm run verify:enquiry                       # 检查站点 + 端点 + 同源防护，并发一封真实测试询盘
+npm run verify:enquiry -- --no-send         # 只检查链路，不发信
+npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后改用它
+```
+
+`200 ok` = 投递通道已通且测试询盘已发出；`503 not_configured` = 端点正常、只差环境变量；`502` = 通道都配了但全部投递失败，需要排查。端点彻底不返回 JSON 时脚本以退出码 1 报错。也可用 `node ../test_enquiry_endpoint.mjs` 跑本地逻辑自测（上级工作目录，12 个用例）。
+
+**兜底降级**：任何一种失败（503 未配置、502 投递全挂、404 端点不存在、访客断网）都会在表单下方显示原因，并附一个**一键预填邮件**按钮 —— 客户已经填写的 10 个字段会自动写进邮件主题和正文，收件人是已实测可用的 `sales@fantasticumbrella.com`，点一下就在本地邮件客户端生成一封完整询盘。因此预览期即使还没填密钥，也不会静默吞掉线索；这不是普通 `mailto:` 死链，而是一条可用的备用提交通路（正文按邮件客户端上限截断到 1800 字符）。
+
+**线上状态（2026-11-14 22:06）**：`functions/` 已被 Wrangler 自动打包随 `pages deploy` 上线，端点不是 404/405，实测 `POST /api/enquiry` 返回结构化 JSON；CI 的「Verify enquiry endpoint is live」步骤要求响应必须含 `ok` 字段（防止 405/HTML fallback 假绿）。Zoho 邮箱侧认证与收发已全部验证通过，`sales@` 可作正式收件地址。**当前唯一未完成的是填投递通道的环境变量**（`RESEND_API_KEY` / `ENQUIRY_TO` / `ENQUIRY_FROM`），未配置时提交明确返回 503 并提供预填邮件兜底。
 
 端点已内置的防护：同源 Origin 校验、蜜罐字段、`1.5s` 极速提交拦截、必填/邮箱/长度校验、`no-store`、请求不落第三方日志。若后续询盘量起来，再加 Cloudflare Turnstile（免费、无验证码打扰）与 D1 存档。
 

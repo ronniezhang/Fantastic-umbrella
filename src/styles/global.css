@@ -91,6 +91,7 @@ img { max-width: 100%; height: auto; }
 .form-status.ok { background: #eef7f0; border-color: #bfe0c8; color: #1e5c34; }
 .form-status.err { background: #fff5ef; border-color: #f0c9b5; color: #7a3418; }
 .form-status a { color: inherit; text-decoration: underline; text-underline-offset: 2px; font-weight: 600; }
+.form-status a.form-fallback-link { display: inline-block; margin-top: 8px; padding: 6px 10px; background: rgba(255,255,255,.75); border: 1px solid currentColor; border-radius: 4px; }
 .btn:disabled { opacity: .6; cursor: default; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 

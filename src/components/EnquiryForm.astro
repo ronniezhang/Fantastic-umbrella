@@ -111,17 +111,41 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
   const markOpened = () => { if (timeInput) timeInput.value = String(Date.now()); };
   markOpened();
 
-  const show = (kind, message, fallback) => {
+  const fieldLabels = {
+    full_name: 'Full name',
+    company: 'Company',
+    email: 'Business email',
+    country: 'Country / region',
+    product_interest: 'Product interest',
+    estimated_quantity: 'Estimated quantity',
+    target_market: 'Target market',
+    annual_volume: 'Annual purchase volume',
+    preferred_incoterm: 'Preferred trade term',
+    message: 'Your requirements',
+  };
+
+  // Never lose a lead: pre-fill everything the visitor already typed into a
+  // ready-to-send email. mailto bodies are capped by mail clients, so truncate.
+  const fallbackMailto = (fallback, payload) => {
+    const rows = Object.entries(fieldLabels)
+      .map(([key, label]) => `${label}: ${(payload && payload[key]) || '-'}`);
+    rows.push('', `Page: ${window.location.href}`, `Sent: ${new Date().toISOString()}`);
+    const subject = `B2B umbrella enquiry - ${(payload && payload.full_name) || ''} (${(payload && payload.company) || ''})`;
+    const body = rows.join('\n').slice(0, 1800);
+    return `mailto:${fallback}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const show = (kind, message, fallback, payload) => {
     if (!status) return;
     status.hidden = false;
     status.className = `form-status ${kind}`;
     status.textContent = message;
-    // Never lose a lead: on any failure give a one-click way to reach sales.
     if (fallback) {
       status.append(' ');
       const link = document.createElement('a');
-      link.href = `mailto:${fallback}?subject=${encodeURIComponent('B2B umbrella enquiry')}`;
-      link.textContent = `Email ${fallback}`;
+      link.className = 'form-fallback-link';
+      link.href = fallbackMailto(fallback, payload);
+      link.textContent = `One-click: email your typed details to ${fallback}`;
       status.append(link);
     }
   };
@@ -154,7 +178,7 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
       markOpened();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'We could not send your enquiry.';
-      show('err', `${message} If it keeps failing, please contact us directly:`, fallback);
+      show('err', `${message} Use the one-click link below - your typed details are already filled in:`, fallback, payload);
     } finally {
       if (button) { button.disabled = false; button.textContent = 'Request a Quote'; }
     }

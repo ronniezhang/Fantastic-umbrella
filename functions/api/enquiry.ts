@@ -44,6 +44,8 @@ const LABELS = {
 
 const MAX_LEN = 500;
 const MAX_MESSAGE = 5000;
+// Verified 2026-11-14: MX + SPF + DKIM + DMARC all pass, inbound/outbound tested.
+const SALES_EMAIL = 'sales@fantasticumbrella.com';
 
 function reply(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -243,7 +245,8 @@ export async function onRequestPost(context) {
         ok: false,
         error: 'not_configured',
         message:
-          'The enquiry form is not enabled yet. Please contact us by email and we will get back to you.',
+          'Online submission is not enabled yet. Please use the one-click email link below to send your details to sales@fantasticumbrella.com - we will get back to you.',
+        fallback: SALES_EMAIL,
       },
       503,
     );
@@ -269,7 +272,8 @@ export async function onRequestPost(context) {
         ok: false,
         error: 'delivery_failed',
         message:
-          'We could not send your enquiry just now. Please try again in a minute, or contact us by email.',
+          'We could not send your enquiry just now. Please try again in a minute, or use the one-click email link below to reach sales@fantasticumbrella.com.',
+        fallback: SALES_EMAIL,
       },
       502,
     );
