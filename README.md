@@ -207,7 +207,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 | --- | --- | --- |
 | `RESEND_API_KEY` | Resend 的 API key（`re_...`），勾 Encrypt | 走邮件时必填 |
 | `ENQUIRY_TO` | 收件人，多个用逗号分隔 | 走邮件时必填 |
-| `ENQUIRY_FROM` | 发件人，如 `Fantastic Umbrella <sales@fantasticumbrella.com>` | 可选，默认 `onboarding@resend.dev` |
+| `ENQUIRY_FROM` | 发件人，如 `Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>`（用**发信子域**，不要复用主域 `sales@`） | 可选，默认 `onboarding@resend.dev` |
 | `ENQUIRY_WEBHOOK_URL` | 企业微信 / 飞书 / Slack / 自建接口 URL，自动识别格式 | 可选 |
 | `ENQUIRY_FORWARD_URL` | 第三方表单服务接收地址 | 可选 |
 | `ENQUIRY_FORWARD_FORMAT` | 设 `form` 时按 `x-www-form-urlencoded` 转发（Formsubmit 等需要），默认 JSON | 可选 |
@@ -218,7 +218,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 ### 通道 A：发到邮箱（推荐，最像原来的 Fluent Forms）
 
 1. 注册 [Resend](https://resend.com)（免费额度 100 封/天、3000 封/月），拿 `RESEND_API_KEY`。
-2. 测试期可用默认 `onboarding@resend.dev`，但**只能发给 Resend 注册邮箱**；正式用必须在 Resend 加 `fantasticumbrella.com` 域名并按提示加几条 DNS 记录（只加发信验证的 TXT/CNAME，**不动 A 记录、不动 NS、不影响网站托管**）。
+2. 测试期可用默认 `onboarding@resend.dev`，但**只能发给 Resend 注册邮箱**；正式用建议在 Resend 验证**发信子域** `notify.fantasticumbrella.com`（而不是主域），按后台提示加 SPF TXT + DKIM CNAME。**原因**：一个域名只能有一条 SPF TXT，主域那条要留给企业邮箱（MX 服务商），两个服务商各要一条就会冲突；子域独立验证还能把网站通知的发信信誉与人工邮件隔离。只加发信验证的 TXT/CNAME，**不动 A 记录、不动 NS、不影响网站托管**。详细 DNS 清单见上级目录 `fantasticumbrella_询盘邮件链路选型与落地清单_2026-11-14.md`。
 3. 填 `ENQUIRY_TO` = 真实收件邮箱（先核实 `sales@fantasticumbrella.com` 是否确实收得到信，见第 6 节第 5 条）。
 4. 重新部署 → 在 Contact 页提交一封真实询盘 → 确认收到、确认「回复」按钮落到客户邮箱（端点已设 `reply_to`）。
 
@@ -228,7 +228,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 ### 通道 C：第三方表单服务（最省事，但客户资料过第三方）
 
-Formspree / Getform：注册后拿表单 URL，填 `ENQUIRY_FORWARD_URL`（JSON 即可）。Formsubmit.co 之类需要表单编码的，再设 `ENQUIRY_FORWARD_FORMAT=form`。费用、留存与隐私条款需自行评估，B2B 客户公司名、邮箱、采购量会经过该服务。
+Formspree / Forminit（原 Getform，2026-01 更名）：注册后拿表单 URL，填 `ENQUIRY_FORWARD_URL`（JSON 即可）。Formsubmit.co 之类需要表单编码的，再设 `ENQUIRY_FORWARD_FORMAT=form`。免费额度很小（Formspree 约 50 条/月、Forminit 约 100 条/月且仅 1 个表单），且超额处理方式不同——Formspree 存起来待升级后可取回，Forminit 据其文档会直接拒收且不保存。费用、留存与隐私条款需自行评估，B2B 客户公司名、邮箱、采购量会经过该服务。正式站点建议用通道 A/B，自建端点没有提交数上限。
 
 ### 自检
 
