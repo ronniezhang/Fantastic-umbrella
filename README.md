@@ -97,6 +97,29 @@ npm run build
 
 ---
 
+### 5.1 Cloudflare Pages 接入参数（账号开好后照填）
+
+| 字段 | 值 |
+| --- | --- |
+| 创建路径 | Workers & Pages → Create application → Pages → Connect to Git |
+| Git 仓库 | `ronniezhang/Fantastic-umbrella`（公开 / 私有均可） |
+| Production branch | `main` |
+| Framework preset | Astro（或留空，手填下面两项） |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Root directory | 留空 |
+| Environment variables | `NODE_VERSION = 20`（Astro 5 要求 Node ≥ 18.17.1 / 20.3+，固定 20 避免默认版本过旧） |
+| 首次部署产物 | `<project>.pages.dev`，**无需自定义域名、无需改 DNS** |
+
+注意：
+
+- 用 Git 集成创建的项目之后**不能**切换成 Direct Upload（官方限制）；本仓库本来就走 Git，无影响。
+- 绑定 **apex 主域名** `fantasticumbrella.com` 按官方要求必须把域名加为 Cloudflare zone，并把 NS 从 GoDaddy 改到 Cloudflare —— **这一步就是切流，需站点负责人明确授权**。子域名则只需一条 CNAME 指向 `<project>.pages.dev`，且必须先在 Pages 面板走 "Add a custom domain"，否则会返回 522。
+- 免费计划额度：500 次构建/月、100 个自定义域名、20,000 文件、2,000 条静态重定向、无限预览部署。本站 19 页 / 19 条 301 远低于限额。
+- GoDaddy Managed WordPress 套餐自带的 Cloudflare CDN 属于 **GoDaddy 的账号**，与这里新建的 Cloudflare 账号互相独立；新开账号不会接管或影响现有 CDN。
+
+---
+
 ## 6. 切流前的硬门槛（未完成不得改 DNS）
 
 1. 询盘表单接通非 WP 端点（Worker + 邮件 API / 第三方表单服务），并**发一封真实询盘确认邮箱收到**
