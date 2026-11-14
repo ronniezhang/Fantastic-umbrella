@@ -87,6 +87,11 @@ img { max-width: 100%; height: auto; }
 .field-full { grid-column: 1 / -1; }
 .form-note { font-size: 12.5px; color: #6b7c8d; margin: 16px 0 0; }
 .form-status { margin-top: 14px; padding: 12px 14px; border-radius: 6px; background: #fff5ef; border: 1px solid #f0c9b5; color: #7a3418; font-size: 14px; }
+.form-status.pending { background: #eef4fa; border-color: #c9d9ea; color: #204a70; }
+.form-status.ok { background: #eef7f0; border-color: #bfe0c8; color: #1e5c34; }
+.form-status.err { background: #fff5ef; border-color: #f0c9b5; color: #7a3418; }
+.btn:disabled { opacity: .6; cursor: default; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px; }
 .product-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; display: flex; flex-direction: column; }

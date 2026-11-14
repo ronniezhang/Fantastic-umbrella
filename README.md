@@ -14,7 +14,7 @@ B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPr
 | 构建产物 | `dist/` 约 193 KB，零运行时脚本 |
 | 产品范围 | 手持小伞 8 款主推、沙滩伞 4 款附带；14 款沙滩椅/天幕/庭院伞移出至 GreenMark |
 | 范围规则 | `src/data/catalog-scope.json`（唯一事实源，`npm run sync` 会读取它） |
-| 询盘表单 | Astro 原生渲染，**提交端点未接通**；提交时明确提示「未发送数据」，不会静默丢单 |
+| 询盘表单 | Astro 原生渲染，POST 到同源 Pages Function `/api/enquiry`；**投递通道由环境变量决定，未配置前明确报 503，不会静默丢单**。详见第 8 节 |
 | 图片 | 12 个 `https://fantasticumbrella.com/wp-content/...` 绝对外链，仍依赖线上 WP |
 | 301 | `public/_redirects`（Cloudflare Pages 格式）+ `dist/.htaccess`（Apache 格式），各 19 条 |
 | SEO | canonical / description / Organization JSON-LD 全站覆盖；7 组 Title/Meta 在 `src/data/seo.json` |
@@ -156,7 +156,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 ## 6. 切流前的硬门槛（未完成不得改 DNS）
 
-1. 询盘表单接通非 WP 端点（Worker + 邮件 API / 第三方表单服务），并**发一封真实询盘确认邮箱收到**
+1. 询盘端点代码已就位（第 8 节）；仍需在 Pages 项目填投递通道的环境变量，并**发一封真实询盘确认邮箱/群消息收到**
 2. 12 个 `wp-content` 图片本地化 + 中文文件名重命名
 3. Yoast 的 meta description 从数据库导出（REST 不暴露该字段）
 4. 3 个法务/关于页 + 9 个分类页补齐
@@ -180,9 +180,67 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 | robots / sitemap | `Disallow: /`；`sitemap.xml` 200 |
 | 19 条 301 | **18 条生效**；唯一未生效的是中文路径 `/我的购物车/`（编码后未匹配），切流前需人工复核 |
 | 图片 | 12 个 `wp-content` 绝对外链仍返回 200（依赖线上 WP，去 WP 前必须本地化） |
-| 表单 | 渲染正常，提交仍提示 `not connected`（端点未接通，切流硬门槛） |
+| 表单（历史基线） | 当次部署渲染正常，提交提示 `not connected`；此后已改为 POST `/api/enquiry`（第 8 节） |
 
 预览期 `robots.txt` 由 workflow 覆写为 `Disallow: /`，**切流绑主域名时必须删掉 workflow 里那一步**恢复正式 robots。备用临时链接 `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` 仍可访问，但它不是生产托管。
+
+---
+
+## 8. 询盘表单接在哪里、怎么开
+
+**不需要 CMS。** CMS（WordPress / Sanity / Contentful）解决的是「谁来编辑页面和产品」，表单解决的是「谁接收一次 POST」。静态 Astro 站只能返回预先生成好的 HTML，本身**收不了 POST**；缺的是一个接收端，不是一套内容后台。只有将来要「多人分派询盘、标记已报价、跟单状态、对接 CRM」时才需要数据库/后台，而且那叫 CRM 或工单系统，仍然不是 CMS。
+
+本项目的接收端是 `functions/api/enquiry.ts`：Cloudflare Pages Function，和静态站**同一个项目、同一个域名**，路由 `/api/enquiry`。部署时 Wrangler 会自动把 `functions/` 编译成 `_worker.js` 一起上传，静态页面照常走 CDN 缓存，只有这一个 API 路径走边缘计算。
+
+```
+访客填表  →  POST /api/enquiry  →  Pages Function（校验 + 反垃圾）
+                                 ├→ Resend 邮件 API   → 销售邮箱
+                                 ├→ 企业微信/飞书/Slack webhook → 群消息
+                                 └→ 第三方表单服务（Formspree 等）→ 其后台 + 邮件
+```
+
+密钥全部放在 Pages 环境变量里，**不会下发到浏览器**。三种通道可单独用，也可同时开做冗余；只要有一个投递成功就返回成功，全部失败返回 502 让用户改发邮件，绝不「假装收到」。
+
+### 环境变量（Pages 项目 → Settings → Environment variables，Production + Preview 都要填）
+
+| 变量 | 用途 | 是否必填 |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Resend 的 API key（`re_...`），勾 Encrypt | 走邮件时必填 |
+| `ENQUIRY_TO` | 收件人，多个用逗号分隔 | 走邮件时必填 |
+| `ENQUIRY_FROM` | 发件人，如 `Fantastic Umbrella <sales@fantasticumbrella.com>` | 可选，默认 `onboarding@resend.dev` |
+| `ENQUIRY_WEBHOOK_URL` | 企业微信 / 飞书 / Slack / 自建接口 URL，自动识别格式 | 可选 |
+| `ENQUIRY_FORWARD_URL` | 第三方表单服务接收地址 | 可选 |
+| `ENQUIRY_FORWARD_FORMAT` | 设 `form` 时按 `x-www-form-urlencoded` 转发（Formsubmit 等需要），默认 JSON | 可选 |
+| `PUBLIC_ENQUIRY_ENDPOINT` | **构建时**变量，改前端 POST 目标；默认 `/api/enquiry`，正常不用动 | 可选 |
+
+改完环境变量要**重新部署一次**才生效（Pages 在部署时把变量绑定进版本）。
+
+### 通道 A：发到邮箱（推荐，最像原来的 Fluent Forms）
+
+1. 注册 [Resend](https://resend.com)（免费额度 100 封/天、3000 封/月），拿 `RESEND_API_KEY`。
+2. 测试期可用默认 `onboarding@resend.dev`，但**只能发给 Resend 注册邮箱**；正式用必须在 Resend 加 `fantasticumbrella.com` 域名并按提示加几条 DNS 记录（只加发信验证的 TXT/CNAME，**不动 A 记录、不动 NS、不影响网站托管**）。
+3. 填 `ENQUIRY_TO` = 真实收件邮箱（先核实 `sales@fantasticumbrella.com` 是否确实收得到信，见第 6 节第 5 条）。
+4. 重新部署 → 在 Contact 页提交一封真实询盘 → 确认收到、确认「回复」按钮落到客户邮箱（端点已设 `reply_to`）。
+
+### 通道 B：发到企业微信 / 飞书 / Slack 群（不用域名验证，最快）
+
+在群里加一个机器人拿 webhook URL，填 `ENQUIRY_WEBHOOK_URL` 即可。端点按 URL 自动选格式：`qyapi.weixin.qq.com` → `msgtype:text`，`open.feishu.cn` → `msg_type:text`，`hooks.slack.com` → `{text}`，其他 → 原始 JSON。适合「询盘立刻有人看到」，但**收件箱里没有存档**，建议和通道 A 一起开。
+
+### 通道 C：第三方表单服务（最省事，但客户资料过第三方）
+
+Formspree / Getform：注册后拿表单 URL，填 `ENQUIRY_FORWARD_URL`（JSON 即可）。Formsubmit.co 之类需要表单编码的，再设 `ENQUIRY_FORWARD_FORMAT=form`。费用、留存与隐私条款需自行评估，B2B 客户公司名、邮箱、采购量会经过该服务。
+
+### 自检
+
+```bash
+curl -s -X POST https://fantastic-umbrella-e13.pages.dev/api/enquiry \
+  -H 'Content-Type: application/json' \
+  -d '{"full_name":"Test","company":"Test Co","email":"test@example.com","country":"DE","product_interest":"Golf umbrella","estimated_quantity":"500 pcs","message":"Endpoint check","_form_time":0}'
+```
+
+未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后返回 `200 {"ok":true}`。也可以用 `node ../test_enquiry_endpoint.mjs` 跑本地逻辑自测（上级工作目录，12 个用例）。
+
+端点已内置的防护：同源 Origin 校验、蜜罐字段、`1.5s` 极速提交拦截、必填/邮箱/长度校验、`no-store`、请求不落第三方日志。若后续询盘量起来，再加 Cloudflare Turnstile（免费、无验证码打扰）与 D1 存档。
 
 ---
 
