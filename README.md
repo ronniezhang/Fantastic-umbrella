@@ -156,7 +156,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 ## 6. 切流前的硬门槛（未完成不得改 DNS）
 
-1. 询盘端点代码已就位（第 8 节）；仍需在 Pages 项目填投递通道的环境变量，并**发一封真实询盘确认邮箱/群消息收到**
+1. 询盘端点 `/api/enquiry` 已部署上线并通过线上验收（第 8 节）；仍需在 Pages 项目填投递通道的环境变量，并**发一封真实询盘确认邮箱/群消息收到**
 2. 12 个 `wp-content` 图片本地化 + 中文文件名重命名
 3. Yoast 的 meta description 从数据库导出（REST 不暴露该字段）
 4. 3 个法务/关于页 + 9 个分类页补齐
@@ -180,7 +180,7 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 | robots / sitemap | `Disallow: /`；`sitemap.xml` 200 |
 | 19 条 301 | **18 条生效**；唯一未生效的是中文路径 `/我的购物车/`（编码后未匹配），切流前需人工复核 |
 | 图片 | 12 个 `wp-content` 绝对外链仍返回 200（依赖线上 WP，去 WP 前必须本地化） |
-| 表单（历史基线） | 当次部署渲染正常，提交提示 `not connected`；此后已改为 POST `/api/enquiry`（第 8 节） |
+| 表单 | **已接通**：`POST /api/enquiry` 线上返回 400 校验 / 503 未配置 / 403 跨源，均符合预期；前端带一键邮件兜底。run `43560263612` 全步骤 success（含端点存活自检）。仅差投递通道环境变量 |
 
 预览期 `robots.txt` 由 workflow 覆写为 `Disallow: /`，**切流绑主域名时必须删掉 workflow 里那一步**恢复正式 robots。备用临时链接 `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` 仍可访问，但它不是生产托管。
 
@@ -241,6 +241,8 @@ curl -s -X POST https://fantastic-umbrella-e13.pages.dev/api/enquiry \
 未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后返回 `200 {"ok":true}`。也可以用 `node ../test_enquiry_endpoint.mjs` 跑本地逻辑自测（上级工作目录，12 个用例）。
 
 **兜底降级**：任何一种失败（503 未配置、502 投递全挂、404 端点不存在、访客断网）都会在表单下方显示原因，并附一个一键 `mailto:sales@fantasticumbrella.com` 链接，客户仍能联系到销售，不会只看到一句报错就离开。因此预览期即使还没填密钥，表单也不会静默吞掉线索。
+
+**线上状态（2026-11-14 13:10）**：`functions/` 已被 Wrangler 自动打包随 `pages deploy` 上线，端点不是 404/405，实测 `POST /api/enquiry` 返回 JSON。CI 的「Verify enquiry endpoint is live」步骤要求响应必须含 `ok` 字段（防止 405/HTML fallback 假绿），run `43560263612` 全步骤 success。**当前唯一未完成的是填投递通道的环境变量**，未配置时提交会明确返回 503。
 
 端点已内置的防护：同源 Origin 校验、蜜罐字段、`1.5s` 极速提交拦截、必填/邮箱/长度校验、`no-store`、请求不落第三方日志。若后续询盘量起来，再加 Cloudflare Turnstile（免费、无验证码打扰）与 D1 存档。
 
