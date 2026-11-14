@@ -1,0 +1,23 @@
+---
+const path = Astro.url.pathname;
+const links = [
+  { href: '/products/', label: 'Products' },
+  { href: '/services/', label: 'OEM & ODM Services' },
+  { href: '/shipping-delivery/', label: 'Shipping & Delivery' },
+  { href: '/quality-claims/', label: 'Quality & Claims' },
+  { href: '/faqs/', label: 'B2B FAQ' },
+];
+const active = (href) => path === href || path.startsWith(href);
+---
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/">Fantastic<span>Umbrella</span></a>
+    <nav class="site-nav" aria-label="Main navigation">
+      {links.map((l) => (
+        <a href={l.href} aria-current={active(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <a href="/contact/" aria-current={active('/contact/') ? 'page' : undefined}>Contact</a>
+    </nav>
+    <a class="btn header-cta" href="/contact/#enquiry-form">Request a Quote</a>
+  </div>
+</header>

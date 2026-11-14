@@ -1,0 +1,28 @@
+{
+  "home": {
+    "title": "Custom Compact Umbrella Manufacturer | Fantastic Umbrella",
+    "description": "Guangzhou OEM/ODM manufacturer of compact, folding and straight rain umbrellas. Digital printing, sampling and QC for B2B buyers, plus a small beach umbrella range."
+  },
+  "contact": {
+    "title": "Contact Us | Custom Rain Umbrella OEM Supplier",
+    "description": "Send an enquiry for custom compact, folding or straight umbrellas. Share your design, quantity and target market — our Guangzhou team will reply with a quotation."
+  },
+  "services": {
+    "description": "Digital printing, sampling, private label and QC in one supply chain. See our OEM/ODM capabilities for custom handheld umbrellas."
+  },
+  "shipping-delivery": {
+    "title": "Shipping & Delivery | Custom Umbrella OEM Orders",
+    "description": "Samples by express in 3-7 days, bulk orders by sea or air. FOB, EXW and CIF terms, packing data and lead times for custom umbrella orders."
+  },
+  "quality-claims": {
+    "title": "Quality & Claims | Custom Umbrella QC Process",
+    "description": "AQL 2.5 inspection, third-party audits and a clear claims process. See how we handle quality checks, documentation and remedies for bulk orders."
+  },
+  "faqs": {
+    "description": "Answers on MOQ, sampling, artwork, payment terms, lead times and certifications for custom rain umbrella orders."
+  },
+  "product-template": {
+    "title": "{{Product Name}} | Custom Umbrella OEM Supplier",
+    "description": "{{Product Name}} — custom printing, {{Size}} and {{Frame}} options. MOQ {{X}} pcs, lead time {{X}} days. Request a quote for your market."
+  }
+}

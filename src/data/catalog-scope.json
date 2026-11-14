@@ -1,0 +1,60 @@
+{
+  "policy": {
+    "decided_on": "2026-11-13",
+    "site": "fantasticumbrella.com",
+    "primary_focus": "Compact / folding / straight rain umbrellas (handheld small umbrellas)",
+    "secondary_focus": "A small selection of beach umbrellas and parasols",
+    "excluded": "Beach chairs, outdoor furniture, sun shelters, cabanas, gazebos, beach tents, patio and garden shade umbrellas",
+    "excluded_destination": "greenmarkoutdoor.com (GreenMark)",
+    "rule": "Only slugs listed under primary or secondary are published on this site. Anything new from WooCommerce goes to needs_review_products.json instead of being published automatically.",
+    "needs_confirmation": "The 10 outdoor_parasol items are excluded by inference from 'only small umbrellas, plus a few beach umbrellas'. If any of them should stay on this site, move its slug into secondary."
+  },
+  "seo_overrides": {
+    "home": {
+      "title": "Custom Compact Umbrella Manufacturer | Fantastic Umbrella",
+      "description": "Guangzhou OEM/ODM manufacturer of compact, folding and straight rain umbrellas. Digital printing, sampling and QC for B2B buyers, plus a small beach umbrella range."
+    },
+    "contact": {
+      "title": "Contact Us | Custom Rain Umbrella OEM Supplier",
+      "description": "Send an enquiry for custom compact, folding or straight umbrellas. Share your design, quantity and target market — our Guangzhou team will reply with a quotation."
+    },
+    "services": {
+      "description": "Digital printing, sampling, private label and QC in one supply chain. See our OEM/ODM capabilities for custom handheld umbrellas."
+    },
+    "faqs": {
+      "description": "Answers on MOQ, sampling, artwork, payment terms, lead times and certifications for custom rain umbrella orders."
+    }
+  },
+  "primary": [
+    "mens-umbrellas",
+    "ladies-umbrellas",
+    "childrens-umbrellas",
+    "five-fold-umbrella",
+    "patio-umbrella",
+    "golf-umbrella",
+    "straight-umbrellas",
+    "fan-spray-umbrella"
+  ],
+  "secondary": [
+    "beach-umbrella-with-tassile",
+    "beach-umbrella-with-fringe-vintage-scalloped-sunshade",
+    "boho-floral-beach-umbrella",
+    "outdoor-beach-umbrella-stylish-shade"
+  ],
+  "exclude": [
+    { "slug": "comfortable-folding-beach-outdoor-seat", "group": "furniture", "reason": "Folding beach seat / outdoor chair" },
+    { "slug": "classic-directors-chair", "group": "furniture", "reason": "Director's chair / outdoor furniture" },
+    { "slug": "sun-shelter-pink-striped-outdoor-sunshade", "group": "shade_structure", "reason": "Sun shelter / shade structure" },
+    { "slug": "large-pop-up-beach-cabana-for-family-daisy-print-sun-shelter", "group": "shade_structure", "reason": "Beach cabana / gazebo / sun shelter" },
+    { "slug": "outdoor-patio-umbrella-stylish-shade", "group": "outdoor_parasol", "reason": "Patio / garden shade umbrella" },
+    { "slug": "pink-striped-outdoor-umbrella-chic-shade", "group": "outdoor_parasol", "reason": "Outdoor garden parasol" },
+    { "slug": "hollow-out-patio-umbrella-modern-outdoor-shade", "group": "outdoor_parasol", "reason": "Patio shade umbrella" },
+    { "slug": "bohemian-rope-umbrella-boho-outdoor-decor", "group": "outdoor_parasol", "reason": "Macrame garden parasol" },
+    { "slug": "artificial-straw-umbrella-tropical-outdoor-elegance", "group": "outdoor_parasol", "reason": "Straw garden parasol" },
+    { "slug": "exquisite-pagoda-umbrella", "group": "outdoor_parasol", "reason": "Pagoda garden parasol" },
+    { "slug": "outdoor-tassel-umbrella-stylish-shade", "group": "outdoor_parasol", "reason": "Outdoor tassel parasol" },
+    { "slug": "bohemian-tassel-umbrella", "group": "outdoor_parasol", "reason": "Tri-colour tassel sunshade / parasol" },
+    { "slug": "exquisite-tri-color-tassel-umbrella-4", "group": "outdoor_parasol", "reason": "Tassel sunshade / parasol" },
+    { "slug": "fringed-pastel-paradise-umbrellas", "group": "outdoor_parasol", "reason": "Fringed outdoor parasol" }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "rebuilt_at": "2026-11-13T11:50:44.864Z",
+  "source": "offline (local data only)",
+  "policy": {
+    "decided_on": "2026-11-13",
+    "site": "fantasticumbrella.com",
+    "primary_focus": "Compact / folding / straight rain umbrellas (handheld small umbrellas)",
+    "secondary_focus": "A small selection of beach umbrellas and parasols",
+    "excluded": "Beach chairs, outdoor furniture, sun shelters, cabanas, gazebos, beach tents, patio and garden shade umbrellas",
+    "excluded_destination": "greenmarkoutdoor.com (GreenMark)",
+    "rule": "Only slugs listed under primary or secondary are published on this site. Anything new from WooCommerce goes to needs_review_products.json instead of being published automatically.",
+    "needs_confirmation": "The 10 outdoor_parasol items are excluded by inference from 'only small umbrellas, plus a few beach umbrellas'. If any of them should stay on this site, move its slug into secondary."
+  },
+  "counts": {
+    "catalogue_total": 26,
+    "published": 12,
+    "primary": 8,
+    "secondary": 4,
+    "excluded": 14,
+    "needs_review": 0,
+    "sitemap_urls": 19,
+    "redirects": 19,
+    "copy_edits": 1
+  },
+  "copy_edits": [
+    {
+      "slug": "contact",
+      "edits": [
+        "custom umbrellas and outdoor gear"
+      ]
+    }
+  ],
+  "excluded_groups": {
+    "shade_structure": 2,
+    "furniture": 2,
+    "outdoor_parasol": 10
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "synced_at": "2026-11-13T10:44:51.823Z",
+  "source": "live wp-json",
+  "pages": [
+    {
+      "slug": "quality-claims",
+      "raw_chars": 4382,
+      "clean_chars": 4382,
+      "plugin_blocks_removed": false,
+      "form_slot": false
+    },
+    {
+      "slug": "shipping-delivery",
+      "raw_chars": 4046,
+      "clean_chars": 4046,
+      "plugin_blocks_removed": false,
+      "form_slot": false
+    },
+    {
+      "slug": "faqs",
+      "raw_chars": 4164,
+      "clean_chars": 4164,
+      "plugin_blocks_removed": false,
+      "form_slot": false
+    },
+    {
+      "slug": "contact",
+      "raw_chars": 17271,
+      "clean_chars": 2057,
+      "plugin_blocks_removed": true,
+      "form_slot": true
+    },
+    {
+      "slug": "services",
+      "raw_chars": 6188,
+      "clean_chars": 6188,
+      "plugin_blocks_removed": false,
+      "form_slot": false
+    }
+  ],
+  "counts": {
+    "published_pages": 14,
+    "migrated_pages": 5,
+    "products": 26,
+    "seo_entries": 7,
+    "sitemap_urls": 33,
+    "redirects": 5,
+    "phase_2_pages": 3
+  }
+}

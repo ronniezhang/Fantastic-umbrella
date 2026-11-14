@@ -1,0 +1,100 @@
+---
+/**
+ * Astro-native replacement for the Fluent Forms shortcode.
+ * Field names match the live form so a future submission endpoint can be
+ * swapped in without changing the markup or notification templates.
+ */
+const products = [
+  'Compact / folding umbrella',
+  'Three-fold umbrella',
+  'Five-fold / ultra-compact umbrella',
+  'Straight / stick umbrella',
+  'Golf umbrella',
+  'Kids umbrella',
+  'Promotional / printed umbrella',
+  'Beach umbrella / parasol',
+  'Not sure yet',
+];
+---
+<section class="form-shell" id="enquiry-form">
+  <h2>Send us your enquiry</h2>
+  <p style="margin:0;color:var(--ink-soft);font-size:14px">
+    New projects, repeat orders, sampling requests and specification questions.
+    Fields marked <span class="req">*</span> are required.
+  </p>
+  <form id="b2b-enquiry" novalidate>
+    <div class="form-grid">
+      <div class="field">
+        <label for="full_name">Full name <span class="req">*</span></label>
+        <input id="full_name" name="full_name" type="text" required placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label for="company">Company <span class="req">*</span></label>
+        <input id="company" name="company" type="text" required placeholder="Company name" />
+      </div>
+      <div class="field">
+        <label for="email">Business email <span class="req">*</span></label>
+        <input id="email" name="email" type="email" required placeholder="name@company.com" />
+      </div>
+      <div class="field">
+        <label for="country">Country / region <span class="req">*</span></label>
+        <input id="country" name="country" type="text" required placeholder="Where you are based" />
+      </div>
+      <div class="field">
+        <label for="product_interest">Product interest <span class="req">*</span></label>
+        <select id="product_interest" name="product_interest" required>
+          <option value="">Select a product type</option>
+          {products.map((p) => <option value={p}>{p}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="estimated_quantity">Estimated quantity <span class="req">*</span></label>
+        <input id="estimated_quantity" name="estimated_quantity" type="text" required placeholder="e.g. 500 pcs" />
+        <span class="hint">An estimate is enough at this stage.</span>
+      </div>
+      <div class="field">
+        <label for="target_market">Target market</label>
+        <input id="target_market" name="target_market" type="text" placeholder="e.g. EU, US, resort groups" />
+      </div>
+      <div class="field">
+        <label for="annual_volume">Annual purchase volume</label>
+        <input id="annual_volume" name="annual_volume" type="text" placeholder="Optional" />
+      </div>
+      <div class="field">
+        <label for="preferred_incoterm">Preferred trade term</label>
+        <select id="preferred_incoterm" name="preferred_incoterm">
+          <option value="">Not sure yet</option>
+          <option>EXW</option><option>FOB</option><option>CIF</option><option>DDP</option>
+        </select>
+      </div>
+      <div class="field field-full">
+        <label for="message">Your requirements <span class="req">*</span></label>
+        <textarea id="message" name="message" required placeholder="Size, frame, fabric, artwork, print placement, target price, delivery window..."></textarea>
+        <span class="hint">Your artwork and specification stay confidential and are used only for your quotation.</span>
+      </div>
+    </div>
+    <p style="margin-top:20px">
+      <button class="btn" type="submit">Request a Quote</button>
+    </p>
+    <div id="form-status" class="form-status" hidden role="status"></div>
+    <p class="form-note">
+      Prototype notice: this form renders natively in Astro. In production the submission
+      goes to a form endpoint (Fluent Forms REST, a Worker, or a form service) that stores
+      the entry and sends the notification email.
+    </p>
+  </form>
+</section>
+
+<script>
+  const form = document.getElementById('b2b-enquiry');
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const status = document.getElementById('form-status');
+    if (status) {
+      status.hidden = false;
+      status.textContent =
+        'Prototype: submission endpoint is not connected yet. No data was sent. ' +
+        'Phase 3 of the migration wires this to a form endpoint and an email notification.';
+    }
+  });
+</script>

@@ -1,0 +1,86 @@
+[
+  {
+    "path": "/quality-claims/",
+    "decision": "migrate",
+    "target": "/quality-claims/",
+    "note": "B2B page"
+  },
+  {
+    "path": "/shipping-delivery/",
+    "decision": "migrate",
+    "target": "/shipping-delivery/",
+    "note": "B2B page"
+  },
+  {
+    "path": "/privacy/",
+    "decision": "phase-2",
+    "target": null,
+    "note": "content page, migrate in phase 2"
+  },
+  {
+    "path": "/terms/",
+    "decision": "phase-2",
+    "target": null,
+    "note": "content page, migrate in phase 2"
+  },
+  {
+    "path": "/about-us/",
+    "decision": "phase-2",
+    "target": null,
+    "note": "content page, migrate in phase 2"
+  },
+  {
+    "path": "/faqs/",
+    "decision": "migrate",
+    "target": "/faqs/",
+    "note": "B2B page"
+  },
+  {
+    "path": "/track-order/",
+    "decision": "301",
+    "target": "/contact/",
+    "note": "WooCommerce / account page"
+  },
+  {
+    "path": "/contact/",
+    "decision": "migrate",
+    "target": "/contact/",
+    "note": "B2B page"
+  },
+  {
+    "path": "/services/",
+    "decision": "migrate",
+    "target": "/services/",
+    "note": "B2B page"
+  },
+  {
+    "path": "/payment/",
+    "decision": "301",
+    "target": "/contact/",
+    "note": "WooCommerce / account page"
+  },
+  {
+    "path": "/%e6%88%91%e7%9a%84%e8%b4%ad%e7%89%a9%e8%bd%a6/",
+    "decision": "301",
+    "target": "/contact/",
+    "note": "WooCommerce cart page (encoded slug)"
+  },
+  {
+    "path": "/my-account/",
+    "decision": "301",
+    "target": "/contact/",
+    "note": "WooCommerce / account page"
+  },
+  {
+    "path": "/shop/",
+    "decision": "301",
+    "target": "/products/",
+    "note": "WooCommerce / account page"
+  },
+  {
+    "path": "/",
+    "decision": "migrate",
+    "target": "/",
+    "note": "new Astro homepage"
+  }
+]

@@ -1,0 +1,21 @@
+# 301 map draft - verify every line before cutover (phase 0 exit condition)
+/track-order/  /contact/  301
+/payment/  /contact/  301
+/%e6%88%91%e7%9a%84%e8%b4%ad%e7%89%a9%e8%bd%a6/  /contact/  301
+/my-account/  /contact/  301
+/shop/  /products/  301
+# Out-of-scope products (chairs, cabanas, patio parasols) - GreenMark takes these over
+/product/sun-shelter-pink-striped-outdoor-sunshade/  /products/  301
+/product/large-pop-up-beach-cabana-for-family-daisy-print-sun-shelter/  /products/  301
+/product/comfortable-folding-beach-outdoor-seat/  /products/  301
+/product/outdoor-patio-umbrella-stylish-shade/  /products/  301
+/product/pink-striped-outdoor-umbrella-chic-shade/  /products/  301
+/product/hollow-out-patio-umbrella-modern-outdoor-shade/  /products/  301
+/product/bohemian-rope-umbrella-boho-outdoor-decor/  /products/  301
+/product/artificial-straw-umbrella-tropical-outdoor-elegance/  /products/  301
+/product/exquisite-pagoda-umbrella/  /products/  301
+/product/outdoor-tassel-umbrella-stylish-shade/  /products/  301
+/product/bohemian-tassel-umbrella/  /products/  301
+/product/exquisite-tri-color-tassel-umbrella-4/  /products/  301
+/product/fringed-pastel-paradise-umbrellas/  /products/  301
+/product/classic-directors-chair/  /products/  301

@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import products from '../../data/products.json';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const title = `${product.name.replace(/&amp;/g, '&')} | Custom Umbrella OEM Supplier`.slice(0, 60);
+---
+<Base path={`/product/${product.slug}/`} title={title} description="Custom printing, frame, size and fabric options for B2B programmes. Request a quotation and specification sheet for this product.">
+  <article class="wrap prose">
+    <p class="eyebrow"><a href="/products/">&larr; All products</a></p>
+    <h1 set:html={product.name} />
+    {product.image && (
+      <p><img src={product.image} alt={product.name} style="max-width:520px;border-radius:10px;border:1px solid var(--line)" /></p>
+    )}
+    {product.short && <p>{product.short}</p>}
+
+    <h2>Built to your specification</h2>
+    <p>
+      Frame material, shaft, handle, panel count, trim and all-over custom printing
+      can be specified for your market. Send vector artwork and Pantone references and we
+      return a digital layout for approval before producing a printed strike-off.
+    </p>
+
+    <h2>Specification &amp; commercial terms</h2>
+    <table>
+      <tbody>
+        <tr><th>MOQ</th><td>Confirmed in writing with your quotation.</td></tr>
+        <tr><th>Lead time</th><td>Confirmed after artwork approval and specification sign-off.</td></tr>
+        <tr><th>Trade terms</th><td>EXW, FOB or CIF, as agreed.</td></tr>
+        <tr><th>Specification sheet</th><td>Available on request for this product.</td></tr>
+      </tbody>
+    </table>
+
+    <p><a class="wp-block-button__link btn" href={`/contact/?product=${product.slug}#enquiry-form`}>Request a Quote</a></p>
+    <blockquote>
+      Product-level dimensions, MOQ and lead time are not published as fixed values —
+      they are confirmed in writing with your quotation, so nothing here is a public commitment.
+    </blockquote>
+  </article>
+</Base>

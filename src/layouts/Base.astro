@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import seo from '../data/seo.json';
+
+const { title, description, seoKey = 'home', path } = Astro.props;
+const entry = seo[seoKey] || {};
+const pageTitle = title || entry.title || 'Fantastic Umbrella';
+const pageDesc = description || entry.description || '';
+const canonical = new URL(path || Astro.url.pathname, Astro.site).href;
+
+// Entity disambiguation: a same-sounding 1968 Rhode Island retail attraction
+// (fantasticumbrellafactory.com) dominates the bare brand phrase in search.
+// Explicitly state who we are and where we operate so search engines keep the
+// two entities separate. No reference to the other site is needed.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Guangzhou Fantastic Umbrella Co., Ltd.',
+  alternateName: 'Fantastic Umbrella',
+  url: 'https://fantasticumbrella.com/',
+  description:
+    'OEM and ODM manufacturer of compact, folding and straight rain umbrellas for B2B buyers.',
+  disambiguatingDescription:
+    'A Guangzhou, China based manufacturer of handheld rain umbrellas serving wholesale and promotional programmes.',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Guangzhou',
+    addressRegion: 'Guangdong',
+    addressCountry: 'CN',
+  },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta name="generator" content="Astro" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
