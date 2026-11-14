@@ -243,7 +243,7 @@ export async function onRequestPost(context) {
         ok: false,
         error: 'not_configured',
         message:
-          'The enquiry form is not enabled yet. Please email us directly at sales@fantasticumbrella.com and we will get back to you.',
+          'The enquiry form is not enabled yet. Please contact us by email and we will get back to you.',
       },
       503,
     );
@@ -269,7 +269,7 @@ export async function onRequestPost(context) {
         ok: false,
         error: 'delivery_failed',
         message:
-          'We could not send your enquiry just now. Please try again in a minute, or email us directly at sales@fantasticumbrella.com.',
+          'We could not send your enquiry just now. Please try again in a minute, or contact us by email.',
       },
       502,
     );

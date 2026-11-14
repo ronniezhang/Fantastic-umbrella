@@ -111,11 +111,19 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
   const markOpened = () => { if (timeInput) timeInput.value = String(Date.now()); };
   markOpened();
 
-  const show = (kind, message) => {
+  const show = (kind, message, fallback) => {
     if (!status) return;
     status.hidden = false;
     status.className = `form-status ${kind}`;
     status.textContent = message;
+    // Never lose a lead: on any failure give a one-click way to reach sales.
+    if (fallback) {
+      status.append(' ');
+      const link = document.createElement('a');
+      link.href = `mailto:${fallback}?subject=${encodeURIComponent('B2B umbrella enquiry')}`;
+      link.textContent = `Email ${fallback}`;
+      status.append(link);
+    }
   };
 
   form?.addEventListener('submit', async (event) => {
@@ -146,7 +154,7 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
       markOpened();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'We could not send your enquiry.';
-      show('err', `${message} If it keeps failing, email us directly at ${fallback}.`);
+      show('err', `${message} If it keeps failing, please contact us directly:`, fallback);
     } finally {
       if (button) { button.disabled = false; button.textContent = 'Request a Quote'; }
     }

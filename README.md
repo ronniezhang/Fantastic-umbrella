@@ -240,6 +240,8 @@ curl -s -X POST https://fantastic-umbrella-e13.pages.dev/api/enquiry \
 
 未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后返回 `200 {"ok":true}`。也可以用 `node ../test_enquiry_endpoint.mjs` 跑本地逻辑自测（上级工作目录，12 个用例）。
 
+**兜底降级**：任何一种失败（503 未配置、502 投递全挂、404 端点不存在、访客断网）都会在表单下方显示原因，并附一个一键 `mailto:sales@fantasticumbrella.com` 链接，客户仍能联系到销售，不会只看到一句报错就离开。因此预览期即使还没填密钥，表单也不会静默吞掉线索。
+
 端点已内置的防护：同源 Origin 校验、蜜罐字段、`1.5s` 极速提交拦截、必填/邮箱/长度校验、`no-store`、请求不落第三方日志。若后续询盘量起来，再加 Cloudflare Turnstile（免费、无验证码打扰）与 D1 存档。
 
 ---
