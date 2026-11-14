@@ -46,7 +46,8 @@ jobs:
 
       - name: Block indexing on preview domain
         if: steps.guard.outputs.ready == 'true'
-        run: printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
 
       - name: Deploy to Cloudflare Pages
         if: steps.guard.outputs.ready == 'true'
