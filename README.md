@@ -82,14 +82,18 @@ npm run preview:stage  # → ../astro-preview/（纯静态部署副本）
 
 ## 5. Git 状态与推送
 
-本地仓库已初始化并完成首次提交。**当前环境没有任何远程仓库、Git 凭据或 CLI**，因此代码尚未 push 到远端。拿到仓库后执行：
+代码已推送到 **https://github.com/ronniezhang/Fantastic-umbrella** 的 `main` 分支（2026-11-14）。本机 Git Credential Manager 已缓存写入凭据，后续提交直接 `git push` 即可。
+
+在新克隆的机器上：
 
 ```bash
-git remote add origin <仓库地址>
-git push -u origin main
+git clone https://github.com/ronniezhang/Fantastic-umbrella.git
+cd Fantastic-umbrella
+npm ci
+npm run build
 ```
 
-推送权限建议使用细粒度 PAT 或 SSH deploy key，不要用平台主账号密码。
+推送权限建议使用细粒度 PAT 或 SSH deploy key，不要用平台主账号密码。仓库为公开仓库，**不要提交 `.env`、API 密钥或任何凭据**（`.gitignore` 已排除）。
 
 ---
 
