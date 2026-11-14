@@ -118,6 +118,27 @@ npm run build
 - 免费计划额度：500 次构建/月、100 个自定义域名、20,000 文件、2,000 条静态重定向、无限预览部署。本站 19 页 / 19 条 301 远低于限额。
 - GoDaddy Managed WordPress 套餐自带的 Cloudflare CDN 属于 **GoDaddy 的账号**，与这里新建的 Cloudflare 账号互相独立；新开账号不会接管或影响现有 CDN。
 
+### 5.2 自动化部署：只需一条最小权限凭据
+
+Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已登录浏览器里开启浏览器控制）。**最小权限、可随时撤销、绝不写进仓库**：
+
+1. Cloudflare 面板 → **My Profile → API Tokens → Create Token** → Custom Token → **Get started**
+   - Token name：`pages-deploy-fantastic-umbrella`
+   - Permissions：**Account / Cloudflare Pages / Edit**（官方 CI 文档指定的权限）
+   - Continue to summary → Create Token → 复制 token（只显示一次）
+2. GitHub 仓库 → **Settings → Secrets and variables → Actions → New repository secret**，加两个值：
+   - `CLOUDFLARE_API_TOKEN` = 上一步的 token
+   - `CLOUDFLARE_ACCOUNT_ID` = Cloudflare 面板首页 URL 里那串 32 位账号 ID
+3. 告诉我「加好了」，我触发一次部署并逐页验收 `https://fantastic-umbrella.pages.dev`（项目名若被占用，Cloudflare 会自动加随机后缀，以实际 URL 为准）。
+
+仓库已带 `.github/workflows/deploy-pages.yml`：push 到 `main` 即自动 `npm ci → npm run build → wrangler pages deploy dist`，之后改一句文案 `git push` 就发布。两个 Secret 未配置时 workflow 会安全跳过，不产生失败记录。
+
+**取舍（重要）**：wrangler 部署创建的是 **Direct Upload** 项目，官方明确它之后**不能切换成 Git 集成**。若以后想要面板里原生的 GitHub 关联与 PR 预览部署，需删除并重建项目；`git push` 自动发布由 GitHub Actions 提供，不受影响。
+
+**预览期 SEO**：workflow 在部署前把 `dist/robots.txt` 覆写为 `Disallow: /`，且全站 canonical 仍指向主域名，避免 `*.pages.dev` 被当成正式站收录。**切流绑主域名时必须删掉这一步**，恢复 `public/robots.txt`（含 sitemap）。
+
+**不要做**：把 Cloudflare 主账号密码或 Global API Key 发出来；把 token 写进任何文件；在授权前点 **Add a custom domain**。
+
 ---
 
 ## 6. 切流前的硬门槛（未完成不得改 DNS）
