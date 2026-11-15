@@ -44,10 +44,10 @@ jobs:
         if: steps.guard.outputs.ready == 'true'
         run: npm run build
 
-      - name: Block indexing on preview domain
-        if: steps.guard.outputs.ready == 'true'
-        run: |
-          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+      # robots.txt is served by functions/robots.txt.ts (host-aware):
+      # Allow + Sitemap on fantasticumbrella.com, Disallow on preview hosts.
+      # Never overwrite dist/robots.txt here - that would de-index the
+      # production domain once the main domain points at this project.
 
       - name: Sync Pages environment variables
         if: steps.guard.outputs.ready == 'true'
@@ -103,4 +103,19 @@ jobs:
             echo "::notice::Delivery channel is bound to this deployment (email=true). No test email was sent."
           else
             echo "::notice::No Resend key in GitHub Secrets - endpoint stays in 503 fallback mode."
+          fi
+
+      - name: Verify host-aware robots.txt
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          body=$(curl -s --retry 8 --retry-delay 5 --retry-all-errors --max-time 15 \
+            https://fantastic-umbrella-e13.pages.dev/robots.txt)
+          echo "Preview robots.txt: $body"
+          if ! printf '%s' "$body" | grep -q 'served-by: pages-function'; then
+            echo "::error::robots.txt is not served by the host-aware Function (a static file took precedence)."
+            exit 1
+          fi
+          if ! printf '%s' "$body" | grep -q 'Disallow: /'; then
+            echo "::error::Preview hostname is not blocked from indexing."
+            exit 1
           fi
