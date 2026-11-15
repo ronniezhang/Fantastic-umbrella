@@ -209,7 +209,7 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 | --- | --- | --- |
 | 投递通道 | Resend 邮件 | `RESEND_API_KEY` + `ENQUIRY_TO` 已绑定，线上 `GET /api/enquiry` 实测 `delivery.email=true` |
 | 发件人 | `Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` | 已验证的发信子域，客户看到的不再是 `resend.dev` |
-| 收件人 | `sales@fantasticumbrella.com` | Zoho 企业邮箱，入站/出站均已实测 |
+| 收件人 | `sales@fantasticumbrella.com` + `ronniezhang690@gmail.com`（冗余，排障中） | Zoho 企业邮箱为主；15:40 自检信未进 Zoho 收件箱，临时加 Gmail 副本交叉验证，定位后可改回单收件人 |
 | 认证 | SPF（Return-Path `send.notify` CNAME 委托）+ DKIM（选择器 `resend`）+ DMARC 对齐 | 对齐域为 `notify.fantasticumbrella.com`；主域 DMARC `p=none sp=none` |
 | 密钥存放 | GitHub Secrets（加密） | 明文不入库、不落盘、不进浏览器；CI 用 Cloudflare API 写成 `secret_text` |
 
@@ -217,7 +217,9 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 
 **切换动作（2026-11-15 15:30）**：确认后台 Verified 后，只更新两个 Secret（`ENQUIRY_TO`、`ENQUIRY_FROM`），`RESEND_API_KEY` 原值保持不变（工作区根目录 `set_github_secrets.py` 支持部分更新，无需重新输入 key）→ 重跑 Actions → CI 同步 Pages 变量并重新部署 → 只读自检 `mode=verified-domain`、`from=no-reply@notify.fantasticumbrella.com`。**代码零改动**：`functions/api/enquiry.ts` 的 `mode` 本就按 `from` 自动判定。
 
-**只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from}`，**不含密钥与收件人**。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
+**只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from, to}`，**不含密钥**（`to` 是网站公开的业务邮箱，用于排障）。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
+
+**未送达排查（2026-11-15 15:40）**：切正式域后自检询盘返回 `200 ok`，但 Zoho 收件箱没收到。端点新增诊断模式（POST 带 `_diag: true` 或请求头 `X-Enquiry-Diag: 1`），返回实际 `to` / `from`、Resend 上游状态码与邮件 id、以及 `GET /emails/:id` 的回读结果。实测 Resend `POST /emails` 返回 200 + 邮件 id，`to` 确实是 `sales@`；`GET /emails/:id` 因 key 为 `restricted_api_key`（仅发送）返回 401 —— **AI 查不到 delivered / bounced，这一步必须看 Resend 后台 Logs**。待排查方向：Zoho 把 `notify.` 子域来信判为仿冒本组织域（进垃圾箱 / 隔离区）、Resend suppression list、Forge 新发信池预热延迟。已临时加 Gmail 冗余收件人防丢单，定位后改回。
 
 **最终验收**：运行 `npm run verify:enquiry`（或在 Contact 页提交一次），会发一封 `Pipeline QA` 自检询盘到 `sales@`。看到 `200 ok`、收件箱收到、Reply-To 是客户地址，即全链路闭环。
 
