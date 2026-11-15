@@ -299,6 +299,22 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 
 ⚠️ **不要再跑 `npm run sync`**：`scripts/sync-content.mjs` 会从 WP REST 重新抓取，把 `image` 字段写回 wp-content 绝对地址，切流后会重新破图。产品数据现在以 `src/data/catalog-scope.json` + 本地 `products.json` 为准。
 
+### Cloudflare 侧已执行（2026-11-15 17:42，现在只剩改 NS）
+
+通过一次性工作流 `.github/workflows/cf-admin.yml` + `scripts/cf-zone-setup.py`（复用仓库里已有的 Cloudflare 凭据，密钥不落日志）完成：
+
+| 项 | 结果 |
+| --- | --- |
+| Zone | 新建 `fantasticumbrella.com`，id `cf90d809b72119d0012a5bbffb2a307c`，type=full，status=`pending`（等 NS 生效） |
+| **GoDaddy 要填的 2 个 NS** | **`adi.ns.cloudflare.com`**、**`damiete.ns.cloudflare.com`** |
+| DNS 记录 | Cloudflare 自动扫描抓到 0 条，脚本从当前权威 DNS（GoDaddy）逐字读取并写入 **14 条**，全部 `proxied=False`（DNS only，邮件记录不能开代理） |
+| TXT 完整性 | 8 条 TXT 与 GoDaddy 现值逐字比对**全部 MATCH**（含 Zoho DKIM 234 字符、Resend DKIM 218 字符，无截断） |
+| Pages 自定义域 | `fantasticumbrella.com` 与 `www.fantasticumbrella.com` 均已添加，status=`pending`；NS 生效后 Cloudflare 自动创建 apex CNAME flattening + www CNAME 并签发 Universal SSL 证书 |
+
+**GoDaddy 侧暂时不用改任何记录**（A / MX / TXT 全部保留作回退）。唯一要做的：把域名的 Nameservers 从 `ns29 / ns30.domaincontrol.com` 换成上面两个 Cloudflare NS。改 NS 之前，Cloudflare 里的一切对公网不可见。
+
+> ⚠️ 过渡窗口：NS 生效后到 Cloudflare 自动创建 apex CNAME、签发证书之间，网站可能短暂打不开（通常几分钟，证书最长几十分钟）。**MX 与全部邮件 TXT 已在 Cloudflare 侧齐备，Zoho 收发不会断。** 回退只需把 NS 改回 `ns29 / ns30.domaincontrol.com`。
+
 ### DNS 迁移清单（改 NS 前逐条核对，一条都不能少）
 
 2026-11-15 17:30 从 `8.8.8.8` 只读实测的**全部**记录。Cloudflare 建 zone 时会自动扫描导入，但必须人工比对 —— 少一条 MX/TXT 就可能让客户邮件退信或询盘认证失败。
