@@ -215,7 +215,7 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 
 **域名验证实测（2026-11-15 15:11）**：GoDaddy 加入 Resend 生成的 3 条记录，经 `8.8.8.8` + 权威 `ns29` 双源复核生效：`resend._domainkey.notify` TXT（DKIM 公钥，选择器 `resend`）、`send.notify` CNAME → `send.forge.rmta.net.`、`rsend.notify` CNAME → `rsend-apne1.forge.rmta.net.`。**Resend 新版由 CNAME 委托目标提供 SPF（Return-Path 域承担 SPF 检查），`notify` 本身不需要 SPF TXT**；DKIM TXT 只有 `p=` 无 `v=DKIM1` 前缀也属正常。主域 A / NS / MX ×3 / 两条 TXT / `_dmarc` 全部未动。详见落地清单「15:11」章。
 
-**切换动作（2026-11-15 15:2x）**：确认后台 Verified 后，只更新两个 Secret（`ENQUIRY_TO`、`ENQUIRY_FROM`），`RESEND_API_KEY` 原值保持不变（工作区根目录 `set_github_secrets.py` 支持部分更新，无需重新输入 key）→ 重跑 Actions → CI 同步 Pages 变量并重新部署 → 只读自检 `mode=verified-domain`、`from=no-reply@notify.fantasticumbrella.com`。**代码零改动**：`functions/api/enquiry.ts` 的 `mode` 本就按 `from` 自动判定。
+**切换动作（2026-11-15 15:30）**：确认后台 Verified 后，只更新两个 Secret（`ENQUIRY_TO`、`ENQUIRY_FROM`），`RESEND_API_KEY` 原值保持不变（工作区根目录 `set_github_secrets.py` 支持部分更新，无需重新输入 key）→ 重跑 Actions → CI 同步 Pages 变量并重新部署 → 只读自检 `mode=verified-domain`、`from=no-reply@notify.fantasticumbrella.com`。**代码零改动**：`functions/api/enquiry.ts` 的 `mode` 本就按 `from` 自动判定。
 
 **只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from}`，**不含密钥与收件人**。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
 
