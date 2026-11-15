@@ -54,5 +54,25 @@ const schema = {
       <slot />
     </main>
     <Footer />
+    <!-- Migration cleanup (temporary, remove after 2026-12-31):
+         retire any Service Worker / Cache Storage left by the old WordPress
+         site. Cache Storage is origin-scoped, so this only affects this domain.
+         It runs as soon as a visitor receives any real page from the new site,
+         which stops the stale worker from serving cached WP pages on later
+         refreshes. -->
+    <script is:inline>
+      (function () {
+        if (window.navigator && 'serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function (regs) {
+            regs.forEach(function (reg) { reg.unregister(); });
+          }).catch(function () {});
+        }
+        if (window.caches && caches.keys) {
+          caches.keys().then(function (keys) {
+            keys.forEach(function (key) { caches.delete(key); });
+          }).catch(function () {});
+        }
+      })();
+    </script>
   </body>
 </html>
