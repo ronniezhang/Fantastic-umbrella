@@ -313,6 +313,22 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 
 **GoDaddy 侧暂时不用改任何记录**（A / MX / TXT 全部保留作回退）。唯一要做的：把域名的 Nameservers 从 `ns29 / ns30.domaincontrol.com` 换成上面两个 Cloudflare NS。改 NS 之前，Cloudflare 里的一切对公网不可见。
 
+#### GoDaddy 常见误区：DNS 记录表里的 NS 行不能改（2026-11-15 17:50）
+
+用户截图确认：GoDaddy「DNS 紀錄」表格里 `@` 的两条 NS（`ns29 / ns30.domaincontrol.com`）的「編輯 / 刪除」图示为灰色禁用。**这是正常设计，不是域名被锁**。GoDaddy 官方帮助明确写道：「如果您的域名使用 GoDaddy 域名服务器，我们将为您处理默认的 NS 记录，您将无法编辑或删除这些默认记录」以及「NS 记录不是您域名的域名服务器；如需更改域名服务器，需要执行不同的步骤」。DNS 记录表里的 NS 行只用于**子域委派**，改不了注册商层面的委派。
+
+正确入口（繁中界面 / 英文对照）：
+
+1. 回到 **我的產品 / My Products → 網域組合 / Domain Portfolio**，点 `fantasticumbrella.com` 进入 **網域設定 / Domain Settings**（不要停留在 DNS 紀錄表格）。
+2. 找到独立的 **名稱伺服器 / Nameservers** 卡片 → 点 **變更 / Change**（官方路径：`Domain Settings → DNS → Nameservers`，通常在记录表上方或页面下方的单独区块）。
+3. 选 **我要使用自己的名稱伺服器 / I'll use my own nameservers (custom)**，移除原有两条，填 `adi.ns.cloudflare.com` 与 `damiete.ns.cloudflare.com`。
+4. **儲存 / Save → 繼續 / Continue**；若开启 Domain Protection，会要求简讯验证码或注册信箱的一次性密码。
+5. GoDaddy 可能警告「会中断 GoDaddy 托管的网站」—— Managed WordPress 绑定域名时会出现，**照常确认即可**，这正是下线 WP 的目标；Zoho 邮箱与托管产品无关，不受影响。改完后 GoDaddy 的 DNS 紀錄页仍会显示旧记录，但已不再权威，不要在那里删东西。
+
+若进入 Nameservers 后**仍**提示无法修改，按顺序排查：① 域名转发（Forwarding）开启会占用记录 → 先关闭；② Domain Protection / 注册锁定 → 按提示完成验证或暂时关闭域名锁定；③ Website Builder / Managed WordPress 产品锁住 DNS → 请 GoDaddy 客服解锁；④ 仍不行则改走路径 B（只绑 `www` + 裸域 301），完全不动 NS。
+
+官方参考：GoDaddy Help《Edit my domain nameservers》(`change-nameservers-for-my-domains-664`)、《編輯 NS 記錄》(`19213`)。
+
 > ⚠️ 过渡窗口：NS 生效后到 Cloudflare 自动创建 apex CNAME、签发证书之间，网站可能短暂打不开（通常几分钟，证书最长几十分钟）。**MX 与全部邮件 TXT 已在 Cloudflare 侧齐备，Zoho 收发不会断。** 回退只需把 NS 改回 `ns29 / ns30.domaincontrol.com`。
 
 ### DNS 迁移清单（改 NS 前逐条核对，一条都不能少）
