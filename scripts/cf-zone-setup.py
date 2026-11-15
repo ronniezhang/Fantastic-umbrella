@@ -278,6 +278,28 @@ def main():
         print("ACTIVATE COMPLETE - mail records untouched")
         return 0
 
+    if ACTION == "purge":
+        """Purge stale CDN cache left by GoDaddy's Managed WordPress CDN.
+
+        Cache-only action: no DNS record is changed. Also reports the current
+        Pages custom-domain validation state so a stuck DCV is visible.
+        """
+        if not zone:
+            print("::error::zone not found - cannot purge")
+            return 1
+        c, d = api("POST", "/zones/%s/purge_cache" % zone["id"], {"purge_everything": True})
+        print("purge everything: HTTP %s %s" % (c, "OK" if good(c, d) else brief(d)))
+        for host in (DOMAIN, "www." + DOMAIN):
+            c, d = api("GET", "/accounts/%s/pages/projects/%s/domains/%s" % (
+                ACCOUNT, PROJECT, urllib.parse.quote(host, safe="")))
+            r = d.get("result") or {}
+            print("   %-32s HTTP %s status=%s verification=%s validation=%s" % (
+                host, c, r.get("status"),
+                (r.get("verification_data") or {}).get("status"),
+                (r.get("validation_data") or {}).get("status")))
+        print("PURGE COMPLETE - no DNS records changed")
+        return 0
+
     if ACTION != "setup":
         print("::error::unknown CF_ACTION=" + ACTION)
         return 1
