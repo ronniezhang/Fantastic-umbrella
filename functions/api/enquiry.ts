@@ -183,6 +183,27 @@ async function sendByForward(env, data, submittedAt) {
   }
 }
 
+/**
+ * GET /api/enquiry - read-only pipeline status for CI / ops checks.
+ * Never returns an API key, a recipient list, or any customer data.
+ * Lets us confirm that Pages env vars are bound WITHOUT sending a test email.
+ */
+export async function onRequestGet(context) {
+  const { env } = context;
+  const from = env.ENQUIRY_FROM || 'Fantastic Umbrella <onboarding@resend.dev>';
+  return reply({
+    ok: true,
+    service: 'fantastic-umbrella-enquiry',
+    delivery: {
+      email: Boolean(env.RESEND_API_KEY && env.ENQUIRY_TO),
+      webhook: Boolean(env.ENQUIRY_WEBHOOK_URL),
+      forward: Boolean(env.ENQUIRY_FORWARD_URL),
+    },
+    mode: from.includes('onboarding@resend.dev') ? 'resend-sandbox' : 'verified-domain',
+    from,
+  });
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
