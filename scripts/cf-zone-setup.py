@@ -148,6 +148,24 @@ def main():
                 r.get("type"), r.get("name"), str(r.get("content"))[:80], r.get("proxied")))
 
     if ACTION == "probe":
+        import hashlib
+        print("--- TXT integrity: Cloudflare zone vs current authoritative DNS ---")
+        cf_txt = {}
+        for r in records:
+            if r.get("type") == "TXT":
+                cf_txt.setdefault(norm(r.get("name", "")), []).append(norm(r.get("content", "")))
+        for name, typ in REQUIRED:
+            if typ != "TXT":
+                continue
+            live = [norm(v) for v, _ in doh(name, typ)]
+            cf = cf_txt.get(norm(name), [])
+            for value in live:
+                print("   %-52s len=%4d sha=%s %s" % (
+                    name, len(value),
+                    hashlib.sha256(value.encode("utf-8")).hexdigest()[:10],
+                    "MATCH" if value in cf else "MISSING"))
+            if not live:
+                print("   %-52s (no authoritative value)" % name)
         print("PROBE COMPLETE - no changes made")
         return 0
     if ACTION != "setup":
