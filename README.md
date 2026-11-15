@@ -209,7 +209,7 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 | --- | --- | --- |
 | 投递通道 | Resend 邮件 | `RESEND_API_KEY` + `ENQUIRY_TO` 已绑定，线上 `GET /api/enquiry` 实测 `delivery.email=true` |
 | 发件人 | `Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` | 已验证的发信子域，客户看到的不再是 `resend.dev` |
-| 收件人 | `sales@fantasticumbrella.com` + `ronniezhang690@gmail.com`（冗余，排障中） | Zoho 企业邮箱为主；15:40 自检信未进 Zoho 收件箱，临时加 Gmail 副本交叉验证，定位后可改回单收件人 |
+| 收件人 | `sales@fantasticumbrella.com` | Zoho 企业邮箱；2026-11-15 三封自检询盘全部落收件箱，询盘统一在 Zoho 收发 |
 | 认证 | SPF（Return-Path `send.notify` CNAME 委托）+ DKIM（选择器 `resend`）+ DMARC 对齐 | 对齐域为 `notify.fantasticumbrella.com`；主域 DMARC `p=none sp=none` |
 | 密钥存放 | GitHub Secrets（加密） | 明文不入库、不落盘、不进浏览器；CI 用 Cloudflare API 写成 `secret_text` |
 
@@ -219,7 +219,9 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 
 **只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from, to}`，**不含密钥**（`to` 是网站公开的业务邮箱，用于排障）。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
 
-**未送达排查（2026-11-15 15:40）**：切正式域后自检询盘返回 `200 ok`，但 Zoho 收件箱没收到。端点新增诊断模式（POST 带 `_diag: true` 或请求头 `X-Enquiry-Diag: 1`），返回实际 `to` / `from`、Resend 上游状态码与邮件 id、以及 `GET /emails/:id` 的回读结果。实测 Resend `POST /emails` 返回 200 + 邮件 id，`to` 确实是 `sales@`；`GET /emails/:id` 因 key 为 `restricted_api_key`（仅发送）返回 401 —— **AI 查不到 delivered / bounced，这一步必须看 Resend 后台 Logs**。待排查方向：Zoho 把 `notify.` 子域来信判为仿冒本组织域（进垃圾箱 / 隔离区）、Resend suppression list、Forge 新发信池预热延迟。已临时加 Gmail 冗余收件人防丢单，定位后改回。
+**投递延迟已闭环（2026-11-15 15:52）**：15:30 自检信发出后，15:37 在 Zoho 收件箱还没看到；到 15:52 三封测试信（`Pipeline QA` 3:45、`Delivery Diagnostics` 3:43、`Delivery Check 2` 3:48）**全部出现在 Zoho 收件箱（非垃圾邮件）**，发件人显示 `Fantastic Umbrella`，10 个字段、`Submitted` 时间、`Source page` 全部正确；双收件人那封同时到达 `sales@` 与 Gmail。结论：**不是丢单，也不是配置错误，而是新验证域名 + Resend Forge 首批发信的排队 / 预热延迟**（约 10–15 分钟）；Zoho 并未把 `notify.` 子域来信当作仿冒本组织域拦截。临时加的 Gmail 副本已撤掉，`ENQUIRY_TO` 改回单一 `sales@fantasticumbrella.com`。
+
+端点保留诊断模式备查：POST 带 `_diag: true` 或请求头 `X-Enquiry-Diag: 1` 会返回实际 `to` / `from`、Resend 上游状态码与邮件 id。`GET /emails/:id` 因 key 为 `restricted_api_key`（仅发送）返回 401，属预期，邮件状态仍以 Resend 后台 Logs 为准。
 
 **最终验收**：运行 `npm run verify:enquiry`（或在 Contact 页提交一次），会发一封 `Pipeline QA` 自检询盘到 `sales@`。看到 `200 ok`、收件箱收到、Reply-To 是客户地址，即全链路闭环。
 
