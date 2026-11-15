@@ -280,9 +280,67 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 
 **兜底降级**：任何一种失败（503 未配置、502 投递全挂、404 端点不存在、访客断网）都会在表单下方显示原因，并附一个**一键预填邮件**按钮 —— 客户已经填写的 10 个字段会自动写进邮件主题和正文，收件人是已实测可用的 `sales@fantasticumbrella.com`，点一下就在本地邮件客户端生成一封完整询盘。因此预览期即使还没填密钥，也不会静默吞掉线索；这不是普通 `mailto:` 死链，而是一条可用的备用提交通路（正文按邮件客户端上限截断到 1800 字符）。
 
-**线上状态（2026-11-14 22:06）**：`functions/` 已被 Wrangler 自动打包随 `pages deploy` 上线，端点不是 404/405，实测 `POST /api/enquiry` 返回结构化 JSON；CI 的「Verify enquiry endpoint is live」步骤要求响应必须含 `ok` 字段（防止 405/HTML fallback 假绿）。Zoho 邮箱侧认证与收发已全部验证通过，`sales@` 可作正式收件地址。**当前唯一未完成的是填投递通道的环境变量**（`RESEND_API_KEY` / `ENQUIRY_TO` / `ENQUIRY_FROM`），未配置时提交明确返回 503 并提供预填邮件兜底。
+**线上状态（2026-11-15 已闭环）**：`functions/` 已被 Wrangler 自动打包随 `pages deploy` 上线；投递通道三个变量已由 CI 同步到 Pages，真实自检询盘已落入 Zoho `sales@` 收件箱（详见 §8）。`503 not_configured` 只在变量被清空时才会出现，届时仍有一键预填邮件兜底。
 
 端点已内置的防护：同源 Origin 校验、蜜罐字段、`1.5s` 极速提交拦截、必填/邮箱/长度校验、`no-store`、请求不落第三方日志。若后续询盘量起来，再加 Cloudflare Turnstile（免费、无验证码打扰）与 D1 存档。
+
+---
+
+## 10. 主域名切流到 Cloudflare Pages（2026-11-15 准备就绪，待执行）
+
+**官方约束**：Cloudflare 文档《Custom domains》明确 —— **裸域 `fantasticumbrella.com` 要绑到 Pages，域名必须成为该 Cloudflare 账号下的 zone 并把 NS 指向 Cloudflare**；外部 DNS（GoDaddy）只能给 `www` 这类子域加 CNAME 到 `fantastic-umbrella-e13.pages.dev`。原因：apex 不能有 CNAME（与 SOA/NS/MX 冲突），Cloudflare 靠自有权威 DNS 的 CNAME flattening 解决。**当前无 CAA 记录**，Cloudflare 可正常签发 Universal SSL 证书。
+
+### 已在代码侧完成的切流准备（CI 全绿）
+
+| 项 | 处理 | 验证 |
+| --- | --- | --- |
+| 12 张产品图原为 `https://fantasticumbrella.com/wp-content/...` 绝对外链，WP 下线即破图 | 全部下载到 `public/images/products/{slug}.{ext}`，`src/data/products.json` 改成本地路径（3.6 MB，JPEG/PNG 文件头均有效） | 构建 19 页；预览站 `/images/products/fan-spray-umbrella.jpg` 返回 `200 image/jpeg 417901` |
+| CI 原先把 `dist/robots.txt` 强制写成 `Disallow: /`，主域切过来会被全站禁止收录 | 删除该覆盖；新增 `functions/robots.txt.ts` 按域名返回：主域 `Allow: /` + Sitemap，预览/其他域名 `Disallow: /`；CI 新增「Verify host-aware robots.txt」校验标记 | run `43699616984` 全绿；预览域名实测返回带 `# served-by: pages-function` 的 Disallow |
+
+⚠️ **不要再跑 `npm run sync`**：`scripts/sync-content.mjs` 会从 WP REST 重新抓取，把 `image` 字段写回 wp-content 绝对地址，切流后会重新破图。产品数据现在以 `src/data/catalog-scope.json` + 本地 `products.json` 为准。
+
+### DNS 迁移清单（改 NS 前逐条核对，一条都不能少）
+
+2026-11-15 17:30 从 `8.8.8.8` 只读实测的**全部**记录。Cloudflare 建 zone 时会自动扫描导入，但必须人工比对 —— 少一条 MX/TXT 就可能让客户邮件退信或询盘认证失败。
+
+| 类型 | 名称 | 值 | 迁移要求 |
+| --- | --- | --- | --- |
+| MX | `@` | `10 mx.zoho.com` / `20 mx2.zoho.com` / `50 mx3.zoho.com` | **必须保留**，丢了收不到客户邮件 |
+| TXT | `@` | `v=spf1 include:dc-8e814c8572._spfm.fantasticumbrella.com ~all` | **必须保留** |
+| TXT | `@` | `zoho-verification=zb38467186.zmverify.zoho.com` | 保留 |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:sales@fantasticumbrella.com; pct=100` | **必须保留**，继续 `p=none` |
+| TXT | `fantastic._domainkey` | `v=DKIM1; k=rsa; p=MIGfMA0G...` | **必须保留**（Zoho DKIM，选择器 `fantastic`） |
+| TXT | `dc-8e814c8572._spfm` | `v=spf1 include:zohomail.com ~all` | **必须保留**（主域 SPF 的 include 目标） |
+| TXT | `resend._domainkey.notify` | `p=MIGfMA0G...` | **必须保留**（询盘通知 DKIM） |
+| CNAME | `send.notify` | `send.forge.rmta.net` | **必须保留**（Resend SPF/Return-Path 委托） |
+| CNAME | `rsend.notify` | `rsend-apne1.forge.rmta.net` | **必须保留** |
+| CNAME | `www` | `fantasticumbrella.com` | 保留，或绑 Pages 后 301 到裸域 |
+| CNAME | `_domainconnect` | `_domainconnect.gd.domaincontrol.com` | GoDaddy 专用，可留可删 |
+| TXT | `_acme-challenge.www` | `ElTHvglaXndDgJXgOR2pwDFCiKXxuCHM5_rQScV7zX0` | 保留 |
+| TXT | `_cf-custom-hostname.www` | `6bc8ecb5-950b-41a7-be38-d6387cf447d4` | 保留 |
+| A | `@` | `160.153.0.130`（GoDaddy WP） | 由 Cloudflare 的 apex CNAME flattening 取代 |
+| NS | `@` | `ns29 / ns30.domaincontrol.com` | **最后一步**改成 Cloudflare 分配的两个 NS |
+
+### 两条路径
+
+| | A：整体迁 NS（推荐） | B：只切 www，DNS 留 GoDaddy |
+| --- | --- | --- |
+| 正式网址 | `https://fantasticumbrella.com/`（裸域，canonical 已是这个） | `https://www.fantasticumbrella.com/`，裸域靠 GoDaddy 转发 301 |
+| 操作 | Cloudflare Add a site → 逐条核对上表 → Pages 绑裸域 + www → GoDaddy 改 2 个 NS | Pages 绑 `www` → GoDaddy 给 `www` 加 CNAME 到 `*.pages.dev` → 裸域用域名转发跳到 www |
+| 风险 | NS 切换当天若漏一条邮件记录会退信，须先核对再切 | 不动 NS，邮箱零风险；但正式域名带 www，canonical/sitemap 要统一改 |
+| 收益 | 裸域直连静态站、SSL 自动、CDN/WAF、CNAME flattening、SEO 最干净 | 改动最小、回退最快 |
+
+**切换顺序（A）**：① Cloudflare 加 zone（自动扫描 DNS）→ ② 逐条核对上表并补齐漏项 → ③ Pages → Custom domains → 添加裸域与 www → ④ 证书 Active → ⑤ **最后**才去 GoDaddy 改 NS → ⑥ 等 5–30 分钟生效并验收。**顺序反了邮件会先断。**
+
+### 切流后验收清单
+
+- `https://fantasticumbrella.com/` 返回 Astro 首页（不再是 WP），HTTPS 有效；`www` 301 到裸域或同等内容。
+- 主域 `/robots.txt` 返回 `Allow: /` + Sitemap；预览域名仍是 `Disallow: /`。
+- 随机开 3 个产品页，图片都是本站 `/images/products/...` 且 200。
+- `/contact/` 提交一封真实询盘，Zoho `sales@` 收到（新发信域首批可能有 10–15 分钟延迟）。
+- 外部邮箱发一封到 `sales@` 确认 MX 仍通；Gmail「显示原始邮件」仍 `spf=pass` / `dkim=pass` / `dmarc=pass`。
+- 旧 WP URL 的 301（`public/_redirects` 19 条）；`/shop/`、`/my-account/` 等电商页会 404，需要则补 301。
+- GoDaddy Managed WordPress 订阅在确认无需回退后再取消（**先备份 WP 数据**）。
 
 ---
 
