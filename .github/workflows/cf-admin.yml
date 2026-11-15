@@ -1,0 +1,30 @@
+name: Cloudflare zone admin (one-off)
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'probe = read-only inventory, setup = prepare zone + custom domains'
+        required: true
+        default: 'probe'
+        type: choice
+        options:
+          - probe
+          - setup
+
+permissions:
+  contents: read
+
+jobs:
+  cf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cloudflare zone admin
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_ACTION: ${{ github.event.inputs.action }}
+        run: python3 scripts/cf-zone-setup.py

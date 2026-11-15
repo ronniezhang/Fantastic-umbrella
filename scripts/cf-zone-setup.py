@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+"""One-off Cloudflare zone + Pages custom domain preparation for the cutover.
+
+Runs in GitHub Actions with CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID.
+No secret is ever printed.
+
+  CF_ACTION=probe  -> read-only inventory of token, zone, DNS and domains
+  CF_ACTION=setup  -> create (or reuse) the full zone, reconcile the mail /
+                      Resend / verification records against the CURRENT
+                      authoritative DNS (GoDaddy), then attach the two Pages
+                      custom domains. Nothing here changes the registrar NS.
+
+Safety: while the registrar still points at GoDaddy, every change in this
+script is invisible to the public internet. The site only moves when the user
+changes the two nameservers in GoDaddy afterwards.
+"""
+import json
+import os
+import re
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
+TOKEN = os.environ.get("CF_API_TOKEN", "").strip()
+ACCOUNT = os.environ.get("CF_ACCOUNT_ID", "").strip()
+PROJECT = os.environ.get("CF_PAGES_PROJECT", "fantastic-umbrella").strip()
+ACTION = os.environ.get("CF_ACTION", "probe").strip()
+DOMAIN = "fantasticumbrella.com"
+BASE = "https://api.cloudflare.com/client/v4"
+TYPE_CODE = {"A": 1, "CNAME": 5, "MX": 15, "TXT": 16}
+
+# Records that must survive the nameserver change. Values are read live from
+# the current authoritative DNS (not hard-coded), so long DKIM keys stay exact.
+REQUIRED = [
+    (DOMAIN, "MX"),
+    (DOMAIN, "TXT"),
+    ("_dmarc." + DOMAIN, "TXT"),
+    ("fantastic._domainkey." + DOMAIN, "TXT"),
+    ("dc-8e814c8572._spfm." + DOMAIN, "TXT"),
+    ("resend._domainkey.notify." + DOMAIN, "TXT"),
+    ("send.notify." + DOMAIN, "CNAME"),
+    ("rsend.notify." + DOMAIN, "CNAME"),
+    ("_acme-challenge.www." + DOMAIN, "TXT"),
+    ("_cf-custom-hostname.www." + DOMAIN, "TXT"),
+    ("_domainconnect." + DOMAIN, "CNAME"),
+]
+
+
+def api(method, path, body=None):
+    data = json.dumps(body).encode("utf-8") if body is not None else None
+    req = urllib.request.Request(
+        BASE + path,
+        data=data,
+        method=method,
+        headers={
+            "Authorization": "Bearer " + TOKEN,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "workbuddy-cf-zone-setup",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as res:
+            return res.status, json.loads(res.read().decode("utf-8", "replace"))
+    except urllib.error.HTTPError as err:
+        raw = err.read().decode("utf-8", "replace")
+        try:
+            return err.code, json.loads(raw)
+        except Exception:
+            return err.code, {"_raw": raw[:300]}
+    except Exception as err:
+        return 0, {"_error": str(err)}
+
+
+def good(code, data):
+    return 200 <= code < 300 and data.get("success") is True
+
+
+def brief(data):
+    return json.dumps(data.get("errors") or data.get("_error") or data.get("_raw") or {})[:260]
+
+
+def doh(name, typ):
+    """Read the CURRENT authoritative values (GoDaddy) via Google DoH."""
+    url = "https://dns.google/resolve?name=%s&type=%d" % (
+        urllib.parse.quote(name), TYPE_CODE[typ])
+    try:
+        with urllib.request.urlopen(url, timeout=15) as res:
+            doc = json.loads(res.read().decode("utf-8", "replace"))
+    except Exception as err:
+        print("   DoH lookup failed for %s %s: %s" % (name, typ, err))
+        return []
+    out = []
+    for ans in doc.get("Answer", []):
+        if ans.get("type") != TYPE_CODE[typ]:
+            continue
+        value = str(ans.get("data", ""))
+        if typ == "TXT":
+            parts = re.findall(r'"([^"]*)"', value)
+            value = "".join(parts) if parts else value.strip().strip('"')
+        elif typ == "MX":
+            bits = value.split(None, 1)
+            if len(bits) == 2:
+                out.append((bits[1].rstrip("."), int(bits[0])))
+            continue
+        else:
+            value = value.rstrip(".")
+        if value:
+            out.append((value, None))
+    return out
+
+
+def norm(value):
+    return re.sub(r"\s+", " ", value.strip().strip('"'))
+
+
+def main():
+    if not TOKEN or not ACCOUNT:
+        print("::error::CF_API_TOKEN / CF_ACCOUNT_ID missing")
+        return 1
+
+    code, data = api("GET", "/user/tokens/verify")
+    print("token verify: HTTP %s status=%s" % (code, (data.get("result") or {}).get("status")))
+
+    code, data = api("GET", "/zones?name=" + DOMAIN)
+    zones = data.get("result") or []
+    print("zone lookup: HTTP %s count=%d" % (code, len(zones)))
+    for z in zones:
+        print("   zone %s status=%s type=%s NS=%s" % (
+            z.get("id"), z.get("status"), z.get("type"), z.get("name_servers")))
+
+    code, data = api("GET", "/accounts/%s/pages/projects/%s/domains" % (ACCOUNT, PROJECT))
+    domains = data.get("result") or []
+    print("pages custom domains: HTTP %s count=%d" % (code, len(domains)))
+    for d in domains:
+        print("   %s status=%s" % (d.get("name"), d.get("status")))
+
+    zone = zones[0] if zones else None
+    records = []
+    if zone:
+        code, data = api("GET", "/zones/%s/dns_records?per_page=100" % zone["id"])
+        records = data.get("result") or []
+        print("dns records: HTTP %s count=%d" % (code, len(records)))
+        for r in records:
+            print("   %-6s %-52s %s proxied=%s" % (
+                r.get("type"), r.get("name"), str(r.get("content"))[:80], r.get("proxied")))
+
+    if ACTION == "probe":
+        print("PROBE COMPLETE - no changes made")
+        return 0
+    if ACTION != "setup":
+        print("::error::unknown CF_ACTION=" + ACTION)
+        return 1
+
+    if not zone:
+        code, data = api("POST", "/zones", {
+            "name": DOMAIN,
+            "account": {"id": ACCOUNT},
+            "type": "full",
+            "jump_start": True,
+        })
+        if not good(code, data):
+            print("::error::create zone failed HTTP %s %s" % (code, brief(data)))
+            print("ACTION_REQUIRED: create the zone manually in the Cloudflare dashboard (Add a site).")
+            return 1
+        zone = data["result"]
+        print("ZONE CREATED %s" % zone["id"])
+        # Cloudflare's initial scan is asynchronous.
+        time.sleep(6)
+    else:
+        print("ZONE REUSED %s" % zone["id"])
+
+    zone_id = zone["id"]
+    nameservers = zone.get("name_servers") or []
+    print("NAMESERVERS_FOR_GODADDY: %s" % ", ".join(nameservers))
+
+    code, data = api("GET", "/zones/%s/dns_records?per_page=100" % zone_id)
+    records = data.get("result") or []
+    print("reconcile: %d existing records" % len(records))
+
+    have = {}
+    for r in records:
+        key = (r.get("type"), norm(r.get("name", "")))
+        have.setdefault(key, []).append(norm(r.get("content", "")))
+
+    added = 0
+    for name, typ in REQUIRED:
+        current = doh(name, typ)
+        if not current:
+            print("   SKIP %s %s (no current value found)" % (typ, name))
+            continue
+        key = (typ, norm(name))
+        for value, priority in current:
+            if norm(value) in have.get(key, []):
+                print("   OK    %-6s %s" % (typ, name))
+                continue
+            body = {
+                "type": typ,
+                "name": name,
+                "content": value,
+                "ttl": 1,           # automatic
+                "proxied": False,    # mail / verification records must stay DNS-only
+            }
+            if priority is not None:
+                body["priority"] = priority
+            code, data = api("POST", "/zones/%s/dns_records" % zone_id, body)
+            status = "OK" if good(code, data) else "FAILED HTTP %s %s" % (code, brief(data))
+            print("   ADD   %-6s %-52s %s" % (typ, name, status))
+            if good(code, data):
+                added += 1
+                have.setdefault(key, []).append(norm(value))
+    print("records added: %d" % added)
+
+    for host in (DOMAIN, "www." + DOMAIN):
+        code, data = api(
+            "POST", "/accounts/%s/pages/projects/%s/domains" % (ACCOUNT, PROJECT),
+            {"name": host})
+        result = data.get("result") or {}
+        print("attach custom domain %-32s HTTP %s status=%s %s" % (
+            host, code, result.get("status", "-"), brief(data) if not good(code, data) else ""))
+
+    code, data = api("GET", "/zones/%s/dns_records?per_page=100" % zone_id)
+    print("FINAL DNS RECORDS (%d):" % len(data.get("result") or []))
+    for r in data.get("result") or []:
+        print("   %-6s %-52s %s proxied=%s" % (
+            r.get("type"), r.get("name"), str(r.get("content"))[:80], r.get("proxied")))
+    print("NAMESERVERS_FOR_GODADDY: %s" % ", ".join(nameservers))
+    print("SETUP COMPLETE - registrar NS has NOT been changed")
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Exception as exc:
+        print("::error::" + str(exc))
+        sys.exit(1)
