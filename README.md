@@ -212,14 +212,16 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 | 收件人 | Resend 注册邮箱（过渡） | 沙箱只能发给注册邮箱；子域验证后改 `sales@fantasticumbrella.com` |
 | 密钥存放 | GitHub Secrets（加密） | 明文不入库、不落盘、不进浏览器；CI 用 Cloudflare API 写成 `secret_text` |
 
-**为什么先走沙箱**：本次拿到的 key 是「仅发送」权限（`restricted_api_key`），`GET /domains`、`GET /api-keys` 都返回 401，因此它**不能用于创建或查询域名**；`notify.fantasticumbrella.com` 也尚未验证，此时填 `no-reply@notify...` 会被 Resend 拒绝。沙箱让表单现在就能真实投递，失败兜底仍指向已验证的 `sales@`。
+**为什么先走沙箱**：本次拿到的 key 是「仅发送」权限（`restricted_api_key`），`GET /domains`、`GET /api-keys` 都返回 401，因此它**不能用于创建或查询域名**；当时 `notify.fantasticumbrella.com` 尚未验证，填 `no-reply@notify...` 会被 Resend 拒绝。沙箱让表单现在就能真实投递，失败兜底仍指向已验证的 `sales@`。
 
-**切到正式发件域（只需 2 步，不用改代码）**：
+**切到正式发件域（DNS 已完成，只剩 1 步，不用改代码）**：
+
+**2026-11-15 15:11**：Resend 后台生成的 3 条记录已加入 GoDaddy，并经 `8.8.8.8` + 权威 `ns29` 双源实测生效：`resend._domainkey.notify` TXT（DKIM 公钥，选择器 `resend`）、`send.notify` CNAME → `send.forge.rmta.net.`、`rsend.notify` CNAME → `rsend-apne1.forge.rmta.net.`。**Resend 新版由 CNAME 委托目标提供 SPF（Return-Path 域承担 SPF 检查），`notify` 本身不需要 SPF TXT**；DKIM TXT 只有 `p=` 无 `v=DKIM1` 前缀也属正常。主域 A / NS / MX ×3 / 两条 TXT / `_dmarc` 全部未动。详见落地清单「15:11」章。
 
 | # | 动作 | 谁做 | 要点 |
 | --- | --- | --- | --- |
-| 1 | Resend 后台 → Domains → Add Domain → 填 `notify.fantasticumbrella.com` → 把后台给出的 SPF TXT / DKIM CNAME（可能还有 MX）发我 → 在 GoDaddy 只加这几条子域记录 → 点 Verify | 用户 | **不要验证主域**（主域 SPF 已被 Zoho 占用）；只加子域记录，**不动 A / NS / MX / 现有 TXT**；值随账号区域变化，以后台为准，不要抄通用值 |
-| 2 | 改两个 GitHub Secret：`ENQUIRY_TO=sales@fantasticumbrella.com`、`ENQUIRY_FROM=Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` → 重跑 Actions（或 push） | AI 可代跑 | CI 自动同步并重新部署；变量在部署时绑定，改完必须有一次新部署 |
+| 1 | 确认 Resend 后台 `notify.fantasticumbrella.com` 显示 **Verified** | 用户 | send-only key 查不到 `GET /domains`，需贴后台截图或回一句；官方通常 15 分钟内自动验证，最长 72 小时，超时用 Restart verification |
+| 2 | 改两个 GitHub Secret：`ENQUIRY_TO=sales@fantasticumbrella.com`、`ENQUIRY_FROM=Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` → 重跑 Actions | AI 可代跑 | CI 自动同步并重新部署；变量在部署时绑定，改完必须有一次新部署。**后台未 Verified 前不要切**：Resend 会拒绝未验证发件域，真实提交会返回 502（但仍有一键预填邮件兜底到 `sales@`，不会丢单） |
 
 **只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from}`，**不含密钥与收件人**。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
 
