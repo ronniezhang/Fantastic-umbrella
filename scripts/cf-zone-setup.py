@@ -168,6 +168,98 @@ def main():
                 print("   %-52s (no authoritative value)" % name)
         print("PROBE COMPLETE - no changes made")
         return 0
+    if ACTION == "activate":
+        """Post-cutover: nudge Pages custom-domain validation into `active`.
+
+        Runs AFTER the registrar NS now points at Cloudflare. Only website
+        records (apex / www pointing at the Pages project) are ever added;
+        mail and verification records are never touched or removed.
+        """
+        if not zone:
+            print("::error::zone not found - cannot activate")
+            return 1
+        zone_id = zone["id"]
+
+        code, proj = api("GET", "/accounts/%s/pages/projects/%s" % (ACCOUNT, PROJECT))
+        subdomain = (proj.get("result") or {}).get("subdomain") or ""
+        target = (subdomain + ".pages.dev") if subdomain else "fantastic-umbrella-e13.pages.dev"
+        print("project HTTP %s subdomain=%s target=%s" % (code, subdomain, target))
+
+        def domain_detail(host):
+            c, d = api("GET", "/accounts/%s/pages/projects/%s/domains/%s" % (
+                ACCOUNT, PROJECT, urllib.parse.quote(host, safe="")))
+            return c, d.get("result") or {}
+
+        def retry(host):
+            c, d = api("PATCH", "/accounts/%s/pages/projects/%s/domains/%s" % (
+                ACCOUNT, PROJECT, urllib.parse.quote(host, safe="")))
+            r = d.get("result") or {}
+            print("   RETRY %-32s HTTP %s status=%s %s" % (
+                host, c, r.get("status", "-"), brief(d) if not good(c, d) else ""))
+
+        hosts = (DOMAIN, "www." + DOMAIN)
+        print("--- details BEFORE ---")
+        for host in hosts:
+            c, r = domain_detail(host)
+            print("   %s HTTP %s %s" % (
+                host, c, json.dumps(r or {}, ensure_ascii=False)[:700]))
+
+        # 1) Let Cloudflare re-run its own validation and automatic record creation.
+        for host in hosts:
+            retry(host)
+        time.sleep(12)
+
+        # 2) If Cloudflare did not create the website records, add them.
+        c, d = api("GET", "/zones/%s/dns_records?per_page=100" % zone_id)
+        current = d.get("result") or []
+        web = {}
+        for r in current:
+            if r.get("type") in ("A", "AAAA", "CNAME"):
+                web.setdefault(norm(r.get("name", "")), []).append(r)
+        for host in hosts:
+            if web.get(norm(host)):
+                for r in web[norm(host)]:
+                    print("   DNS OK  %-32s %s -> %s proxied=%s" % (
+                        host, r.get("type"), r.get("content"), r.get("proxied")))
+                continue
+            c, d = api("POST", "/zones/%s/dns_records" % zone_id, {
+                "type": "CNAME", "name": host, "content": target,
+                "ttl": 1, "proxied": True,
+            })
+            print("   DNS ADD %-32s -> %-38s HTTP %s %s" % (
+                host, target, c, "OK" if good(c, d) else brief(d)))
+
+        # 3) TXT-based DCV: add the token Cloudflare asks for, if any.
+        for host in hosts:
+            c, r = domain_detail(host)
+            vd = r.get("validation_data") or {}
+            txt_name, txt_value = vd.get("txt_name"), vd.get("txt_value")
+            if vd.get("method") == "txt" and txt_name and txt_value:
+                existing = [norm(x.get("content", "")) for x in current
+                            if x.get("type") == "TXT" and norm(x.get("name", "")) == norm(txt_name)]
+                if norm(txt_value) not in existing:
+                    c2, d2 = api("POST", "/zones/%s/dns_records" % zone_id, {
+                        "type": "TXT", "name": txt_name, "content": txt_value,
+                        "ttl": 1, "proxied": False,
+                    })
+                    print("   DCV TXT %-32s HTTP %s %s" % (
+                        txt_name, c2, "OK" if good(c2, d2) else brief(d2)))
+                else:
+                    print("   DCV TXT %-32s already present" % txt_name)
+
+        # 4) Re-run validation once records exist.
+        time.sleep(5)
+        for host in hosts:
+            retry(host)
+
+        print("--- details AFTER ---")
+        for host in hosts:
+            c, r = domain_detail(host)
+            print("   %s HTTP %s %s" % (
+                host, c, json.dumps(r or {}, ensure_ascii=False)[:700]))
+        print("ACTIVATE COMPLETE - mail records untouched")
+        return 0
+
     if ACTION != "setup":
         print("::error::unknown CF_ACTION=" + ACTION)
         return 1
