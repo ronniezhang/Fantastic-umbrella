@@ -371,6 +371,29 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 - 随机开 3 个产品页，图片都是本站 `/images/products/...` 且 200。
 - `/contact/` 提交一封真实询盘，Zoho `sales@` 收到（新发信域首批可能有 10–15 分钟延迟）。
 - 外部邮箱发一封到 `sales@` 确认 MX 仍通；Gmail「显示原始邮件」仍 `spf=pass` / `dkim=pass` / `dmarc=pass`。
+
+### 切流完成实测（2026-11-15 18:12–18:25）
+
+用户在 GoDaddy 把 NS 改成 `adi.ns.cloudflare.com` / `damiete.ns.cloudflare.com` 后，公网 NS 与 SOA 随即切到 Cloudflare（`8.8.8.8` 实测），zone 由 `pending` 变 `active`。
+
+**过渡期两个真实问题与修复**（由 `cf-admin.yml` + `scripts/cf-zone-setup.py` 新增的 `activate` / `purge` action 处理）：
+
+1. Cloudflare 没有自动生成 apex / www 的网站记录，`GET /domains/{name}` 返回 `verification_data.error_message = "CNAME record not set"`。已补两条 `proxied=True` 的 CNAME 指向 `fantastic-umbrella-e13.pages.dev`。**注意**：项目 API 的 `subdomain` 已经是完整 `*.pages.dev`，不要再拼一次后缀 —— 首版脚本曾误写成 `.pages.dev.pages.dev`，已用 `PUT` 原地修正。
+2. 改 NS 后主域一度仍返回旧 WordPress 页面，响应头 `CF-Cache-Status: HIT` / `Age: ~96000` / `x-gateway-cache-*` / `Link: wp-json`，是 GoDaddy Managed WordPress 自带 Cloudflare CDN 留下的旧缓存；`/.well-known/acme-challenge/*` 返回 500，导致 apex 自定义域一度 `deactivated`、HTTP DCV 失败。执行 `purge_everything` + 重新 `PATCH` retry validation 后，两个域名 `verification=active`，证书签发完成，主域自动切到 Astro。
+
+**最终状态**：zone `active`；apex 自定义域 `active`、www `pending`（状态滞后，实际 HTTPS 与内容均正常）；DNS 16 条 = 14 条邮件/验证记录 + 2 条 proxied CNAME。
+
+**验收实测**：
+
+- `https://fantasticumbrella.com/` 200 + 有效证书（`ssl_verify_result=0`），首页 Astro（6 处 `/images/products/`，无 `wp-content`）。
+- 主域 `/robots.txt` 返回 `# served-by: pages-function` + `Allow: /` + Sitemap；预览域名仍 `Disallow: /`。
+- `/sitemap.xml` 200 XML；产品图 `200 image/jpeg 417901`；`/contact/`、`/products/` 均 200。
+- `/api/enquiry` GET → `email=true, mode=verified-domain, to=sales@fantasticumbrella.com`；POST 真实自检询盘 → `200 ok`，Resend 邮件 id `01a1debd-0e03-733d-8a60-830c895536cd`，`from=no-reply@notify.fantasticumbrella.com`。
+- 301 实测：`/shop/ → /products/`、`/track-order/ → /contact/`、已下线产品 → `/products/` 均 301。
+- 从 Cloudflare 权威 NS 直查：MX ×3、主域 SPF、zoho-verification、`_dmarc`、Zoho DKIM、SPF include、Resend DKIM、`send/rsend` CNAME 全部正确，**邮件未断**。
+- `www` 返回 200 且证书有效、内容与裸域相同（canonical 指向裸域），目前**未做 301**；若要统一权重，可在 Cloudflare 加一条 Redirect Rule 把 `www` 跳到裸域。
+
+**回退**：把 GoDaddy NS 改回 `ns29 / ns30.domaincontrol.com`（GoDaddy 里的 A / MX / TXT 一直保留未删）。**GoDaddy Managed WordPress 订阅先别取消**，观察几天再决定。
 - 旧 WP URL 的 301（`public/_redirects` 19 条）；`/shop/`、`/my-account/` 等电商页会 404，需要则补 301。
 - GoDaddy Managed WordPress 订阅在确认无需回退后再取消（**先备份 WP 数据**）。
 
