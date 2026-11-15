@@ -31,6 +31,7 @@ const sample = {
 };
 
 let broken = false;
+let deliveryBound = false;
 const log = (s) => console.log(s);
 
 async function post(body, extraHeaders = {}) {
@@ -75,6 +76,18 @@ async function run() {
     broken = true;
   }
 
+  // Read-only status probe: proves the delivery variables are bound to this
+  // deployment WITHOUT sending an email. Older builds simply return a warning.
+  try {
+    const res = await fetch(`${base}/api/enquiry`, { signal: AbortSignal.timeout(20000) });
+    const diag = await res.json();
+    const d = diag.delivery || {};
+    deliveryBound = d.email === true;
+    log(`  [${deliveryBound ? 'OK  ' : 'WAIT'}] Delivery channel bound -> email=${Boolean(d.email)}, webhook=${Boolean(d.webhook)}, forward=${Boolean(d.forward)}, mode=${diag.mode || 'unknown'}`);
+  } catch (_) {
+    log('  [WARN] No read-only status endpoint on this deployment (older build).');
+  }
+
   try {
     const r = await post({ _form_time: 0 }, { Origin: 'https://evil.example' });
     log(`  [${r.status === 403 ? 'OK  ' : 'WARN'}] Cross-origin guard -> HTTP ${r.status}`);
@@ -109,8 +122,10 @@ async function run() {
   if (broken) {
     log('RESULT: BROKEN - the form would lose submissions. Do not point the main domain at this build.');
     process.exitCode = 1;
+  } else if (deliveryBound) {
+    log('RESULT: endpoint healthy, delivery configured. Run without --no-send (or submit on the Contact page) to send ONE real test enquiry.');
   } else {
-    log('RESULT: endpoint healthy. 503 = waiting for delivery keys; 200 = fully live.');
+    log('RESULT: endpoint healthy, delivery not configured yet (503 not_configured).');
   }
 }
 

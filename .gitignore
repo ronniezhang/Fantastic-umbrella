@@ -19,3 +19,7 @@ public/.htaccess
 # OS noise
 .DS_Store
 Thumbs.db
+
+# Python bytecode from local script checks
+__pycache__/
+*.pyc

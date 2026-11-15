@@ -201,19 +201,33 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 密钥全部放在 Pages 环境变量里，**不会下发到浏览器**。三种通道可单独用，也可同时开做冗余；只要有一个投递成功就返回成功，全部失败返回 502 让用户改发邮件，绝不「假装收到」。
 
-### 最快接通：只需 3 步（2026-11-14 22:06 收口）
+### 当前状态（2026-11-15 15:00）：已接上 Resend，处于沙箱过渡期
 
-Zoho 侧已全部完成（域名验证 / MX / SPF / DKIM / DMARC / 收发双向实测），**剩下的 3 步都需要账号或密钥，AI 无法凭空代做**：
+Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）。Resend 的 API key 已通过 **GitHub Actions Secrets 加密写入**，CI 每次部署前由 `scripts/sync-pages-env.py` 自动同步到 Cloudflare Pages（**Production + Preview 同时写**），不需要手动去 Pages 后台填变量。工作流 run `43687799065` 全步骤 success。
+
+| 项 | 当前值 | 说明 |
+| --- | --- | --- |
+| 投递通道 | Resend 邮件 | `RESEND_API_KEY` + `ENQUIRY_TO` 已绑定，线上 `GET /api/enquiry` 实测 `delivery.email=true` |
+| 发件人 | `onboarding@resend.dev` | Resend 未验证域名时的沙箱发件人 |
+| 收件人 | Resend 注册邮箱（过渡） | 沙箱只能发给注册邮箱；子域验证后改 `sales@fantasticumbrella.com` |
+| 密钥存放 | GitHub Secrets（加密） | 明文不入库、不落盘、不进浏览器；CI 用 Cloudflare API 写成 `secret_text` |
+
+**为什么先走沙箱**：本次拿到的 key 是「仅发送」权限（`restricted_api_key`），`GET /domains`、`GET /api-keys` 都返回 401，因此它**不能用于创建或查询域名**；`notify.fantasticumbrella.com` 也尚未验证，此时填 `no-reply@notify...` 会被 Resend 拒绝。沙箱让表单现在就能真实投递，失败兜底仍指向已验证的 `sales@`。
+
+**切到正式发件域（只需 2 步，不用改代码）**：
 
 | # | 动作 | 谁做 | 要点 |
 | --- | --- | --- | --- |
-| 1 | 注册 Resend → Domains → 加 `notify.fantasticumbrella.com` → 按后台给的值在 GoDaddy 加 SPF TXT + DKIM CNAME → 点 Verify | 用户 | **不要验证主域**（主域 SPF 已被 Zoho 占用）；只加子域记录，**不动 A / NS / MX / 现有 TXT** |
-| 2 | 创建只含「发送邮件」权限的 API key，在 Cloudflare Pages 项目 Settings → Environment variables 填 3 个变量（Production + Preview 都要），`RESEND_API_KEY` 勾 Encrypt | 用户 | `ENQUIRY_TO=sales@fantasticumbrella.com`；`ENQUIRY_FROM=Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` |
-| 3 | 重新部署（push 或 Retry deployment）→ 跑 `npm run verify:enquiry` → 收一封真实询盘 | AI 可代跑 | 看到 `200 ok` 且邮件落在收件箱即完成；脚本同时检查端点存活、同源防护与 Contact 页接线 |
+| 1 | Resend 后台 → Domains → Add Domain → 填 `notify.fantasticumbrella.com` → 把后台给出的 SPF TXT / DKIM CNAME（可能还有 MX）发我 → 在 GoDaddy 只加这几条子域记录 → 点 Verify | 用户 | **不要验证主域**（主域 SPF 已被 Zoho 占用）；只加子域记录，**不动 A / NS / MX / 现有 TXT**；值随账号区域变化，以后台为准，不要抄通用值 |
+| 2 | 改两个 GitHub Secret：`ENQUIRY_TO=sales@fantasticumbrella.com`、`ENQUIRY_FROM=Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` → 重跑 Actions（或 push） | AI 可代跑 | CI 自动同步并重新部署；变量在部署时绑定，改完必须有一次新部署 |
+
+**只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from}`，**不含密钥与收件人**。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
+
+**最终验收需你点一次**：按邮件合规口径，测试邮件由用户执行 —— 在 Contact 页提交一次，或运行 `npm run verify:enquiry`（默认发一封 `Pipeline QA` 自检询盘）。看到 `200 ok` 且邮箱收到、检查 Reply-To 是客户地址，即全链路闭环。若 Resend 注册邮箱不是 `ronniezhang690@gmail.com`，把正确地址告诉我，改一个 Secret 即可。
 
 **为什么 Resend 必须走子域**：主域 SPF 只能有一条且已归属 Zoho，两个发信源各要一条会冲突、认证随机失败；子域验证还能隔离人工邮件与网站通知的发信信誉。当前主域 DMARC `p=none sp=none`，子域不受影响；**将来收紧到 `reject` 前必须先完成第 1 步**，否则询盘通知可能被拒收。
 
-**今晚已自动完成**（不依赖任何密钥）：一键邮件兜底升级为**携带全部已填字段的预填邮件**（指向已验证的 `sales@`）、端点 503/502 返回明确地址与 `fallback` 字段、`npm run verify:enquiry` 一键验收脚本、CI 端点存活自检。即使密钥还没填，客户点一下就能把完整询盘发到销售邮箱，不会静默丢单。
+**2026-11-15 自动化落地**：密钥经 GitHub Secrets 加密 → CI 部署前同步 Pages 变量 → 部署后用只读 GET 自检；`npm run verify:enquiry` 也会显示 `delivery.email` 与 `mode`（不发信）。任何投递失败仍保留**携带全部已填字段的一键预填邮件**（指向已验证的 `sales@`），端点 502/503 返回明确地址与 `fallback` 字段，不会静默丢单。
 
 ### 环境变量（Pages 项目 → Settings → Environment variables，Production + Preview 都要填）
 
@@ -227,7 +241,7 @@ Zoho 侧已全部完成（域名验证 / MX / SPF / DKIM / DMARC / 收发双向�
 | `ENQUIRY_FORWARD_FORMAT` | 设 `form` 时按 `x-www-form-urlencoded` 转发（Formsubmit 等需要），默认 JSON | 可选 |
 | `PUBLIC_ENQUIRY_ENDPOINT` | **构建时**变量，改前端 POST 目标；默认 `/api/enquiry`，正常不用动 | 可选 |
 
-改完环境变量要**重新部署一次**才生效（Pages 在部署时把变量绑定进版本）。
+改完环境变量要**重新部署一次**才生效（Pages 在部署时把变量绑定进版本）。本项目不需要手动去 Pages 后台填：三个值存在 GitHub Secrets 里，由工作流里的 `Sync Pages environment variables` 步骤通过 Cloudflare API 自动写入 Production + Preview，改 Secret 后重跑一次 Actions 即可。
 
 ### 通道 A：发到邮箱（推荐，最像原来的 Fluent Forms）
 
@@ -252,7 +266,7 @@ curl -s -X POST https://fantastic-umbrella-e13.pages.dev/api/enquiry \
   -d '{"full_name":"Test","company":"Test Co","email":"test@example.com","country":"DE","product_interest":"Golf umbrella","estimated_quantity":"500 pcs","message":"Endpoint check","_form_time":0}'
 ```
 
-未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后返回 `200 {"ok":true}`。
+未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后完整提交返回 `200 {"ok":true}`。**当前已配置**（2026-11-15 实测 `GET /api/enquiry` → `delivery.email=true`、`mode=resend-sandbox`），但真实测试询盘按合规口径由用户执行一次，见上方「最终验收需你点一次」。
 
 **一键验收**（推荐，明天填完变量后跑一次即可）：
 
