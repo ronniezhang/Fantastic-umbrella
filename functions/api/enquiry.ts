@@ -116,12 +116,46 @@ async function sendByEmail(env, mail, replyTo) {
         html: mail.html,
       }),
     });
-    if (!res.ok) console.error('Resend failed', res.status, await res.text());
-    return { channel: 'email', ok: res.ok };
+    const raw = await res.text();
+    let parsed = null;
+    try { parsed = JSON.parse(raw); } catch (_) { /* non-JSON upstream error */ }
+    if (!res.ok) console.error('Resend failed', res.status, raw.slice(0, 400));
+    return {
+      channel: 'email',
+      ok: res.ok,
+      status: res.status,
+      id: parsed && parsed.id ? String(parsed.id) : null,
+      detail: res.ok ? null : raw.slice(0, 400),
+    };
   } catch (err) {
     console.error('Resend error', err);
-    return { channel: 'email', ok: false };
+    return { channel: 'email', ok: false, status: 0, id: null, detail: String(err).slice(0, 200) };
   }
+}
+
+/** Read back one message's delivery state. Needs a key with read access; a
+ *  send-only key will answer 401, which is itself a useful diagnostic result. */
+async function emailStatus(env, id) {
+  if (!id) return null;
+  try {
+    const res = await fetch(`https://api.resend.com/emails/${id}`, {
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}` },
+    });
+    const raw = await res.text();
+    return { status: res.status, body: raw.slice(0, 600) };
+  } catch (err) {
+    return { status: 0, body: String(err).slice(0, 200) };
+  }
+}
+
+function publicResult(r) {
+  return {
+    channel: r.channel,
+    ok: r.ok,
+    status: r.status || null,
+    id: r.id || null,
+    detail: r.detail || null,
+  };
 }
 
 async function sendByWebhook(env, data, mail, submittedAt) {
@@ -201,6 +235,7 @@ export async function onRequestGet(context) {
     },
     mode: from.includes('onboarding@resend.dev') ? 'resend-sandbox' : 'verified-domain',
     from,
+    to: env.ENQUIRY_TO || null,
   });
 }
 
@@ -286,6 +321,15 @@ export async function onRequestPost(context) {
   ).filter(Boolean);
 
   const delivered = results.some((r) => r.ok);
+  const diagnose = data._diag === true || request.headers.get('X-Enquiry-Diag') === '1';
+  const diagnostics = diagnose
+    ? {
+        to: env.ENQUIRY_TO || null,
+        from: env.ENQUIRY_FROM || 'Fantastic Umbrella <onboarding@resend.dev>',
+        delivery: results.map(publicResult),
+      }
+    : null;
+
   if (!delivered) {
     console.error('All delivery channels failed', results);
     return reply(
@@ -295,13 +339,22 @@ export async function onRequestPost(context) {
         message:
           'We could not send your enquiry just now. Please try again in a minute, or use the one-click email link below to reach sales@fantasticumbrella.com.',
         fallback: SALES_EMAIL,
+        ...(diagnose ? { diagnostics } : {}),
       },
       502,
     );
   }
 
-  return reply({
+  const body = {
     ok: true,
     message: 'Thank you. Your enquiry has been received - we normally reply within one business day.',
-  });
+  };
+  if (diagnose) {
+    const emailResult = results.find((r) => r.channel === 'email');
+    body.diagnostics = {
+      ...diagnostics,
+      email_status: await emailStatus(env, emailResult && emailResult.id),
+    };
+  }
+  return reply(body);
 }
