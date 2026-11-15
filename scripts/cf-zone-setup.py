@@ -182,7 +182,9 @@ def main():
 
         code, proj = api("GET", "/accounts/%s/pages/projects/%s" % (ACCOUNT, PROJECT))
         subdomain = (proj.get("result") or {}).get("subdomain") or ""
-        target = (subdomain + ".pages.dev") if subdomain else "fantastic-umbrella-e13.pages.dev"
+        # The project API already returns the FULL *.pages.dev hostname.
+        target = subdomain if subdomain.endswith(".pages.dev") else (
+            (subdomain + ".pages.dev") if subdomain else "fantastic-umbrella-e13.pages.dev")
         print("project HTTP %s subdomain=%s target=%s" % (code, subdomain, target))
 
         def domain_detail(host):
@@ -217,17 +219,33 @@ def main():
             if r.get("type") in ("A", "AAAA", "CNAME"):
                 web.setdefault(norm(r.get("name", "")), []).append(r)
         for host in hosts:
-            if web.get(norm(host)):
-                for r in web[norm(host)]:
-                    print("   DNS OK  %-32s %s -> %s proxied=%s" % (
-                        host, r.get("type"), r.get("content"), r.get("proxied")))
-                continue
-            c, d = api("POST", "/zones/%s/dns_records" % zone_id, {
-                "type": "CNAME", "name": host, "content": target,
-                "ttl": 1, "proxied": True,
-            })
-            print("   DNS ADD %-32s -> %-38s HTTP %s %s" % (
-                host, target, c, "OK" if good(c, d) else brief(d)))
+            existing = web.get(norm(host), [])
+            cnames = [r for r in existing if r.get("type") == "CNAME"]
+            if cnames:
+                primary = cnames[0]
+                if norm(primary.get("content", "")) == norm(target):
+                    print("   DNS OK  %-32s CNAME -> %s" % (host, target))
+                else:
+                    c, d = api("PUT", "/zones/%s/dns_records/%s" % (zone_id, primary["id"]), {
+                        "type": "CNAME", "name": host, "content": target,
+                        "ttl": 1, "proxied": True,
+                    })
+                    print("   DNS FIX %-32s -> %-38s HTTP %s %s" % (
+                        host, target, c, "OK" if good(c, d) else brief(d)))
+                for extra in cnames[1:]:
+                    api("DELETE", "/zones/%s/dns_records/%s" % (zone_id, extra["id"]))
+                    print("   DNS DEL duplicate %s" % host)
+            elif existing:
+                for r in existing:
+                    print("   DNS OK  %-32s %s -> %s (Cloudflare-managed)" % (
+                        host, r.get("type"), r.get("content")))
+            else:
+                c, d = api("POST", "/zones/%s/dns_records" % zone_id, {
+                    "type": "CNAME", "name": host, "content": target,
+                    "ttl": 1, "proxied": True,
+                })
+                print("   DNS ADD %-32s -> %-38s HTTP %s %s" % (
+                    host, target, c, "OK" if good(c, d) else brief(d)))
 
         # 3) TXT-based DCV: add the token Cloudflare asks for, if any.
         for host in hosts:
