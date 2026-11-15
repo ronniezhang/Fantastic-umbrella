@@ -201,35 +201,29 @@ Cloudflare 面板 URL 不含登录态，自动化必须靠 API Token（或在已
 
 密钥全部放在 Pages 环境变量里，**不会下发到浏览器**。三种通道可单独用，也可同时开做冗余；只要有一个投递成功就返回成功，全部失败返回 502 让用户改发邮件，绝不「假装收到」。
 
-### 当前状态（2026-11-15 15:00）：已接上 Resend，处于沙箱过渡期
+### 当前状态（2026-11-15）：正式发件域已上线
 
-Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）。Resend 的 API key 已通过 **GitHub Actions Secrets 加密写入**，CI 每次部署前由 `scripts/sync-pages-env.py` 自动同步到 Cloudflare Pages（**Production + Preview 同时写**），不需要手动去 Pages 后台填变量。工作流 run `43687799065` 全步骤 success。
+Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）。Resend 后台已于 2026-11-15 确认 `notify.fantasticumbrella.com` **Verified / Resend Forge Ready**（事件链：Domain added → DNS verified → Domain verified），随后完成正式发件域切换。API key 通过 **GitHub Actions Secrets 加密写入**，CI 每次部署前由 `scripts/sync-pages-env.py` 自动同步到 Cloudflare Pages（**Production + Preview 同时写**），不需要手动去 Pages 后台填变量。
 
 | 项 | 当前值 | 说明 |
 | --- | --- | --- |
 | 投递通道 | Resend 邮件 | `RESEND_API_KEY` + `ENQUIRY_TO` 已绑定，线上 `GET /api/enquiry` 实测 `delivery.email=true` |
-| 发件人 | `onboarding@resend.dev` | Resend 未验证域名时的沙箱发件人 |
-| 收件人 | Resend 注册邮箱（过渡） | 沙箱只能发给注册邮箱；子域验证后改 `sales@fantasticumbrella.com` |
+| 发件人 | `Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` | 已验证的发信子域，客户看到的不再是 `resend.dev` |
+| 收件人 | `sales@fantasticumbrella.com` | Zoho 企业邮箱，入站/出站均已实测 |
+| 认证 | SPF（Return-Path `send.notify` CNAME 委托）+ DKIM（选择器 `resend`）+ DMARC 对齐 | 对齐域为 `notify.fantasticumbrella.com`；主域 DMARC `p=none sp=none` |
 | 密钥存放 | GitHub Secrets（加密） | 明文不入库、不落盘、不进浏览器；CI 用 Cloudflare API 写成 `secret_text` |
 
-**为什么先走沙箱**：本次拿到的 key 是「仅发送」权限（`restricted_api_key`），`GET /domains`、`GET /api-keys` 都返回 401，因此它**不能用于创建或查询域名**；当时 `notify.fantasticumbrella.com` 尚未验证，填 `no-reply@notify...` 会被 Resend 拒绝。沙箱让表单现在就能真实投递，失败兜底仍指向已验证的 `sales@`。
+**域名验证实测（2026-11-15 15:11）**：GoDaddy 加入 Resend 生成的 3 条记录，经 `8.8.8.8` + 权威 `ns29` 双源复核生效：`resend._domainkey.notify` TXT（DKIM 公钥，选择器 `resend`）、`send.notify` CNAME → `send.forge.rmta.net.`、`rsend.notify` CNAME → `rsend-apne1.forge.rmta.net.`。**Resend 新版由 CNAME 委托目标提供 SPF（Return-Path 域承担 SPF 检查），`notify` 本身不需要 SPF TXT**；DKIM TXT 只有 `p=` 无 `v=DKIM1` 前缀也属正常。主域 A / NS / MX ×3 / 两条 TXT / `_dmarc` 全部未动。详见落地清单「15:11」章。
 
-**切到正式发件域（DNS 已完成，只剩 1 步，不用改代码）**：
-
-**2026-11-15 15:11**：Resend 后台生成的 3 条记录已加入 GoDaddy，并经 `8.8.8.8` + 权威 `ns29` 双源实测生效：`resend._domainkey.notify` TXT（DKIM 公钥，选择器 `resend`）、`send.notify` CNAME → `send.forge.rmta.net.`、`rsend.notify` CNAME → `rsend-apne1.forge.rmta.net.`。**Resend 新版由 CNAME 委托目标提供 SPF（Return-Path 域承担 SPF 检查），`notify` 本身不需要 SPF TXT**；DKIM TXT 只有 `p=` 无 `v=DKIM1` 前缀也属正常。主域 A / NS / MX ×3 / 两条 TXT / `_dmarc` 全部未动。详见落地清单「15:11」章。
-
-| # | 动作 | 谁做 | 要点 |
-| --- | --- | --- | --- |
-| 1 | 确认 Resend 后台 `notify.fantasticumbrella.com` 显示 **Verified** | 用户 | send-only key 查不到 `GET /domains`，需贴后台截图或回一句；官方通常 15 分钟内自动验证，最长 72 小时，超时用 Restart verification |
-| 2 | 改两个 GitHub Secret：`ENQUIRY_TO=sales@fantasticumbrella.com`、`ENQUIRY_FROM=Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>` → 重跑 Actions | AI 可代跑 | CI 自动同步并重新部署；变量在部署时绑定，改完必须有一次新部署。**后台未 Verified 前不要切**：Resend 会拒绝未验证发件域，真实提交会返回 502（但仍有一键预填邮件兜底到 `sales@`，不会丢单） |
+**切换动作（2026-11-15 15:2x）**：确认后台 Verified 后，只更新两个 Secret（`ENQUIRY_TO`、`ENQUIRY_FROM`），`RESEND_API_KEY` 原值保持不变（工作区根目录 `set_github_secrets.py` 支持部分更新，无需重新输入 key）→ 重跑 Actions → CI 同步 Pages 变量并重新部署 → 只读自检 `mode=verified-domain`、`from=no-reply@notify.fantasticumbrella.com`。**代码零改动**：`functions/api/enquiry.ts` 的 `mode` 本就按 `from` 自动判定。
 
 **只读自检**：`GET /api/enquiry` 返回 `{ok, delivery:{email,webhook,forward}, mode, from}`，**不含密钥与收件人**。CI 在部署后会检查 `delivery.email === true`，变量没绑上直接让工作流失败，不会「假绿」。
 
-**最终验收需你点一次**：按邮件合规口径，测试邮件由用户执行 —— 在 Contact 页提交一次，或运行 `npm run verify:enquiry`（默认发一封 `Pipeline QA` 自检询盘）。看到 `200 ok` 且邮箱收到、检查 Reply-To 是客户地址，即全链路闭环。若 Resend 注册邮箱不是 `ronniezhang690@gmail.com`，把正确地址告诉我，改一个 Secret 即可。
+**最终验收**：运行 `npm run verify:enquiry`（或在 Contact 页提交一次），会发一封 `Pipeline QA` 自检询盘到 `sales@`。看到 `200 ok`、收件箱收到、Reply-To 是客户地址，即全链路闭环。
 
-**为什么 Resend 必须走子域**：主域 SPF 只能有一条且已归属 Zoho，两个发信源各要一条会冲突、认证随机失败；子域验证还能隔离人工邮件与网站通知的发信信誉。当前主域 DMARC `p=none sp=none`，子域不受影响；**将来收紧到 `reject` 前必须先完成第 1 步**，否则询盘通知可能被拒收。
+**为什么 Resend 必须走子域**：主域 SPF 只能有一条且已归属 Zoho，两个发信源各要一条会冲突、认证随机失败；子域验证还能隔离人工邮件与网站通知的发信信誉。当前主域 DMARC `p=none sp=none`；**将来收紧到 `quarantine` / `reject` 前，先确认 `notify.` 子域的 SPF/DKIM 对齐仍通过**，否则询盘通知可能被拒收。
 
-**2026-11-15 自动化落地**：密钥经 GitHub Secrets 加密 → CI 部署前同步 Pages 变量 → 部署后用只读 GET 自检；`npm run verify:enquiry` 也会显示 `delivery.email` 与 `mode`（不发信）。任何投递失败仍保留**携带全部已填字段的一键预填邮件**（指向已验证的 `sales@`），端点 502/503 返回明确地址与 `fallback` 字段，不会静默丢单。
+**失败兜底**：任何投递失败仍保留**携带全部已填字段的一键预填邮件**（指向已验证的 `sales@`），端点 502/503 返回明确地址与 `fallback` 字段，不会静默丢单。`npm run verify:enquiry -- --no-send` 可在不发信的情况下显示 `delivery.email` 与 `mode`。
 
 ### 环境变量（Pages 项目 → Settings → Environment variables，Production + Preview 都要填）
 
@@ -237,7 +231,7 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 | --- | --- | --- |
 | `RESEND_API_KEY` | Resend 的 API key（`re_...`），勾 Encrypt | 走邮件时必填 |
 | `ENQUIRY_TO` | 收件人，多个用逗号分隔 | 走邮件时必填 |
-| `ENQUIRY_FROM` | 发件人，如 `Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>`（用**发信子域**，不要复用主域 `sales@`） | 可选，默认 `onboarding@resend.dev` |
+| `ENQUIRY_FROM` | 发件人，当前 `Fantastic Umbrella <no-reply@notify.fantasticumbrella.com>`（用**已验证的发信子域**，不要复用主域 `sales@`） | 可选；未设置时回退到 `onboarding@resend.dev` 沙箱 |
 | `ENQUIRY_WEBHOOK_URL` | 企业微信 / 飞书 / Slack / 自建接口 URL，自动识别格式 | 可选 |
 | `ENQUIRY_FORWARD_URL` | 第三方表单服务接收地址 | 可选 |
 | `ENQUIRY_FORWARD_FORMAT` | 设 `form` 时按 `x-www-form-urlencoded` 转发（Formsubmit 等需要），默认 JSON | 可选 |
@@ -248,7 +242,7 @@ Zoho 侧早已闭环（MX / SPF / DKIM / DMARC 全通过、收发双向实测）
 ### 通道 A：发到邮箱（推荐，最像原来的 Fluent Forms）
 
 1. 注册 [Resend](https://resend.com)（免费额度 100 封/天、3000 封/月），拿 `RESEND_API_KEY`。
-2. 测试期可用默认 `onboarding@resend.dev`，但**只能发给 Resend 注册邮箱**；正式用建议在 Resend 验证**发信子域** `notify.fantasticumbrella.com`（而不是主域），按后台提示加 SPF TXT + DKIM CNAME。**原因**：一个域名只能有一条 SPF TXT，主域那条要留给企业邮箱（MX 服务商），两个服务商各要一条就会冲突；子域独立验证还能把网站通知的发信信誉与人工邮件隔离。只加发信验证的 TXT/CNAME，**不动 A 记录、不动 NS、不影响网站托管**。详细 DNS 清单见上级目录 `fantasticumbrella_询盘邮件链路选型与落地清单_2026-11-14.md`。
+2. 测试期可用默认 `onboarding@resend.dev`，但**只能发给 Resend 注册邮箱**；正式用必须验证**发信子域** `notify.fantasticumbrella.com`（而不是主域）。本项目已于 2026-11-15 完成验证，Resend 新版 Records 页给出的是 **CNAME 委托**：`send.notify` → `send.forge.rmta.net.`、`rsend.notify` → `rsend-apne1.forge.rmta.net.`，外加 `resend._domainkey.notify` TXT（DKIM）；**`notify` 本身不需要 SPF TXT**，SPF 由 Return-Path 域的委托目标提供。**原因**：一个域名只能有一条 SPF TXT，主域那条要留给企业邮箱（MX 服务商），两个服务商各要一条就会冲突；子域独立验证还能把网站通知的发信信誉与人工邮件隔离。只加发信验证的记录，**不动 A 记录、不动 NS、不影响网站托管**。详细 DNS 清单见上级目录 `fantasticumbrella_询盘邮件链路选型与落地清单_2026-11-14.md`。
 3. 填 `ENQUIRY_TO=sales@fantasticumbrella.com`。**该地址已于 2026-11-14 实测可用**：MX ×3 生效，Gmail 原始邮件头 `spf=pass` / `dkim=pass` / `dmarc=pass`（DKIM 选择器 `fantastic`），Hotmail / Gmail 来信进 Zoho 收件箱、`sales@` 发往 Gmail 也进收件箱。
 4. 重新部署 → 在 Contact 页提交一封真实询盘 → 确认收到、确认「回复」按钮落到客户邮箱（端点已设 `reply_to`）。
 
@@ -268,9 +262,9 @@ curl -s -X POST https://fantastic-umbrella-e13.pages.dev/api/enquiry \
   -d '{"full_name":"Test","company":"Test Co","email":"test@example.com","country":"DE","product_interest":"Golf umbrella","estimated_quantity":"500 pcs","message":"Endpoint check","_form_time":0}'
 ```
 
-未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后完整提交返回 `200 {"ok":true}`。**当前已配置**（2026-11-15 实测 `GET /api/enquiry` → `delivery.email=true`、`mode=resend-sandbox`），但真实测试询盘按合规口径由用户执行一次，见上方「最终验收需你点一次」。
+未配置任何通道时返回 `503 {"ok":false,"error":"not_configured"}`；配置成功后完整提交返回 `200 {"ok":true}`。**当前已配置**（2026-11-15 实测 `GET /api/enquiry` → `delivery.email=true`、`mode=verified-domain`、`from=no-reply@notify.fantasticumbrella.com`），真实自检询盘用下方一键验收命令。
 
-**一键验收**（推荐，明天填完变量后跑一次即可）：
+**一键验收**（切正式发件域后跑一次即可）：
 
 ```bash
 npm run verify:enquiry                       # 检查站点 + 端点 + 同源防护，并发一封真实测试询盘
