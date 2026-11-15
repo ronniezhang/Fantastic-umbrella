@@ -286,7 +286,7 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 
 ---
 
-## 10. 主域名切流到 Cloudflare Pages（2026-11-15 准备就绪，待执行）
+## 10. 主域名切流到 Cloudflare Pages（2026-11-15 已完成）
 
 **官方约束**：Cloudflare 文档《Custom domains》明确 —— **裸域 `fantasticumbrella.com` 要绑到 Pages，域名必须成为该 Cloudflare 账号下的 zone 并把 NS 指向 Cloudflare**；外部 DNS（GoDaddy）只能给 `www` 这类子域加 CNAME 到 `fantastic-umbrella-e13.pages.dev`。原因：apex 不能有 CNAME（与 SOA/NS/MX 冲突），Cloudflare 靠自有权威 DNS 的 CNAME flattening 解决。**当前无 CAA 记录**，Cloudflare 可正常签发 Universal SSL 证书。
 
@@ -299,7 +299,7 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 
 ⚠️ **不要再跑 `npm run sync`**：`scripts/sync-content.mjs` 会从 WP REST 重新抓取，把 `image` 字段写回 wp-content 绝对地址，切流后会重新破图。产品数据现在以 `src/data/catalog-scope.json` + 本地 `products.json` 为准。
 
-### Cloudflare 侧已执行（2026-11-15 17:42，现在只剩改 NS）
+### Cloudflare 侧已执行（2026-11-15 17:42，改 NS 前完成）
 
 通过一次性工作流 `.github/workflows/cf-admin.yml` + `scripts/cf-zone-setup.py`（复用仓库里已有的 Cloudflare 凭据，密钥不落日志）完成：
 
@@ -396,6 +396,33 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 **回退**：把 GoDaddy NS 改回 `ns29 / ns30.domaincontrol.com`（GoDaddy 里的 A / MX / TXT 一直保留未删）。**GoDaddy Managed WordPress 订阅先别取消**，观察几天再决定。
 - 旧 WP URL 的 301（`public/_redirects` 19 条）；`/shop/`、`/my-account/` 等电商页会 404，需要则补 301。
 - GoDaddy Managed WordPress 订阅在确认无需回退后再取消（**先备份 WP 数据**）。
+
+### 浏览器仍显示旧 WordPress 页面（2026-11-15 18:30 排查与加固）
+
+**结论：服务端已完全切干净，旧页面只可能来自访客浏览器本地。**
+
+| 检查 | 结果 |
+| --- | --- |
+| 带代理 / 直连 curl 主域 | 均返回 Astro 首页；`cf-cache-status: DYNAMIC`、`Cache-Control: public, max-age=0, must-revalidate`，无 `Age` 头 |
+| 连续 5 次不同 URL 探测 | 5/5 全是新站（6 处 `/images/products/`、标题 `Custom Compact Umbrella Manufacturer`），无 `wp-content` |
+| 独立第三方出口抓取 | 标题与正文均为新 B2B 首页，无 WP 特征 |
+| 本机解析 | `A 104.21.30.68 / 172.67.172.56`（Cloudflare），hosts 无条目；已执行 `ipconfig /flushdns` 后复核 |
+
+**成因**：旧 WP 响应若带较长 `max-age`，浏览器会直接用本地缓存副本而不发请求，服务端换新头也清不掉；更麻烦的是旧站若注册过 Service Worker（scope `/`），切流后 `/sw.js` 曾返回 `200 text/html`（软 404），浏览器拿不到合法 JS 就**永远无法更新该 worker**，它会持续吐缓存的 WP 页面 —— 普通刷新也无效。
+
+**服务端加固**（远程 `488770fc`，Actions `43704765305` 全绿）：
+
+- `public/sw.js`：迁移期 kill-switch。浏览器更新检查拉到合法 JS 后清空本 origin 全部 Cache Storage 并自注销；`fetch` 事件一律直连网络，不再读缓存。
+- `src/layouts/Base.astro`：所有页面内联一次性清理脚本，访客只要拿到任意一张真实新页面，就注销残留 SW 并清 Cache Storage（origin 隔离，不影响其它站点）。**临时代码，2026-12-31 后可删**。
+- `public/404.html`：修复软 404。此前 `/wp-admin/`、`/sw.js`、`/wp-json/` 等旧 WP 路径都返回 `200 text/html` 首页，会被搜索引擎当成重复页；现在返回 `404` + `noindex`。实测 `/wp-admin/` → 404，`/sw.js` → `200 application/javascript`，首页含清理脚本且仍为 Astro，`robots.txt` 仍 `Allow: /`，`/api/enquiry` 仍 `verified-domain`。
+
+**访客侧必须自己做一次**（浏览器本地缓存，服务端无法代清）：
+
+1. 最快验证：开**无痕窗口**打开 `https://fantasticumbrella.com/?fresh=1` —— 看到新站即证明是本地缓存。
+2. 普通窗口按 `Ctrl + Shift + R`（强制刷新）一到两次。
+3. 仍旧：F12 → Application → Service Workers → Unregister；Storage → Clear site data，再刷新；或在浏览器设置里删除 `fantasticumbrella.com` 的站点数据。
+4. 若手机 / 其它网络仍是旧站，是那侧 DNS 缓存了 GoDaddy 的旧 A `160.153.0.130`，等 TTL（约 1 小时）过期或切飞行模式重连。
+5. 若指的是 **Google / Bing 搜索结果里的旧标题与摘要**，那是搜索索引缓存，与站点切换无关；等重新抓取，或在 Search Console 提交 `sitemap.xml` 加速更新。
 
 ---
 
