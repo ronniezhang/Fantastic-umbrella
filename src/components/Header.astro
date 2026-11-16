@@ -25,19 +25,52 @@ const active = (href) => path === href || path.startsWith(href);
       ))}
       <a href={L('/contact/')} aria-current={active('/contact/') ? 'page' : undefined}>{t.nav.contact}</a>
     </nav>
-    <div class="lang-switch" role="group" aria-label={t.nav.language}>
-      {LOCALES.map((l) => (
-        <a
-          href={localePath(l, path)}
-          lang={l}
-          hreflang={l}
-          class={l === locale ? 'lang-link is-active' : 'lang-link'}
-          aria-current={l === locale ? 'page' : undefined}
-          rel="alternate"
-          title={LOCALE_NAMES[l]}
-        >{l.toUpperCase()}</a>
-      ))}
+    <div class="lang-switch">
+      <details class="lang-dropdown">
+        <summary class="lang-toggle" aria-label={t.nav.languagePicker} title={t.nav.languagePicker}>
+          <svg class="lang-globe" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18M12 3c2.4 2.5 3.7 5.5 3.7 9S14.4 18.5 12 21c-2.4-2.5-3.7-5.5-3.7-9S9.6 5.5 12 3z" />
+          </svg>
+          <span class="lang-current">{locale.toUpperCase()}</span>
+          <span class="lang-chevron" aria-hidden="true"></span>
+        </summary>
+        <ul class="lang-menu" aria-label={t.nav.language}>
+          {LOCALES.map((l) => (
+            <li>
+              <a
+                href={localePath(l, path)}
+                lang={l}
+                hreflang={l}
+                rel="alternate"
+                class={l === locale ? 'lang-option is-active' : 'lang-option'}
+                aria-current={l === locale ? 'page' : undefined}
+              >
+                <span class="lang-code">{l.toUpperCase()}</span>
+                <span class="lang-name">{LOCALE_NAMES[l]}</span>
+                {l === locale && <span class="lang-check" aria-hidden="true">✓</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
     <a class="btn header-cta" href={L('/contact/#enquiry-form')}>{t.nav.quote}</a>
   </div>
 </header>
+
+<script is:inline>
+  /* Progressive enhancement: the native <details> works without JS.
+     This only closes the menu when clicking outside or pressing Escape. */
+  (function () {
+    function closeOutside(target) {
+      document.querySelectorAll('.lang-dropdown[open]').forEach(function (d) {
+        if (!d.contains(target)) d.removeAttribute('open');
+      });
+    }
+    document.addEventListener('click', function (e) { closeOutside(e.target); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeOutside(null);
+    });
+  })();
+</script>

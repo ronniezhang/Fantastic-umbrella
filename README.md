@@ -452,7 +452,9 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 | fr | `/fr/` | `/fr/contact/` | `/fr/product/<slug>/` |
 | de | `/de/` | `/de/contact/` | `/de/product/<slug>/` |
 
-英文**保持原有无前缀 URL**，因此 19 条旧 WP 301、已有外链与英文页排名零损伤。**路径 slug 不翻译**（`about`、`products`、`product/<slug>` 四语种一致），保证 hreflang 一一对应、canonical 规则简单、下游脚本不需改。语言切换器按当前路径映射到同页的其它语种，不会跳回首页。
+英文**保持原有无前缀 URL**，因此 19 条旧 WP 301、已有外链与英文页排名零损伤。**路径 slug 不翻译**（`contact`、`products`、`product/<slug>` 四语种一致），保证 hreflang 一一对应、canonical 规则简单、下游脚本不需改。
+
+**语言切换器是页头的一个下拉单**（2026-11-16 改版）：收起时显示地球图标 + 当前语种代码（EN / ES / FR / DE），展开后列出四个本地语言名称（English / Español / Français / Deutsch），当前项高亮打勾。用原生 `<details>` / `<summary>` 实现，**不依赖 JS 也能开合**；四个 `<a>` 始终保留在 HTML 里并带 `lang` / `hreflang` / `rel="alternate"`，搜索引擎仍可抓取语种关系。`Header.astro` 末尾有一段 `is:inline` 渐进增强脚本，仅用于点击外部或按 Esc 关闭菜单。切换后停留在当前页的对应语种，不会跳回首页。
 
 ### 文件职责
 
