@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { DEFAULT_LOCALE, localePath, alternates } from '../i18n/config.mjs';
 import { ui } from '../i18n/dict.mjs';
+import social from '../data/social.json';
 
 const {
   title,
@@ -19,6 +20,9 @@ const pageTitle = title || t.seo?.[seoKey]?.title || t.seo.home.title;
 const pageDesc = description || t.seo?.[seoKey]?.description || t.seo.home.description;
 const alts = alternates(path);
 const ogLocale = { en: 'en_US', es: 'es_ES', fr: 'fr_FR', de: 'de_DE' }[locale] || 'en_US';
+const ogImage = new URL('/images/products/fan-spray-umbrella.jpg', Astro.site).href;
+// Only real social profile URLs go into sameAs; WhatsApp is a contact channel.
+const socialProfiles = social.profiles.filter((p) => p.href && p.id !== 'whatsapp').map((p) => p.href);
 
 // Entity disambiguation: a same-sounding 1968 Rhode Island retail attraction
 // (fantasticumbrellafactory.com) dominates the bare brand phrase in search.
@@ -38,6 +42,14 @@ const schema = {
     addressRegion: 'Guangdong',
     addressCountry: 'CN',
   },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    email: 'sales@fantasticumbrella.com',
+    telephone: '+86-137-2520-9358',
+    availableLanguage: ['en', 'es', 'fr', 'de'],
+  },
+  ...(socialProfiles.length ? { sameAs: socialProfiles } : {}),
 };
 ---
 <!doctype html>
@@ -55,6 +67,13 @@ const schema = {
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDesc} />
+    <meta property="og:site_name" content="Fantastic Umbrella" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Custom compact and folding umbrellas by Fantastic Umbrella" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDesc} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="generator" content="Astro" />
     <link rel="sitemap" href="/sitemap.xml" />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />

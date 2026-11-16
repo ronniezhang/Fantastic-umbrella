@@ -1,0 +1,13 @@
+{
+  "_note": "Official social profile URLs. Every entry with a non-empty href is rendered as a footer badge and added to the Organization schema (sameAs). Empty entries stay hidden. Only add accounts you own: a same-named 1968 Rhode Island attraction exists, so never guess a URL from a web search.",
+  "profiles": [
+    { "id": "whatsapp", "label": "WhatsApp", "badge": "WA", "href": "https://wa.me/8613725209358" },
+    { "id": "facebook", "label": "Facebook", "badge": "FB", "href": "" },
+    { "id": "instagram", "label": "Instagram", "badge": "IG", "href": "" },
+    { "id": "linkedin", "label": "LinkedIn", "badge": "IN", "href": "" },
+    { "id": "youtube", "label": "YouTube", "badge": "YT", "href": "" },
+    { "id": "pinterest", "label": "Pinterest", "badge": "P", "href": "" },
+    { "id": "tiktok", "label": "TikTok", "badge": "TT", "href": "" },
+    { "id": "x", "label": "X", "badge": "X", "href": "" }
+  ]
+}

@@ -508,4 +508,27 @@ push `main` → 远程 `7cf05f0`，Actions run `43791676708` **success**，Pages
 
 ---
 
+## 12. 社媒链接与分享标签（2026-11-16）
+
+### 配置源
+
+**`src/data/social.json` 是唯一的社媒配置源**。数组里每一项的 `href` 填上官方主页 URL 后，会自动出现在四语种页脚的「Follow us / Síguenos / Suivez-nous / Folgen Sie uns」徽章区，并自动写进 Organization schema 的 `sameAs`；空 `href` 不渲染任何东西。链接统一 `target="_blank" rel="noopener noreferrer"`，`aria-label` 用四语种词典 `footer.followOn`（含 `{name}` 占位符）。
+
+当前只配置了**已确认存在**的两个渠道：
+
+| 渠道 | 来源 | 状态 |
+| --- | --- | --- |
+| 邮箱 `sales@fantasticumbrella.com` | Contact 页 / 表单收件人 | `mailto:` 链接 |
+| WhatsApp `+86 137 2520 9358` | Contact 页「Phone / WhatsApp」 | `https://wa.me/8613725209358` 直链 + WA 徽章 |
+
+`Facebook` / `Instagram` / `LinkedIn` / `YouTube` / `Pinterest` / `TikTok` / `X` 预留了条目但 `href` 为空。**不要凭搜索结果填**：品牌名与 1968 年罗德岛同名景点冲突（见 `Base.astro` 的实体消歧注释），搜到的账号很可能不是本公司的。拿到用户确认的官方主页 URL 后，只改这个 JSON → `npm run build` → push 即可，无需改组件。
+
+### 分享标签与结构化数据
+
+`Base.astro` 全站输出：`og:site_name`、`og:image`（指向本地 `/images/products/fan-spray-umbrella.jpg`）、`og:image:alt`、`twitter:card=summary_large_image`、`twitter:title/description/image`；Organization JSON-LD 增加 `contactPoint`（sales 邮箱、电话、`availableLanguage: en/es/fr/de`），`sameAs` 只在配置了社媒主页时出现。
+
+**注意**：旧 WordPress 站审计明确记录**没有装 GA4 / GTM / gtag / 任何社媒像素**，本地备份、页脚 widget 备份与 DNS TXT 里也都没有社媒主页或域名验证记录，所以这里没有「可转移」的追踪标签。若需要 Meta Pixel / LinkedIn Insight Tag / TikTok Pixel / GA4，需提供对应 ID，且会引入第三方脚本（性能与隐私影响需单独确认），不属于本次静态迁移范围。
+
+---
+
 **关联文档**（位于上级工作目录）：`fantasticumbrella_Astro迁移评估_2026-11-12.md`、`fantasticumbrella_Astro迁移执行流程_2026-11-13.md`、`fantasticumbrella_产品线范围与两站分工_2026-11-13.md`、`fantasticumbrella_去WP决策与托管实测_2026-11-14.md`、`fantasticumbrella_多语言上线与维护_2026-11-16.md`。

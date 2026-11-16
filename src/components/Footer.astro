@@ -1,11 +1,16 @@
 ---
 import { DEFAULT_LOCALE, localePath } from '../i18n/config.mjs';
 import { ui } from '../i18n/dict.mjs';
+import social from '../data/social.json';
 
 const { locale = DEFAULT_LOCALE } = Astro.props;
 const t = ui(locale);
 const L = (p) => localePath(locale, p);
 const year = new Date().getFullYear();
+// Only configured profiles are rendered. Empty hrefs in social.json stay hidden.
+const profiles = social.profiles.filter((p) => p.href);
+const whatsappHref = profiles.find((p) => p.id === 'whatsapp')?.href || '';
+const ariaFor = (name) => t.footer.followOn.replace('{name}', name);
 ---
 <footer class="site-footer">
   <div class="wrap">
@@ -35,10 +40,25 @@ const year = new Date().getFullYear();
         <h3>{t.footer.getInTouch}</h3>
         <ul>
           <li><a href="mailto:sales@fantasticumbrella.com">sales@fantasticumbrella.com</a></li>
-          <li>{t.footer.whatsapp}: +86 137 2520 9358</li>
+          <li>{t.footer.whatsapp}: <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={ariaFor('WhatsApp')}>+86 137 2520 9358</a></li>
         </ul>
       </div>
     </div>
+    {profiles.length > 0 && (
+      <div class="footer-social">
+        <h3>{t.footer.followUs}</h3>
+        <ul class="social-list">
+          {profiles.map((p) => (
+            <li>
+              <a href={p.href} target="_blank" rel="noopener noreferrer" aria-label={ariaFor(p.label)} title={p.label}>
+                <span class="social-badge" aria-hidden="true">{p.badge}</span>
+                <span>{p.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
     <div class="footer-bottom">
       <span>&copy; {year} Fantastic Umbrella. {t.footer.copyright}</span>
       <span>{t.footer.platformNote}</span>
