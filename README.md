@@ -1,8 +1,8 @@
 # fantasticumbrella.com — Astro 静态前台
 
-B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPress（GoDaddy Managed WordPress）**；静态站已在 Cloudflare Pages 预览域名运行（GitHub Actions 自动构建发布），但**尚未切流、未绑定主域名**。
+B2B 站点的 Astro 源码仓库。**主域名已于 2026-11-15 完整切流到 Cloudflare Pages**，WordPress 不再对外服务（GoDaddy 托管订阅与 DNS 记录保留作回退）。2026-11-16 起全站提供英文 / 西班牙语 / 法语 / 德语四个语种，详见第 11 节。
 
-日期：2026-11-14
+日期：2026-11-16
 
 ---
 
@@ -10,18 +10,20 @@ B2B 站点迁移用的 Astro 源码仓库。**线上主域名目前仍是 WordPr
 
 | 项 | 值 |
 | --- | --- |
-| 静态页 | 19（首页 + 5 个 B2B 页 + 产品列表 + 12 个产品页） |
-| 构建产物 | `dist/` 约 193 KB，零运行时脚本 |
+| 线上地址 | **https://fantasticumbrella.com/**（Cloudflare Pages，有效 HTTPS）；预览域名 https://fantastic-umbrella-e13.pages.dev/ |
+| 静态页 | **76**（19 个英文页 × 4 语种：首页 + 5 个 B2B 页 + 产品列表 + 12 个产品页） |
+| 多语言 | `en` 保持无前缀 URL；`/es/`、`/fr/`、`/de/` 前缀；全站 hreflang + `x-default` + 自指 canonical；语言切换器保持当前页面路径 |
+| 构建产物 | `dist/` 纯静态 HTML，零运行时脚本 |
 | 产品范围 | 手持小伞 8 款主推、沙滩伞 4 款附带；14 款沙滩椅/天幕/庭院伞移出至 GreenMark |
-| 范围规则 | `src/data/catalog-scope.json`（唯一事实源，`npm run sync` 会读取它） |
-| 询盘表单 | Astro 原生渲染，POST 到同源 Pages Function `/api/enquiry`；**投递通道由环境变量决定，未配置前明确报 503，不会静默丢单**。详见第 8 节 |
-| 图片 | 12 个 `https://fantasticumbrella.com/wp-content/...` 绝对外链，仍依赖线上 WP |
+| 范围规则 | `src/data/catalog-scope.json`（唯一事实源；`npm run sync` 已被 guard 冻结，见第 3 节） |
+| 询盘表单 | Astro 原生渲染，POST 到同源 Pages Function `/api/enquiry`；表单按语种显示文案并带 `_locale`，邮件标题按语种打标（EN/ES/FR/DE）。详见第 8 节 |
+| 图片 | 12 张产品图已本地化到 `public/images/products/`，**不再依赖 WP** |
+| sitemap | `scripts/make-sitemap.mjs` 在 prebuild 生成，**76 条 URL**，每条带 4 语种 hreflang alternates |
 | 301 | `public/_redirects`（Cloudflare Pages 格式）+ `dist/.htaccess`（Apache 格式），各 19 条 |
-| SEO | canonical / description / Organization JSON-LD 全站覆盖；7 组 Title/Meta 在 `src/data/seo.json` |
-| 预览地址 | **https://fantastic-umbrella-e13.pages.dev/**（Cloudflare Pages）；备用临时链接 `https://wbapp-72hb4123vtqk7gaufcq75x.app.workbuddy.host/?sharecode=4IFW5XU2RU` |
+| SEO | canonical / description / Organization JSON-LD + hreflang 全站覆盖；7 组 Title/Meta 在 `src/data/seo.json` |
 | 自动部署 | GitHub Actions `deploy-pages.yml`：push `main` 或 `workflow_dispatch` → `npm ci → npm run build → wrangler pages deploy dist --project-name=fantastic-umbrella` |
 
-**注意**：`astro.config.mjs` 里 `site` 仍写主域名，因此 canonical 与 sitemap 都指向 `fantasticumbrella.com`。预览阶段这是有意的（避免预览站被当作正式站点收录），切流后无需改动。
+`astro.config.mjs` 的 `site` 指向主域名，canonical 与 sitemap 均生成 `https://fantasticumbrella.com/...`，切流后即为正式 URL。预览域名由 `functions/robots.txt.ts` 保持 `Disallow: /`，不会被当作正式站收录。
 
 ---
 
@@ -33,19 +35,29 @@ astro-prototype/
 ├── package.json
 ├── public/
 │   ├── _redirects            # 19 条 301（Cloudflare Pages）
-│   ├── sitemap.xml           # 19 条 URL
-│   └── robots.txt            # 正式版：Allow / + Sitemap
+│   ├── sitemap.xml           # prebuild 自动生成，76 条 URL + hreflang
+│   ├── robots.txt            # 正式版：Allow / + Sitemap
+│   ├── sw.js / 404.html      # 迁移期 SW 清理 / 旧 WP 路径软 404 修复
+│   └── images/products/      # 12 张本地产品图
+├── functions/                # Pages Functions：/api/enquiry、robots.txt
 ├── scripts/
-│   ├── sync-content.mjs      # 从线上 wp-json 拉内容（⚠ 见下方警告）
+│   ├── make-sitemap.mjs      # 生成四语种 sitemap（prebuild 自动跑）
+│   ├── verify-i18n.mjs       # 词典/正文/产品译文完整性校验（prebuild 自动跑）
+│   ├── extract-page-texts.mjs# 从英文页抽取待译文本节点
+│   ├── guard-legacy-sync.mjs # 冻结两个旧 WP 同步脚本
+│   ├── sync-content.mjs      # ⚠ 旧：从 wp-json 拉内容（已被 guard 拦截）
 │   ├── catalog-scope.mjs     # 产品范围判定 + 正文术语修正
-│   ├── rebuild-scope.mjs     # 离线重算目录（不联网、不撞后台限流）
+│   ├── rebuild-scope.mjs     # ⚠ 旧：离线重算目录（已被 guard 拦截）
 │   ├── make-htaccess.mjs     # _redirects → Apache RewriteRule
 │   └── make-preview.mjs      # 生成预览部署副本
 ├── src/
-│   ├── data/                 # 内容数据（去 WP 后的唯一内容源，必须入库）
-│   ├── layouts/Base.astro
+│   ├── i18n/                 # config / routes / html / dict + ui|pages|products 词典
+│   ├── data/                 # 英文内容数据（去 WP 后的唯一内容源，必须入库）
+│   ├── layouts/Base.astro    # html lang / hreflang / canonical / 语言切换脚本
 │   ├── components/           # Header / Footer / EnquiryForm
-│   ├── pages/                # index / [slug] / products / product/[slug]
+│   ├── components/pages/     # 共享页面组件，路由薄壳只传 locale
+│   ├── pages/                # en：index / [slug] / products / product/[slug]
+│   ├── pages/es|fr|de/       # 三个语种的同构薄壳路由
 │   └── styles/global.css
 └── dist/                     # 构建产物（gitignore）
 ```
@@ -56,12 +68,13 @@ astro-prototype/
 
 ```bash
 npm ci
-npm run build          # → dist/，postbuild 自动再生成 dist/.htaccess
+npm run verify:i18n    # 校验四语种词典结构、文本节点数、产品 slug 一致性
+npm run build          # prebuild 自动跑校验 + 生成 sitemap → dist/；postbuild 生成 .htaccess
 npm run preview        # 本地预览 http://127.0.0.1:4321/
 npm run preview:stage  # → ../astro-preview/（纯静态部署副本）
 ```
 
-> ⚠️ **`npm run sync` 会覆盖** `src/data/*.json`、`public/_redirects`、`public/sitemap.xml`、`public/robots.txt`，以及人工写进 `seo.json` 的描述。人工改动要么固化进脚本，要么在冻结期停跑 sync。WP 下线后 `wp-json` 停供，此命令将彻底不可用——`src/data/` 就是最终内容源。
+> ⚠️ **旧 WP 同步脚本已冻结**：`npm run sync` / `npm run rebuild-scope` 现在默认被 `scripts/guard-legacy-sync.mjs` 拦截并报错。它们会用单语种内容覆盖 `src/data/*.json`、`public/sitemap.xml`、`public/_redirects`、`public/robots.txt`，抹掉 es/fr/de 的 sitemap 与 hreflang，还会把产品图改回 `wp-content` 外链（WP 已下线即图片全裂）。确需重跑时用 `ALLOW_LEGACY_SYNC=1 npm run sync -- --force`，跑完必须重新执行 `npm run verify:i18n && npm run build` 并复核图片本地化。日常改动直接改 `src/data/` 与 `src/i18n/`，不要走同步脚本。
 
 ---
 
@@ -426,4 +439,60 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 
 ---
 
-**关联文档**（位于上级工作目录）：`fantasticumbrella_Astro迁移评估_2026-11-12.md`、`fantasticumbrella_Astro迁移执行流程_2026-11-13.md`、`fantasticumbrella_产品线范围与两站分工_2026-11-13.md`、`fantasticumbrella_去WP决策与托管实测_2026-11-14.md`。
+## 11. 多语言（2026-11-16 全站上线）
+
+按用户确认的范围一次到位：**英文 + 西班牙语 + 法语 + 德语，全站 19 个页面 × 4 语种 = 76 页**。详细交付与维护手册见上级目录 `fantasticumbrella_多语言上线与维护_2026-11-16.md`。
+
+### URL 策略
+
+| 语种 | 首页 | 正文页 | 产品 |
+| --- | --- | --- | --- |
+| en（默认） | `/` | `/contact/` | `/product/<slug>/` |
+| es | `/es/` | `/es/contact/` | `/es/product/<slug>/` |
+| fr | `/fr/` | `/fr/contact/` | `/fr/product/<slug>/` |
+| de | `/de/` | `/de/contact/` | `/de/product/<slug>/` |
+
+英文**保持原有无前缀 URL**，因此 19 条旧 WP 301、已有外链与英文页排名零损伤。**路径 slug 不翻译**（`about`、`products`、`product/<slug>` 四语种一致），保证 hreflang 一一对应、canonical 规则简单、下游脚本不需改。语言切换器按当前路径映射到同页的其它语种，不会跳回首页。
+
+### 文件职责
+
+| 路径 | 作用 |
+| --- | --- |
+| `src/i18n/config.mjs` | 语种列表、前缀与路径换算、`alternates()` 生成 hreflang 组 |
+| `src/i18n/ui/{en,es,fr,de}.json` | 导航、页脚、按钮、表单标签等 **122 个 UI 键** |
+| `src/i18n/pages/{en,es,fr,de}.json` | 5 个正文页的 **246 个可见文本节点**（按文档顺序） |
+| `src/i18n/products/{en,es,fr,de}.json` | 12 款产品的名称与简介 |
+| `src/i18n/html.mjs` | 按 `>([^<]+)<` 替换可见文本节点；标签、属性、class、实体编码保持字节一致；译文短/缺时剩余节点保留英文而非破坏结构；并给正文内部链接加语种前缀 |
+| `src/i18n/dict.mjs` / `routes.mjs` | 词典读取；`getStaticPaths` 载荷（用静态 JSON import，避免打包后 `import.meta.url` 指向 `dist/` 而读不到文件） |
+| `src/components/pages/*` | 共享页面组件，接收 `locale`；`src/pages/**` 各路由只是三行薄壳 |
+| `scripts/extract-page-texts.mjs` | 从英文正文重新抽取待译文本节点 |
+| `scripts/verify-i18n.mjs` | 校验 UI 键结构、占位符、正文节点数、产品 slug 集合；**prebuild 必跑，失败即阻断构建** |
+| `scripts/make-sitemap.mjs` | 生成 76 条 URL，每条带 4 语种 + `x-default` 的 reciprocal hreflang |
+| `scripts/guard-legacy-sync.mjs` | 冻结旧 `sync-content` / `rebuild-scope`，防止覆盖多语言成果 |
+
+### SEO 与表单
+
+- 每个页面 `<html lang>` 正确，输出 4 条 `hreflang` + 1 条 `x-default`，canonical **自指**（不是一律指英文页）。
+- `public/sitemap.xml` 由 `make-sitemap.mjs` 在 prebuild 生成，CI 断言 76 条 URL；`functions/robots.txt.ts` 仍按 host 区分主域 `Allow` / 预览域名 `Disallow`。
+- `EnquiryForm.astro` 全部可见文案走词典，提交带隐藏字段 `_locale`；**表单 action 仍是 `/api/enquiry`，不加语种前缀**。`functions/api/enquiry.ts` 按 `_locale` 返回对应语种的提示语，邮件标题加 `[ES]` / `[FR]` / `[DE]` 前缀并标注来源语言，未知值回落英文。
+- 246 个正文节点中 **240 个已译（98%）**，剩余 6 个是邮箱、电话与纯符号，有意保留不改。
+
+### 维护流程
+
+1. 改英文正文或产品文案 → 改 `src/data/*.json`（**不要跑 `npm run sync`**）。
+2. 若正文结构变化 → `node scripts/extract-page-texts.mjs` 重抽文本节点，补齐 `src/i18n/pages/{es,fr,de}.json` 对应条目（节点顺序与数量必须一致）。
+3. 改 UI 文案 → 四个 `src/i18n/ui/*.json` 同步加键；含 `{count}` 等占位符的译文必须原样保留。
+4. `npm run verify:i18n && npm run build` → 确认 76 页 / 76 sitemap URL。
+5. push `main`，GitHub Actions 自动部署并自检；上线后抽查各语种首页、正文页、产品页与表单。
+6. 新增语种：在 `config.mjs` 的 `LOCALES` / `LOCALE_NAMES` / `LOCALE_MAIL_TAGS` 登记 → 补四份词典 → 复制一份 `src/pages/es/` 薄壳目录改 locale → 更新 CI 里的页面数断言（当前 76 = 19 × 4）。
+
+### 已知边界
+
+- 译文为一次性批量生成，**建议由母语者抽校产品名、规格术语与询盘表单提示**，尤其是德语复合词与法语长句可能撑破按钮布局。
+- URL slug 不翻译（西/法/德产品 URL 仍是英文 slug），是刻意的稳定性取舍，不是遗漏。
+- `www` 仍未 301 到裸域；DMARC 仍 `p=none`；GoDaddy 托管订阅未取消 —— 均为第 10 节遗留的可选项，与多语言无关。
+- 迁移期 Service Worker 清理脚本（`Base.astro` 内联）计划 2026-12-31 后删除，四语种页面都带该脚本。
+
+---
+
+**关联文档**（位于上级工作目录）：`fantasticumbrella_Astro迁移评估_2026-11-12.md`、`fantasticumbrella_Astro迁移执行流程_2026-11-13.md`、`fantasticumbrella_产品线范围与两站分工_2026-11-13.md`、`fantasticumbrella_去WP决策与托管实测_2026-11-14.md`、`fantasticumbrella_多语言上线与维护_2026-11-16.md`。

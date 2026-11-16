@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import EnquiryForm from '../EnquiryForm.astro';
+import pages from '../../data/pages.json';
+import { DEFAULT_LOCALE } from '../../i18n/config.mjs';
+import { pageTexts, pageTitle } from '../../i18n/dict.mjs';
+import { localizeHtml, localizeLinks } from '../../i18n/html.mjs';
+
+const { locale = DEFAULT_LOCALE, slug } = Astro.props;
+const page = pages.find((p) => p.slug === slug);
+if (!page) throw new Error(`Unknown static page slug: ${slug}`);
+
+const translated = pageTexts(locale, slug);
+const { html, used, expected } = localizeHtml(page.html, translated);
+const body = localizeLinks(html, locale);
+if (locale !== 'en' && used < expected - 12) {
+  console.warn(`[i18n] ${locale}/${slug}: only ${used}/${expected} text nodes translated`);
+}
+
+const hasH1 = /<h1[\s>]/i.test(body);
+const parts = body.split('<!-- ASTRO_FORM_SLOT -->');
+const heading = pageTitle(locale, slug) || page.title;
+---
+<Base seoKey={page.slug} path={`/${page.slug}/`} locale={locale}>
+  <article class="wrap prose">
+    {!hasH1 && <h1 set:html={heading} />}
+    <div set:html={parts[0]} />
+    {parts.length > 1 && (
+      <>
+        <EnquiryForm locale={locale} />
+        <div set:html={parts[1]} />
+      </>
+    )}
+  </article>
+</Base>

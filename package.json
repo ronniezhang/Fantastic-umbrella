@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "sync": "node scripts/sync-content.mjs",
+    "sync": "node scripts/guard-legacy-sync.mjs sync-content.mjs",
+    "rebuild-scope": "node scripts/guard-legacy-sync.mjs rebuild-scope.mjs",
+    "verify:i18n": "node scripts/verify-i18n.mjs",
+    "prebuild": "node scripts/verify-i18n.mjs && node scripts/make-sitemap.mjs",
     "dev": "astro dev",
     "build": "astro build",
     "postbuild": "node scripts/make-htaccess.mjs",

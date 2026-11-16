@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import products from '../../data/products.json';
+import { DEFAULT_LOCALE, localePath } from '../../i18n/config.mjs';
+import { ui, fill, productCopy } from '../../i18n/dict.mjs';
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const t = ui(locale);
+const p = t.products;
+const L = (href) => localePath(locale, href);
+const primary = products.filter((item) => item.scope === 'primary');
+const secondary = products.filter((item) => item.scope === 'secondary');
+const nameOf = (item) => productCopy(locale, item.slug)?.name || item.name;
+---
+<Base path="/products/" locale={locale} title={p.seoTitle} description={p.seoDesc}>
+  <section class="hero" style="padding:48px 0">
+    <div class="wrap">
+      <p class="eyebrow">{p.eyebrow}</p>
+      <h1>{p.h1}</h1>
+      <p>{fill(p.intro, { primary: primary.length, secondary: secondary.length })}</p>
+      <a class="btn" href={L('/contact/#enquiry-form')}>{t.nav.quote}</a>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <h2>{p.coreTitle}</h2>
+      <div class="product-grid">
+        {primary.map((item) => (
+          <a class="product-card" href={L(`/product/${item.slug}/`)}>
+            <div class="thumb">
+              {item.image
+                ? <img src={item.image} alt={nameOf(item)} loading="lazy" />
+                : <span style="color:#8b9aa8;font-size:13px">{t.common.imagePending}</span>}
+            </div>
+            <div class="body">
+              <h3 set:html={nameOf(item)} />
+              <span class="link">{t.common.viewEnquire}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <h2 style="margin-top:52px">{p.beachTitle}</h2>
+      <p>{p.beachIntro}</p>
+      <div class="product-grid">
+        {secondary.map((item) => (
+          <a class="product-card" href={L(`/product/${item.slug}/`)}>
+            <div class="thumb">
+              {item.image
+                ? <img src={item.image} alt={nameOf(item)} loading="lazy" />
+                : <span style="color:#8b9aa8;font-size:13px">{t.common.imagePending}</span>}
+            </div>
+            <div class="body">
+              <h3 set:html={nameOf(item)} />
+              <span class="link">{t.common.viewEnquire}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p style="margin-top:36px;font-size:14px;color:var(--ink-soft)">{t.common.greenmarkProducts}</p>
+    </div>
+  </section>
+</Base>

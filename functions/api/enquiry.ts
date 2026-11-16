@@ -47,6 +47,75 @@ const MAX_MESSAGE = 5000;
 // Verified 2026-11-14: MX + SPF + DKIM + DMARC all pass, inbound/outbound tested.
 const SALES_EMAIL = 'sales@fantasticumbrella.com';
 
+/**
+ * Visitor-facing messages, selected by the hidden `_locale` field the form
+ * submits. The internal notification email deliberately stays in English -
+ * the sales team reads it - but carries a language tag and a Language: line
+ * so the reply can be written in the buyer's language.
+ */
+const MESSAGES = {
+  en: {
+    invalid: 'Invalid submission.',
+    received: 'Thank you. Your enquiry has been received.',
+    tooFast: 'Please review your details and submit again.',
+    missing: 'Please complete all required fields.',
+    invalidEmail: 'Please enter a valid business email address.',
+    tooLong: 'One of the fields is too long.',
+    notConfigured:
+      'Online submission is not enabled yet. Please use the one-click email link below to send your details to sales@fantasticumbrella.com - we will get back to you.',
+    deliveryFailed:
+      'We could not send your enquiry just now. Please try again in a minute, or use the one-click email link below to reach sales@fantasticumbrella.com.',
+    success:
+      'Thank you. Your enquiry has been received - we normally reply within one business day.',
+  },
+  es: {
+    invalid: 'Envío no válido.',
+    received: 'Gracias. Hemos recibido su consulta.',
+    tooFast: 'Revise los datos y vuelva a enviar el formulario.',
+    missing: 'Complete todos los campos obligatorios.',
+    invalidEmail: 'Introduzca una dirección de correo empresarial válida.',
+    tooLong: 'Uno de los campos es demasiado largo.',
+    notConfigured:
+      'El envío en línea aún no está disponible. Utilice el enlace de un clic para enviarnos sus datos a sales@fantasticumbrella.com; le responderemos.',
+    deliveryFailed:
+      'No hemos podido enviar su consulta. Inténtelo de nuevo en unos minutos o utilice el enlace de un clic para escribir a sales@fantasticumbrella.com.',
+    success:
+      'Gracias. Hemos recibido su consulta; normalmente respondemos en un día laborable.',
+  },
+  fr: {
+    invalid: 'Envoi invalide.',
+    received: 'Merci. Nous avons bien reçu votre demande.',
+    tooFast: 'Vérifiez vos informations et soumettez à nouveau le formulaire.',
+    missing: 'Veuillez remplir tous les champs obligatoires.',
+    invalidEmail: 'Veuillez saisir une adresse e-mail professionnelle valide.',
+    tooLong: "L'un des champs est trop long.",
+    notConfigured:
+      "L'envoi en ligne n'est pas encore activé. Utilisez le lien en un clic pour envoyer vos informations à sales@fantasticumbrella.com ; nous vous répondrons.",
+    deliveryFailed:
+      "Nous n'avons pas pu envoyer votre demande. Réessayez dans quelques instants ou utilisez le lien en un clic pour écrire à sales@fantasticumbrella.com.",
+    success:
+      'Merci. Nous avons bien reçu votre demande ; nous répondons généralement sous un jour ouvré.',
+  },
+  de: {
+    invalid: 'Ungültige Übermittlung.',
+    received: 'Vielen Dank. Ihre Anfrage ist bei uns eingegangen.',
+    tooFast: 'Bitte prüfen Sie Ihre Angaben und senden Sie das Formular erneut ab.',
+    missing: 'Bitte füllen Sie alle Pflichtfelder aus.',
+    invalidEmail: 'Bitte geben Sie eine gültige geschäftliche E-Mail-Adresse ein.',
+    tooLong: 'Eines der Felder ist zu lang.',
+    notConfigured:
+      'Der Online-Versand ist noch nicht aktiviert. Bitte nutzen Sie den Ein-Klick-Link, um Ihre Angaben an sales@fantasticumbrella.com zu senden; wir melden uns.',
+    deliveryFailed:
+      'Ihre Anfrage konnte gerade nicht gesendet werden. Bitte versuchen Sie es in wenigen Minuten erneut oder nutzen Sie den Ein-Klick-Link an sales@fantasticumbrella.com.',
+    success:
+      'Vielen Dank. Ihre Anfrage ist eingegangen; wir antworten in der Regel innerhalb eines Werktags.',
+  },
+};
+
+const LOCALE_LABEL = { en: 'English', es: 'Spanish', fr: 'French', de: 'German' };
+const SUPPORTED_LOCALES = ['es', 'fr', 'de'];
+const messagesFor = (locale) => MESSAGES[locale] || MESSAGES.en;
+
 function reply(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -70,9 +139,11 @@ function esc(value) {
     .replace(/"/g, '&quot;');
 }
 
-function buildMail(data, submittedAt, source) {
+function buildMail(data, submittedAt, source, locale = 'en') {
   const rows = Object.keys(LABELS).map((key) => [LABELS[key], clean(data[key]) || '-']);
-  const subject = `New B2B enquiry - ${clean(data.full_name)} (${clean(data.company)})`;
+  const tag = locale === 'en' ? '' : `[${locale.toUpperCase()}] `;
+  const language = LOCALE_LABEL[locale] || 'English';
+  const subject = `${tag}New B2B enquiry - ${clean(data.full_name)} (${clean(data.company)})`;
 
   const text = [
     subject,
@@ -82,6 +153,7 @@ function buildMail(data, submittedAt, source) {
     '---',
     `Submitted: ${submittedAt}`,
     `Source page: ${source}`,
+    `Language: ${language}`,
   ].join('\n');
 
   const html = [
@@ -92,7 +164,7 @@ function buildMail(data, submittedAt, source) {
         `<tr><td valign="top"><strong>${esc(label)}</strong></td><td valign="top" style="white-space:pre-wrap">${esc(value)}</td></tr>`,
     ),
     '</table>',
-    `<p style="color:#6b7c8d;font-size:12px">Submitted: ${esc(submittedAt)}<br>Source page: ${esc(source)}</p>`,
+    `<p style="color:#6b7c8d;font-size:12px">Submitted: ${esc(submittedAt)}<br>Source page: ${esc(source)}<br>Language: ${esc(language)}</p>`,
   ].join('');
 
   return { subject, text, html };
@@ -260,32 +332,36 @@ export async function onRequestPost(context) {
     return reply({ ok: false, error: 'invalid_json', message: 'Invalid submission.' }, 400);
   }
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
-    return reply({ ok: false, error: 'invalid_payload', message: 'Invalid submission.' }, 400);
+    return reply({ ok: false, error: 'invalid_payload', message: MESSAGES.en.invalid }, 400);
   }
+
+  // The form submits a hidden _locale. Unknown values fall back to English.
+  const locale = SUPPORTED_LOCALES.includes(clean(data._locale)) ? clean(data._locale) : 'en';
+  const m = messagesFor(locale);
 
   // Honeypot: bots get a fake success, humans never see this field.
   if (clean(data._gotcha)) {
-    return reply({ ok: true, message: 'Thank you. Your enquiry has been received.' });
+    return reply({ ok: true, message: m.received });
   }
 
   // Very fast submissions are almost always bots. Missing field = JS off, skip.
   const openedAt = Number(data._form_time || 0);
   if (openedAt > 0 && Date.now() - openedAt < 1500) {
-    return reply({ ok: false, error: 'too_fast', message: 'Please review your details and submit again.' }, 400);
+    return reply({ ok: false, error: 'too_fast', message: m.tooFast }, 400);
   }
 
   for (const key of REQUIRED) {
     if (!clean(data[key])) {
-      return reply({ ok: false, error: 'missing_field', field: key, message: 'Please complete all required fields.' }, 400);
+      return reply({ ok: false, error: 'missing_field', field: key, message: m.missing }, 400);
     }
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(data.email)) || clean(data.email).length > 200) {
-    return reply({ ok: false, error: 'invalid_email', message: 'Please enter a valid business email address.' }, 400);
+    return reply({ ok: false, error: 'invalid_email', message: m.invalidEmail }, 400);
   }
   for (const key of Object.keys(LABELS)) {
     const limit = key === 'message' ? MAX_MESSAGE : MAX_LEN;
     if (clean(data[key]).length > limit) {
-      return reply({ ok: false, error: 'field_too_long', field: key, message: 'One of the fields is too long.' }, 400);
+      return reply({ ok: false, error: 'field_too_long', field: key, message: m.tooLong }, 400);
     }
   }
 
@@ -300,8 +376,7 @@ export async function onRequestPost(context) {
       {
         ok: false,
         error: 'not_configured',
-        message:
-          'Online submission is not enabled yet. Please use the one-click email link below to send your details to sales@fantasticumbrella.com - we will get back to you.',
+        message: m.notConfigured,
         fallback: SALES_EMAIL,
       },
       503,
@@ -310,7 +385,7 @@ export async function onRequestPost(context) {
 
   const submittedAt = new Date().toISOString();
   const source = clean(data._page) || request.headers.get('Referer') || '(unknown)';
-  const mail = buildMail(data, submittedAt, source);
+  const mail = buildMail(data, submittedAt, source, locale);
 
   const results = (
     await Promise.all([
@@ -336,8 +411,7 @@ export async function onRequestPost(context) {
       {
         ok: false,
         error: 'delivery_failed',
-        message:
-          'We could not send your enquiry just now. Please try again in a minute, or use the one-click email link below to reach sales@fantasticumbrella.com.',
+        message: m.deliveryFailed,
         fallback: SALES_EMAIL,
         ...(diagnose ? { diagnostics } : {}),
       },
@@ -347,7 +421,7 @@ export async function onRequestPost(context) {
 
   const body = {
     ok: true,
-    message: 'Thank you. Your enquiry has been received - we normally reply within one business day.',
+    message: m.success,
   };
   if (diagnose) {
     const emailResult = results.find((r) => r.channel === 'email');

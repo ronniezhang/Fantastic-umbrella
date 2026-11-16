@@ -1,0 +1,169 @@
+{
+  "lang": "fr",
+  "localeName": "Français",
+  "org": {
+    "description": "Fabricant OEM et ODM de parapluies compacts, pliants et droits pour acheteurs B2B.",
+    "disambiguating": "Fabricant de parapluies de pluie portables basé à Guangzhou, en Chine, au service des programmes de vente en gros et de promotion."
+  },
+  "nav": {
+    "products": "Produits",
+    "services": "Services OEM et ODM",
+    "shipping": "Expédition et livraison",
+    "quality": "Qualité et réclamations",
+    "faq": "FAQ B2B",
+    "contact": "Contact",
+    "quote": "Demander un devis",
+    "mainNav": "Navigation principale",
+    "language": "Langue",
+    "languagePicker": "Choisir la langue"
+  },
+  "footer": {
+    "brandDesc": "Parapluies compacts et pliants sur mesure pour programmes B2B. Guangzhou, Guangdong, Chine.",
+    "capabilities": "Savoir-faire",
+    "productRange": "Gamme de produits",
+    "support": "Assistance",
+    "contactUs": "Nous contacter",
+    "getInTouch": "Prendre contact",
+    "whatsapp": "WhatsApp",
+    "copyright": "Tous droits réservés.",
+    "platformNote": "Site de fabrication B2B · Guangzhou, Chine"
+  },
+  "common": {
+    "requestQuote": "Demander un devis",
+    "exploreCapabilities": "Découvrir notre savoir-faire",
+    "readFaq": "Consulter la FAQ B2B",
+    "viewEnquire": "Voir et se renseigner →",
+    "allProducts": "Tous les produits",
+    "seeAllProducts": "Voir les {count} produits",
+    "imagePending": "Image à venir",
+    "customOnRequest": "Impression et spécifications personnalisées sur demande.",
+    "backToProducts": "← Tous les produits",
+    "greenmarkHome": "Vous recherchez des chaises de plage, des cabanes, des abris solaires ou des structures d'ombrage pour terrasse ? Ces gammes sont prises en charge par notre site partenaire GreenMark.",
+    "greenmarkProducts": "Les chaises de plage, cabanes, abris solaires, gazebos et structures d'ombrage pour terrasse ne font pas partie de la gamme de ce site — ils sont pris en charge par notre site partenaire GreenMark."
+  },
+  "home": {
+    "eyebrow": "Fabrication B2B · Guangzhou, Chine",
+    "h1": "Parapluies compacts et pliants sur mesure, fabriqués selon votre cahier des charges.",
+    "intro": "Fourniture OEM et ODM de parapluies de pluie portables pour distributeurs, marques de distribution et programmes promotionnels. Une petite sélection de parasols de plage complète la gamme principale. Nous prenons en charge les visuels, l'échantillonnage, la production, le contrôle et les documents d'exportation au sein d'une chaîne d'approvisionnement unique — en démarrant par un devis écrit, et non par une commande en ligne.",
+    "note": "Les quantités minimales de commande (MOQ), les délais et les normes de contrôle sont donnés à titre indicatif et sont confirmés par écrit avec votre devis et votre fiche technique.",
+    "supplyTitle": "Une chaîne d'approvisionnement unique, du visuel à l'expédition",
+    "supplyBody": "Nous avons débuté dans l'impression numérique pour devenir un fabricant complet sur mesure. Cela signifie que l'impression, la confection et la finition sont gérées ensemble, sans passer d'un fournisseur à l'autre.",
+    "capabilities": [
+      { "title": "Impression numérique", "text": "Impression personnalisée intégrale, correspondance Pantone et maquette numérique à valider avant tout tirage d'essai." },
+      { "title": "Échantillonnage et outillage", "text": "Tirage d'essai imprimé ou prototype complet, avec modifications confirmées par écrit avant le lancement de la production en série." },
+      { "title": "Contrôle qualité", "text": "Contrôles en cours de production et inspection avant expédition selon une fiche technique convenue, avec audits tiers sur demande." }
+    ],
+    "programmesTitle": "Conçus pour des programmes, et non pour des commandes ponctuelles",
+    "programmesBody": "Tous les points ci-dessous sont convenus par écrit avant la production, afin que les commandes récurrentes restent cohérentes.",
+    "programmes": [
+      { "title": "OEM et ODM", "text": "Votre design et votre cahier des charges, ou les nôtres adaptés à votre marché." },
+      { "title": "Marque de distributeur", "text": "Étiquettes, emballages et présentation prêts pour la vente au détail personnalisés." },
+      { "title": "Prêt pour l'export", "text": "Conditions EXW, FOB et CIF, données de colisage et documents d'expédition." }
+    ],
+    "rangeTitle": "Parapluies compacts et pliants",
+    "rangeBody": "Notre gamme principale se compose de parapluies de pluie portables — modèles trois plis, cinq plis, droits, golf et enfants. Quelques parasols de plage sont disponibles pour les programmes hôteliers et promotionnels. Chaque article peut être adapté en taille, armature, tissu et impression.",
+    "ctaTitle": "Faites-nous part de vos besoins",
+    "ctaBody": "Communiquez-nous un design, une quantité et votre marché — nous vous répondons par un devis écrit et les prochaines étapes."
+  },
+  "products": {
+    "eyebrow": "Gamme de produits",
+    "h1": "Parapluies compacts et pliants",
+    "intro": "{primary} modèles de parapluies portables principaux, auxquels s'ajoutent {secondary} parasols de plage. Chacun peut être adapté en taille, armature, tissu et impression. Chaque produit de ce site fait l'objet d'une demande de renseignements — il n'y a pas de commande en ligne.",
+    "coreTitle": "Gamme principale · parapluies de pluie portables",
+    "beachTitle": "Parasols de plage et ombrelles",
+    "beachIntro": "Une petite gamme complémentaire pour les programmes hôteliers et promotionnels.",
+    "seoTitle": "Parapluies compacts et pliants | Fournisseur OEM de parapluies sur mesure",
+    "seoDesc": "Parapluies de pluie compacts, pliants, droits, golf et enfants sur mesure pour programmes B2B, ainsi qu'une petite gamme de parasols de plage. Armatures, tissu et impression personnalisés sur demande."
+  },
+  "product": {
+    "builtTitle": "Fabriqué selon votre cahier des charges",
+    "builtBody": "Le matériau de l'armature, la tige, le manche, le nombre de panneaux, les finitions et l'impression personnalisée intégrale peuvent être définis pour votre marché. Transmettez-nous vos fichiers vectoriels et vos références Pantone ; nous vous retournons une maquette numérique à valider avant de réaliser un tirage d'essai imprimé.",
+    "specTitle": "Spécifications et conditions commerciales",
+    "table": [
+      ["MOQ", "La quantité minimale est confirmée par écrit avec votre devis."],
+      ["Délai de production", "Le délai est confirmé après validation des visuels et du cahier des charges."],
+      ["Conditions commerciales", "EXW, FOB ou CIF, selon accord."],
+      ["Fiche technique", "Disponible sur demande pour ce produit."]
+    ],
+    "disclaimer": "Les dimensions, la quantité minimale de commande et le délai au niveau du produit ne sont pas publiés comme des valeurs fixes — ils sont confirmés par écrit avec votre devis ; aucun élément ici ne constitue donc un engagement public.",
+    "seoSuffix": "Fournisseur OEM de parapluies sur mesure",
+    "seoDesc": "Options d'impression, d'armature, de taille et de tissu personnalisées pour les programmes B2B. Demandez un devis et une fiche technique pour ce produit."
+  },
+  "form": {
+    "title": "Envoyez-nous votre demande",
+    "intro": "Nouveaux projets, commandes récurrentes, demandes d'échantillons et questions sur les spécifications. Les champs marqués d'un * sont obligatoires.",
+    "fields": {
+      "full_name": "Nom complet",
+      "company": "Société",
+      "email": "E-mail professionnel",
+      "country": "Pays / région",
+      "product_interest": "Produit recherché",
+      "estimated_quantity": "Quantité estimée",
+      "target_market": "Marché cible",
+      "annual_volume": "Volume d'achat annuel",
+      "preferred_incoterm": "Incoterm souhaité",
+      "message": "Vos besoins"
+    },
+    "placeholders": {
+      "full_name": "Votre nom",
+      "company": "Nom de la société",
+      "email": "name@company.com",
+      "country": "Votre lieu d'établissement",
+      "estimated_quantity": "ex. 500 pcs",
+      "target_market": "ex. UE, US, groupes hôteliers",
+      "annual_volume": "Facultatif",
+      "message": "Taille, armature, tissu, visuel, emplacement d'impression, prix cible, fenêtre de livraison..."
+    },
+    "selectPlaceholder": "Sélectionnez un type de produit",
+    "notSure": "Pas encore déterminé",
+    "productOptions": [
+      "Parapluie compact / pliant",
+      "Parapluie trois plis",
+      "Parapluie cinq plis / ultra-compact",
+      "Parapluie droit / canne",
+      "Parapluie golf",
+      "Parapluie enfant",
+      "Parapluie promotionnel / imprimé",
+      "Parasol de plage / ombrelle",
+      "Pas encore déterminé"
+    ],
+    "hints": {
+      "quantity": "Une estimation suffit à ce stade.",
+      "message": "Vos visuels et votre cahier des charges restent confidentiels et sont utilisés uniquement pour votre devis."
+    },
+    "honeypot": "Laissez ce champ vide",
+    "submit": "Demander un devis",
+    "noteBefore": "Nous utilisons ces informations uniquement pour préparer votre devis. Nous répondons normalement sous un jour ouvré. Vous pouvez également écrire à",
+    "noteAfter": "directement."
+  },
+  "formJs": {
+    "sending": "Envoi de votre demande...",
+    "sendingShort": "Envoi...",
+    "submit": "Demander un devis",
+    "received": "Merci. Votre demande a bien été reçue.",
+    "couldNotSend": "Nous n'avons pas pu envoyer votre demande. Veuillez réessayer.",
+    "couldNotSendShort": "Nous n'avons pas pu envoyer votre demande.",
+    "useOneClick": "Utilisez le lien en un clic ci-dessous — les informations que vous avez saisies sont déjà préremplies :",
+    "oneClick": "En un clic : envoyer vos informations saisies à {email}",
+    "pageLabel": "Page :",
+    "sentLabel": "Envoyé :",
+    "subject": "Demande B2B parapluies - {name} ({company})"
+  },
+  "notFound": {
+    "title": "Page introuvable | Fantastic Umbrella",
+    "h1": "Page introuvable",
+    "body": "Cette adresse ne fait plus partie de notre catalogue. Nous avons migré le site vers une nouvelle plateforme en conservant les principales pages produits et de contact.",
+    "home": "Accueil",
+    "products": "Tous les produits",
+    "contact": "Envoyer une demande",
+    "tagline": "Fantastic Umbrella · parapluies compacts et pliants sur mesure"
+  },
+  "seo": {
+    "home": { "title": "Fabricant de parapluies compacts sur mesure | Fantastic Umbrella", "description": "Fabricant OEM/ODM à Guangzhou de parapluies compacts, pliants et droits. Visuels, échantillonnage, production et contrôle réunis en une chaîne d'approvisionnement pour acheteurs B2B." },
+    "contact": { "title": "Nous contacter | Fournisseur OEM de parapluies de pluie sur mesure", "description": "Envoyez une demande pour des parapluies compacts, pliants ou droits sur mesure. Communiquez votre cahier des charges et votre quantité pour recevoir un devis écrit." },
+    "services": { "title": "Services OEM et ODM | Fabricant de parapluies sur mesure", "description": "Impression numérique, échantillonnage, marque de distributeur et contrôle qualité en une chaîne unique. Découvrez notre savoir-faire OEM/ODM pour parapluies portables sur mesure." },
+    "faqs": { "title": "FAQ B2B | Commandes OEM de parapluies sur mesure", "description": "Réponses sur les MOQ, l'échantillonnage, les visuels, les conditions de paiement, les délais et les certifications pour vos commandes de parapluies sur mesure." },
+    "shipping-delivery": { "title": "Expédition et livraison | Commandes OEM de parapluies sur mesure", "description": "Échantillons par express en 3-7 jours, commandes en volume par mer ou par air. Conditions FOB, EXW et CIF avec données de colisage confirmées par écrit." },
+    "quality-claims": { "title": "Qualité et réclamations | Processus de contrôle qualité des parapluies", "description": "Inspection AQL 2.5, audits tiers et procédure de réclamation claire. Découvrez notre gestion de la qualité par rapport à un échantillon approuvé." }
+  }
+}

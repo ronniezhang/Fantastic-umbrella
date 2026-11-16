@@ -1,23 +1,43 @@
 ---
-const path = Astro.url.pathname;
+import { DEFAULT_LOCALE, LOCALES, LOCALE_NAMES, localePath } from '../i18n/config.mjs';
+import { ui } from '../i18n/dict.mjs';
+
+const { locale = DEFAULT_LOCALE, path = '/' } = Astro.props;
+const t = ui(locale);
+const L = (p) => localePath(locale, p);
+
 const links = [
-  { href: '/products/', label: 'Products' },
-  { href: '/services/', label: 'OEM & ODM Services' },
-  { href: '/shipping-delivery/', label: 'Shipping & Delivery' },
-  { href: '/quality-claims/', label: 'Quality & Claims' },
-  { href: '/faqs/', label: 'B2B FAQ' },
+  { href: '/products/', label: t.nav.products },
+  { href: '/services/', label: t.nav.services },
+  { href: '/shipping-delivery/', label: t.nav.shipping },
+  { href: '/quality-claims/', label: t.nav.quality },
+  { href: '/faqs/', label: t.nav.faq },
 ];
+// `path` is locale-neutral, so active-state checks keep working under /es/ etc.
 const active = (href) => path === href || path.startsWith(href);
 ---
 <header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="/">Fantastic<span>Umbrella</span></a>
-    <nav class="site-nav" aria-label="Main navigation">
+  <div class="wrap header-inner">
+    <a class="brand" href={L('/')}>Fantastic<span>Umbrella</span></a>
+    <nav class="site-nav" aria-label={t.nav.mainNav}>
       {links.map((l) => (
-        <a href={l.href} aria-current={active(l.href) ? 'page' : undefined}>{l.label}</a>
+        <a href={L(l.href)} aria-current={active(l.href) ? 'page' : undefined}>{l.label}</a>
       ))}
-      <a href="/contact/" aria-current={active('/contact/') ? 'page' : undefined}>Contact</a>
+      <a href={L('/contact/')} aria-current={active('/contact/') ? 'page' : undefined}>{t.nav.contact}</a>
     </nav>
-    <a class="btn header-cta" href="/contact/#enquiry-form">Request a Quote</a>
+    <div class="lang-switch" role="group" aria-label={t.nav.language}>
+      {LOCALES.map((l) => (
+        <a
+          href={localePath(l, path)}
+          lang={l}
+          hreflang={l}
+          class={l === locale ? 'lang-link is-active' : 'lang-link'}
+          aria-current={l === locale ? 'page' : undefined}
+          rel="alternate"
+          title={LOCALE_NAMES[l]}
+        >{l.toUpperCase()}</a>
+      ))}
+    </div>
+    <a class="btn header-cta" href={L('/contact/#enquiry-form')}>{t.nav.quote}</a>
   </div>
 </header>

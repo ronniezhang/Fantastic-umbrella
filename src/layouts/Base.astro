@@ -2,13 +2,23 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import seo from '../data/seo.json';
+import { DEFAULT_LOCALE, localePath, alternates } from '../i18n/config.mjs';
+import { ui } from '../i18n/dict.mjs';
 
-const { title, description, seoKey = 'home', path } = Astro.props;
-const entry = seo[seoKey] || {};
-const pageTitle = title || entry.title || 'Fantastic Umbrella';
-const pageDesc = description || entry.description || '';
-const canonical = new URL(path || Astro.url.pathname, Astro.site).href;
+const {
+  title,
+  description,
+  seoKey = 'home',
+  path = '/',
+  locale = DEFAULT_LOCALE,
+} = Astro.props;
+
+const t = ui(locale);
+const canonical = new URL(localePath(locale, path), Astro.site).href;
+const pageTitle = title || t.seo?.[seoKey]?.title || t.seo.home.title;
+const pageDesc = description || t.seo?.[seoKey]?.description || t.seo.home.description;
+const alts = alternates(path);
+const ogLocale = { en: 'en_US', es: 'es_ES', fr: 'fr_FR', de: 'de_DE' }[locale] || 'en_US';
 
 // Entity disambiguation: a same-sounding 1968 Rhode Island retail attraction
 // (fantasticumbrellafactory.com) dominates the bare brand phrase in search.
@@ -20,10 +30,8 @@ const schema = {
   name: 'Guangzhou Fantastic Umbrella Co., Ltd.',
   alternateName: 'Fantastic Umbrella',
   url: 'https://fantasticumbrella.com/',
-  description:
-    'OEM and ODM manufacturer of compact, folding and straight rain umbrellas for B2B buyers.',
-  disambiguatingDescription:
-    'A Guangzhou, China based manufacturer of handheld rain umbrellas serving wholesale and promotional programmes.',
+  description: t.org.description,
+  disambiguatingDescription: t.org.disambiguating,
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Guangzhou',
@@ -33,15 +41,18 @@ const schema = {
 };
 ---
 <!doctype html>
-<html lang="en">
+<html lang={t.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
     <link rel="canonical" href={canonical} />
+    {alts.map((a) => <link rel="alternate" hreflang={a.locale} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={alts[0].href} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDesc} />
     <meta name="generator" content="Astro" />
@@ -49,17 +60,14 @@ const schema = {
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
   </head>
   <body>
-    <Header />
+    <Header locale={locale} path={path} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer locale={locale} />
     <!-- Migration cleanup (temporary, remove after 2026-12-31):
          retire any Service Worker / Cache Storage left by the old WordPress
-         site. Cache Storage is origin-scoped, so this only affects this domain.
-         It runs as soon as a visitor receives any real page from the new site,
-         which stops the stale worker from serving cached WP pages on later
-         refreshes. -->
+         site. Cache Storage is origin-scoped, so this only affects this domain. -->
     <script is:inline>
       (function () {
         if (window.navigator && 'serviceWorker' in navigator) {

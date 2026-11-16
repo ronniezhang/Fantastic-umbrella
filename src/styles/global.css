@@ -33,6 +33,26 @@ img { max-width: 100%; height: auto; }
 .site-nav a[aria-current="page"] { color: var(--accent); }
 .header-cta { font-size: 14px; }
 
+/* Language switcher (EN unprefixed, ES/FR/DE prefixed) */
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 3px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--wash);
+}
+.lang-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 32px; padding: 4px 7px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; letter-spacing: .02em;
+  color: var(--ink-soft); text-decoration: none;
+}
+.lang-link:hover { color: var(--accent); }
+.lang-link.is-active { background: var(--accent); color: #fff; }
+.lang-link.is-active:hover { color: #fff; }
+@media (max-width: 720px) {
+  .lang-switch { order: 3; }
+  .header-cta { order: 2; }
+}
+
 .btn {
   display: inline-block; padding: 11px 22px; border-radius: var(--radius);
   background: var(--accent); color: #fff !important; font-weight: 600; font-size: 15px;

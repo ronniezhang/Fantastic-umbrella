@@ -7,6 +7,7 @@
     <title>Page not found | Fantastic Umbrella</title>
     <style>
       :root { color-scheme: light; }
+      [hidden] { display: none !important; }
       body { margin: 0; min-height: 100vh; display: grid; place-items: center;
              font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
              color: #1b2430; background: #f7f9fb; }
@@ -23,13 +24,64 @@
   </head>
   <body>
     <main>
-      <h1>Page not found</h1>
-      <p>That address is no longer part of our catalogue. We have moved the site
-         to a new platform and kept the main product and enquiry pages.</p>
-      <a class="primary" href="/">Home</a>
-      <a href="/products/">All products</a>
-      <a href="/contact/">Send an enquiry</a>
-      <small>Fantastic Umbrella &middot; custom compact &amp; folding umbrellas</small>
+      <div class="i18n" data-locale="en">
+        <h1>Page not found</h1>
+        <p>That address is no longer part of our catalogue. We have moved the site to a new platform and kept the main product and enquiry pages.</p>
+        <a class="primary" data-path="/">Home</a>
+        <a data-path="/products/">All products</a>
+        <a data-path="/contact/">Send an enquiry</a>
+        <small>Fantastic Umbrella &middot; custom compact &amp; folding umbrellas</small>
+      </div>
+      <div class="i18n" data-locale="es" hidden>
+        <h1>Página no encontrada</h1>
+        <p>Esa dirección ya no forma parte de nuestro catálogo. Hemos migrado el sitio a una nueva plataforma y conservamos las páginas principales de productos y de contacto.</p>
+        <a class="primary" data-path="/">Inicio</a>
+        <a data-path="/products/">Todos los productos</a>
+        <a data-path="/contact/">Enviar una consulta</a>
+        <small>Fantastic Umbrella &middot; paraguas compactos y plegables a medida</small>
+      </div>
+      <div class="i18n" data-locale="fr" hidden>
+        <h1>Page introuvable</h1>
+        <p>Cette adresse ne fait plus partie de notre catalogue. Nous avons migré le site vers une nouvelle plateforme et conservé les pages principales de produits et de contact.</p>
+        <a class="primary" data-path="/">Accueil</a>
+        <a data-path="/products/">Tous les produits</a>
+        <a data-path="/contact/">Envoyer une demande</a>
+        <small>Fantastic Umbrella &middot; parapluies compacts et pliants sur mesure</small>
+      </div>
+      <div class="i18n" data-locale="de" hidden>
+        <h1>Seite nicht gefunden</h1>
+        <p>Diese Adresse gehört nicht mehr zu unserem Katalog. Wir haben die Website auf eine neue Plattform umgestellt und die wichtigsten Produkt- und Kontaktseiten beibehalten.</p>
+        <a class="primary" data-path="/">Startseite</a>
+        <a data-path="/products/">Alle Produkte</a>
+        <a data-path="/contact/">Anfrage senden</a>
+        <small>Fantastic Umbrella &middot; maßgefertigte Taschen- und Faltschirme</small>
+      </div>
     </main>
+    <script>
+      (function () {
+        var match = location.pathname.match(/^\/(es|fr|de)(\/|$)/);
+        var locale = match ? match[1] : 'en';
+        var prefix = match ? '/' + locale : '';
+        var titles = {
+          en: 'Page not found | Fantastic Umbrella',
+          es: 'Página no encontrada | Fantastic Umbrella',
+          fr: 'Page introuvable | Fantastic Umbrella',
+          de: 'Seite nicht gefunden | Fantastic Umbrella'
+        };
+        document.documentElement.lang = locale;
+        document.title = titles[locale];
+        var blocks = document.querySelectorAll('.i18n');
+        for (var i = 0; i < blocks.length; i++) {
+          var visible = blocks[i].getAttribute('data-locale') === locale;
+          blocks[i].hidden = !visible;
+          if (visible) {
+            var links = blocks[i].querySelectorAll('a[data-path]');
+            for (var j = 0; j < links.length; j++) {
+              links[j].href = prefix + links[j].getAttribute('data-path');
+            }
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

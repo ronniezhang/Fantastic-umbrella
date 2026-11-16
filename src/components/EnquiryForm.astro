@@ -2,101 +2,110 @@
 /**
  * Astro-native replacement for the Fluent Forms shortcode.
  * Field names match the live WordPress form exactly, so notification
- * templates and any downstream CRM mapping stay unchanged:
- * full_name / company / email / country / product_interest /
- * estimated_quantity / message / target_market / annual_volume /
- * preferred_incoterm
+ * templates and any downstream CRM mapping stay unchanged.
  *
- * The form POSTs to a same-origin Pages Function at /api/enquiry.
- * The endpoint (functions/api/enquiry.ts) is configured purely through
- * Pages environment variables - no secret is ever shipped to the browser.
+ * The form POSTs to a same-origin Pages Function at /api/enquiry (absolute
+ * path on purpose - it must NOT be prefixed with a locale).
+ * All visible copy comes from the locale dictionary; option VALUES stay
+ * English so the notification email and any CRM mapping remain stable.
  */
-const products = [
-  'Compact / folding umbrella',
-  'Three-fold umbrella',
-  'Five-fold / ultra-compact umbrella',
-  'Straight / stick umbrella',
-  'Golf umbrella',
-  'Kids umbrella',
-  'Promotional / printed umbrella',
-  'Beach umbrella / parasol',
-  'Not sure yet',
-];
+import { DEFAULT_LOCALE } from '../i18n/config.mjs';
+import { ui } from '../i18n/dict.mjs';
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const t = ui(locale);
+const englishOptions = ui('en').form.productOptions;
+const labels = t.form.productOptions;
+
 const endpoint = import.meta.env.PUBLIC_ENQUIRY_ENDPOINT || '/api/enquiry';
 const fallbackEmail = 'sales@fantasticumbrella.com';
+
+// Passed to the client script through a data attribute. Using define:vars
+// would re-create the script per page; this keeps a single bundled script.
+const clientI18n = {
+  fieldLabels: t.form.fields,
+  pageLabel: t.formJs.pageLabel,
+  sentLabel: t.formJs.sentLabel,
+  subject: t.formJs.subject,
+  oneClick: t.formJs.oneClick,
+  sending: t.formJs.sending,
+  sendingShort: t.formJs.sendingShort,
+  submit: t.formJs.submit,
+  received: t.formJs.received,
+  couldNotSend: t.formJs.couldNotSend,
+  couldNotSendShort: t.formJs.couldNotSendShort,
+  useOneClick: t.formJs.useOneClick,
+};
 ---
 <section class="form-shell" id="enquiry-form">
-  <h2>Send us your enquiry</h2>
-  <p style="margin:0;color:var(--ink-soft);font-size:14px">
-    New projects, repeat orders, sampling requests and specification questions.
-    Fields marked <span class="req">*</span> are required.
-  </p>
-  <form id="b2b-enquiry" data-endpoint={endpoint} data-fallback={fallbackEmail}>
+  <h2>{t.form.title}</h2>
+  <p style="margin:0;color:var(--ink-soft);font-size:14px">{t.form.intro}</p>
+  <form id="b2b-enquiry" data-endpoint={endpoint} data-fallback={fallbackEmail} data-i18n={JSON.stringify(clientI18n)}>
     <div class="form-grid">
       <div class="field">
-        <label for="full_name">Full name <span class="req">*</span></label>
-        <input id="full_name" name="full_name" type="text" required maxlength="500" placeholder="Your name" />
+        <label for="full_name">{t.form.fields.full_name} <span class="req">*</span></label>
+        <input id="full_name" name="full_name" type="text" required maxlength="500" placeholder={t.form.placeholders.full_name} />
       </div>
       <div class="field">
-        <label for="company">Company <span class="req">*</span></label>
-        <input id="company" name="company" type="text" required maxlength="500" placeholder="Company name" />
+        <label for="company">{t.form.fields.company} <span class="req">*</span></label>
+        <input id="company" name="company" type="text" required maxlength="500" placeholder={t.form.placeholders.company} />
       </div>
       <div class="field">
-        <label for="email">Business email <span class="req">*</span></label>
-        <input id="email" name="email" type="email" required maxlength="200" placeholder="name@company.com" />
+        <label for="email">{t.form.fields.email} <span class="req">*</span></label>
+        <input id="email" name="email" type="email" required maxlength="200" placeholder={t.form.placeholders.email} />
       </div>
       <div class="field">
-        <label for="country">Country / region <span class="req">*</span></label>
-        <input id="country" name="country" type="text" required maxlength="500" placeholder="Where you are based" />
+        <label for="country">{t.form.fields.country} <span class="req">*</span></label>
+        <input id="country" name="country" type="text" required maxlength="500" placeholder={t.form.placeholders.country} />
       </div>
       <div class="field">
-        <label for="product_interest">Product interest <span class="req">*</span></label>
+        <label for="product_interest">{t.form.fields.product_interest} <span class="req">*</span></label>
         <select id="product_interest" name="product_interest" required>
-          <option value="">Select a product type</option>
-          {products.map((p) => <option value={p}>{p}</option>)}
+          <option value="">{t.form.selectPlaceholder}</option>
+          {englishOptions.map((value, i) => <option value={value}>{labels[i] || value}</option>)}
         </select>
       </div>
       <div class="field">
-        <label for="estimated_quantity">Estimated quantity <span class="req">*</span></label>
-        <input id="estimated_quantity" name="estimated_quantity" type="text" required maxlength="500" placeholder="e.g. 500 pcs" />
-        <span class="hint">An estimate is enough at this stage.</span>
+        <label for="estimated_quantity">{t.form.fields.estimated_quantity} <span class="req">*</span></label>
+        <input id="estimated_quantity" name="estimated_quantity" type="text" required maxlength="500" placeholder={t.form.placeholders.estimated_quantity} />
+        <span class="hint">{t.form.hints.quantity}</span>
       </div>
       <div class="field">
-        <label for="target_market">Target market</label>
-        <input id="target_market" name="target_market" type="text" maxlength="500" placeholder="e.g. EU, US, resort groups" />
+        <label for="target_market">{t.form.fields.target_market}</label>
+        <input id="target_market" name="target_market" type="text" maxlength="500" placeholder={t.form.placeholders.target_market} />
       </div>
       <div class="field">
-        <label for="annual_volume">Annual purchase volume</label>
-        <input id="annual_volume" name="annual_volume" type="text" maxlength="500" placeholder="Optional" />
+        <label for="annual_volume">{t.form.fields.annual_volume}</label>
+        <input id="annual_volume" name="annual_volume" type="text" maxlength="500" placeholder={t.form.placeholders.annual_volume} />
       </div>
       <div class="field">
-        <label for="preferred_incoterm">Preferred trade term</label>
+        <label for="preferred_incoterm">{t.form.fields.preferred_incoterm}</label>
         <select id="preferred_incoterm" name="preferred_incoterm">
-          <option value="">Not sure yet</option>
+          <option value="">{t.form.notSure}</option>
           <option>EXW</option><option>FOB</option><option>CIF</option><option>DDP</option>
         </select>
       </div>
       <div class="field field-full">
-        <label for="message">Your requirements <span class="req">*</span></label>
-        <textarea id="message" name="message" required maxlength="5000" placeholder="Size, frame, fabric, artwork, print placement, target price, delivery window..."></textarea>
-        <span class="hint">Your artwork and specification stay confidential and are used only for your quotation.</span>
+        <label for="message">{t.form.fields.message} <span class="req">*</span></label>
+        <textarea id="message" name="message" required maxlength="5000" placeholder={t.form.placeholders.message}></textarea>
+        <span class="hint">{t.form.hints.message}</span>
       </div>
     </div>
 
     <input type="hidden" name="_page" id="_page" value="" />
     <input type="hidden" name="_form_time" id="_form_time" value="" />
+    <input type="hidden" name="_locale" value={locale} />
     <div class="hp" aria-hidden="true">
-      <label for="_gotcha">Leave this field empty</label>
+      <label for="_gotcha">{t.form.honeypot}</label>
       <input id="_gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
     <p style="margin-top:20px">
-      <button class="btn" type="submit">Request a Quote</button>
+      <button class="btn" type="submit">{t.form.submit}</button>
     </p>
     <div id="form-status" class="form-status" hidden role="status" aria-live="polite"></div>
     <p class="form-note">
-      We use these details only to prepare your quotation. We normally reply within one business day.
-      You can also email <a href={`mailto:${fallbackEmail}`}>{fallbackEmail}</a> directly.
+      {t.form.noteBefore} <a href={`mailto:${fallbackEmail}`}>{fallbackEmail}</a> {t.form.noteAfter}
     </p>
   </form>
 </section>
@@ -106,31 +115,24 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
   const status = document.getElementById('form-status');
   const pageInput = document.getElementById('_page');
   const timeInput = document.getElementById('_form_time');
+  const i18n = JSON.parse(form?.dataset.i18n || '{}');
+  const tmpl = (s, vars) => String(s || '').replace(/\{(\w+)\}/g, (m, k) =>
+    Object.prototype.hasOwnProperty.call(vars, k) ? String(vars[k]) : m);
 
   if (pageInput) pageInput.value = window.location.href;
   const markOpened = () => { if (timeInput) timeInput.value = String(Date.now()); };
   markOpened();
 
-  const fieldLabels = {
-    full_name: 'Full name',
-    company: 'Company',
-    email: 'Business email',
-    country: 'Country / region',
-    product_interest: 'Product interest',
-    estimated_quantity: 'Estimated quantity',
-    target_market: 'Target market',
-    annual_volume: 'Annual purchase volume',
-    preferred_incoterm: 'Preferred trade term',
-    message: 'Your requirements',
-  };
-
   // Never lose a lead: pre-fill everything the visitor already typed into a
   // ready-to-send email. mailto bodies are capped by mail clients, so truncate.
   const fallbackMailto = (fallback, payload) => {
-    const rows = Object.entries(fieldLabels)
+    const rows = Object.entries(i18n.fieldLabels || {})
       .map(([key, label]) => `${label}: ${(payload && payload[key]) || '-'}`);
-    rows.push('', `Page: ${window.location.href}`, `Sent: ${new Date().toISOString()}`);
-    const subject = `B2B umbrella enquiry - ${(payload && payload.full_name) || ''} (${(payload && payload.company) || ''})`;
+    rows.push('', `${i18n.pageLabel || 'Page:'} ${window.location.href}`, `${i18n.sentLabel || 'Sent:'} ${new Date().toISOString()}`);
+    const subject = tmpl(i18n.subject || 'B2B umbrella enquiry - {name} ({company})', {
+      name: (payload && payload.full_name) || '',
+      company: (payload && payload.company) || '',
+    });
     const body = rows.join('\n').slice(0, 1800);
     return `mailto:${fallback}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
@@ -145,7 +147,7 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
       const link = document.createElement('a');
       link.className = 'form-fallback-link';
       link.href = fallbackMailto(fallback, payload);
-      link.textContent = `One-click: email your typed details to ${fallback}`;
+      link.textContent = tmpl(i18n.oneClick || 'One-click: email your typed details to {email}', { email: fallback });
       status.append(link);
     }
   };
@@ -159,8 +161,8 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
     const payload = Object.fromEntries(new FormData(form).entries());
     payload._page = window.location.href;
 
-    show('pending', 'Sending your enquiry...');
-    if (button) { button.disabled = true; button.textContent = 'Sending...'; }
+    show('pending', i18n.sending || 'Sending your enquiry...');
+    if (button) { button.disabled = true; button.textContent = i18n.sendingShort || 'Sending...'; }
 
     try {
       const response = await fetch(endpoint, {
@@ -170,17 +172,17 @@ const fallbackEmail = 'sales@fantasticumbrella.com';
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
-        throw new Error(result.message || 'We could not send your enquiry. Please try again.');
+        throw new Error(result.message || i18n.couldNotSend || 'We could not send your enquiry. Please try again.');
       }
-      show('ok', result.message || 'Thank you. Your enquiry has been received.');
+      show('ok', result.message || i18n.received || 'Thank you. Your enquiry has been received.');
       form.reset();
       if (pageInput) pageInput.value = window.location.href;
       markOpened();
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'We could not send your enquiry.';
-      show('err', `${message} Use the one-click link below - your typed details are already filled in:`, fallback, payload);
+      const message = error instanceof Error ? error.message : (i18n.couldNotSendShort || 'We could not send your enquiry.');
+      show('err', `${message} ${i18n.useOneClick || 'Use the one-click link below - your typed details are already filled in:'}`, fallback, payload);
     } finally {
-      if (button) { button.disabled = false; button.textContent = 'Request a Quote'; }
+      if (button) { button.disabled = false; button.textContent = i18n.submit || 'Request a Quote'; }
     }
   });
 </script>

@@ -49,6 +49,21 @@ jobs:
       # Never overwrite dist/robots.txt here - that would de-index the
       # production domain once the main domain points at this project.
 
+      - name: Verify multilingual build output
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          for l in es fr de; do
+            test -f "dist/$l/index.html" || { echo "::error::missing /$l/ home"; exit 1; }
+            test -f "dist/$l/contact/index.html" || { echo "::error::missing /$l/contact/"; exit 1; }
+            test -f "dist/$l/products/index.html" || { echo "::error::missing /$l/products/"; exit 1; }
+            grep -q "lang=\"$l\"" "dist/$l/index.html" || { echo "::error::wrong html lang on /$l/"; exit 1; }
+            grep -q 'hreflang="es"' "dist/$l/index.html" || { echo "::error::missing reciprocal hreflang on /$l/"; exit 1; }
+            grep -q 'hreflang="x-default"' "dist/$l/index.html" || { echo "::error::missing x-default on /$l/"; exit 1; }
+          done
+          urls=$(grep -c '<loc>' dist/sitemap.xml || true)
+          test "$urls" -eq 76 || { echo "::error::sitemap has $urls URLs, expected 76"; exit 1; }
+          echo "Multilingual build OK: 76 pages, 76 sitemap URLs"
+
       - name: Sync Pages environment variables
         if: steps.guard.outputs.ready == 'true'
         env:
@@ -119,3 +134,27 @@ jobs:
             echo "::error::Preview hostname is not blocked from indexing."
             exit 1
           fi
+
+      - name: Verify localized pages are live
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          for l in es fr de; do
+            ok=0
+            for attempt in $(seq 1 12); do
+              body=$(curl -s -H 'Cache-Control: no-cache' --max-time 20 \
+                "https://fantasticumbrella.com/$l/?cb=$GITHUB_RUN_ID") || body=''
+              if printf '%s' "$body" | grep -q "lang=\"$l\"" \
+                 && printf '%s' "$body" | grep -q 'hreflang="x-default"'; then
+                ok=1; break
+              fi
+              echo "Attempt $attempt: /$l/ not switched yet"
+              sleep 5
+            done
+            test "$ok" -eq 1 || { echo "::error::/$l/ never returned the localized page"; exit 1; }
+            echo "  /$l/ OK"
+          done
+          sitemap=$(curl -s -H 'Cache-Control: no-cache' --max-time 20 \
+            https://fantasticumbrella.com/sitemap.xml)
+          count=$(printf '%s' "$sitemap" | grep -c '<loc>' || true)
+          test "$count" -eq 76 || { echo "::error::live sitemap has $count URLs, expected 76"; exit 1; }
+          echo "Live multilingual sitemap OK: $count URLs"

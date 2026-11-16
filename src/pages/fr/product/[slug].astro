@@ -1,0 +1,7 @@
+---
+import ProductDetail from '../../../components/pages/ProductDetail.astro';
+import {productPaths} from '../../../i18n/routes.mjs';
+export function getStaticPaths() { return productPaths(); }
+const { slug } = Astro.props;
+---
+<ProductDetail locale="fr" slug={slug} />

@@ -1,0 +1,169 @@
+{
+  "lang": "es",
+  "localeName": "Español",
+  "org": {
+    "description": "Fabricante OEM y ODM de paraguas de lluvia compactos, plegables y rectos para compradores B2B.",
+    "disambiguating": "Fabricante de paraguas de lluvia de mano con sede en Guangzhou (China) que atiende programas mayoristas y promocionales."
+  },
+  "nav": {
+    "products": "Productos",
+    "services": "Servicios OEM y ODM",
+    "shipping": "Envío y entrega",
+    "quality": "Calidad y reclamaciones",
+    "faq": "Preguntas frecuentes B2B",
+    "contact": "Contacto",
+    "quote": "Solicitar presupuesto",
+    "mainNav": "Navegación principal",
+    "language": "Idioma",
+    "languagePicker": "Seleccionar idioma"
+  },
+  "footer": {
+    "brandDesc": "Paraguas compactos y plegables a medida para programas B2B. Guangzhou, Guangdong, China.",
+    "capabilities": "Capacidades",
+    "productRange": "Gama de productos",
+    "support": "Asistencia",
+    "contactUs": "Contacto",
+    "getInTouch": "Póngase en contacto",
+    "whatsapp": "WhatsApp",
+    "copyright": "Todos los derechos reservados.",
+    "platformNote": "Sitio de fabricación B2B · Guangzhou, China"
+  },
+  "common": {
+    "requestQuote": "Solicitar presupuesto",
+    "exploreCapabilities": "Descubra nuestras capacidades",
+    "readFaq": "Consulte las preguntas frecuentes B2B",
+    "viewEnquire": "Ver y consultar →",
+    "allProducts": "Todos los productos",
+    "seeAllProducts": "Ver todos los {count} productos",
+    "imagePending": "Imagen pendiente",
+    "customOnRequest": "Impresión y especificaciones a medida bajo consulta.",
+    "backToProducts": "← Todos los productos",
+    "greenmarkHome": "¿Busca sillas de playa, cabañas, toldos de sombra o estructuras de sombra para patio? Esas líneas de producto las gestiona nuestro sitio hermano GreenMark.",
+    "greenmarkProducts": "Las sillas de playa, las cabañas, los toldos de sombra, los cenadores y las estructuras de sombra para patio no forman parte de la gama de este sitio: las gestiona nuestro sitio hermano GreenMark."
+  },
+  "home": {
+    "eyebrow": "Fabricación B2B · Guangzhou, China",
+    "h1": "Paraguas compactos y plegables a medida, fabricados según sus especificaciones.",
+    "intro": "Suministro OEM y ODM de paraguas de lluvia de mano para distribuidores, marcas minoristas y programas promocionales. Junto a la gama principal ofrecemos una pequeña selección de sombrillas de playa. Gestionamos el diseño, el muestreo, la producción, la inspección y la documentación de exportación en una sola cadena de suministro, empezando por un presupuesto por escrito y no por una compra en línea.",
+    "note": "El MOQ, los plazos de entrega y los estándares de inspección son orientativos y se confirman por escrito en el presupuesto y la hoja de especificaciones.",
+    "supplyTitle": "Una sola cadena de suministro, del diseño al envío",
+    "supplyBody": "Comenzamos con la impresión digital y evolucionamos hacia la fabricación integral a medida. Esto significa que la impresión, la estructura y los acabados se gestionan de forma conjunta, en lugar de repartirse entre varios proveedores.",
+    "capabilities": [
+      { "title": "Impresión digital", "text": "Impresión integral personalizada, ajuste de color Pantone y una maqueta digital para su aprobación antes de producir cualquier prueba de impresión." },
+      { "title": "Muestreo y utillaje", "text": "Prueba de impresión o prototipo completo, con las modificaciones confirmadas por escrito antes de iniciar la producción en serie." },
+      { "title": "Control de calidad", "text": "Controles en línea e inspección previa al embarque conforme a una hoja de especificaciones acordada, con auditorías de terceros bajo consulta." }
+    ],
+    "programmesTitle": "Diseñado para programas continuados, no para pedidos aislados",
+    "programmesBody": "Todo lo que sigue se acuerda por escrito antes de la producción, para que los pedidos recurrentes se mantengan consistentes.",
+    "programmes": [
+      { "title": "OEM y ODM", "text": "Su diseño y sus especificaciones, o los nuestros adaptados a su mercado." },
+      { "title": "Marca propia", "text": "Etiquetas, embalaje y presentación listos para la venta minorista, personalizados." },
+      { "title": "Listo para exportar", "text": "Condiciones EXW, FOB y CIF, datos de embalaje y documentos de embarque." }
+    ],
+    "rangeTitle": "Paraguas compactos y plegables",
+    "rangeBody": "Nuestra gama principal son los paraguas de lluvia de mano: modelos de tres pliegues, cinco pliegues, rectos, de golf e infantiles. Disponemos de algunas sombrillas de playa para programas de complejos turísticos y promocionales. Cada artículo puede adaptarse en tamaño, estructura, tejido e impresión.",
+    "ctaTitle": "Cuéntenos qué necesita",
+    "ctaBody": "Compártanos un diseño, una cantidad y su mercado; le responderemos con un presupuesto por escrito y los siguientes pasos."
+  },
+  "products": {
+    "eyebrow": "Gama de productos",
+    "h1": "Paraguas compactos y plegables",
+    "intro": "{primary} modelos principales de paraguas de mano, más {secondary} sombrillas de playa. Cada uno puede adaptarse en tamaño, estructura, tejido e impresión. Todos los productos de este sitio se gestionan mediante consulta; no hay venta directa al por menor.",
+    "coreTitle": "Gama principal · paraguas de lluvia de mano",
+    "beachTitle": "Sombrillas de playa y parasoles",
+    "beachIntro": "Una pequeña gama complementaria para programas de complejos turísticos y promocionales.",
+    "seoTitle": "Paraguas compactos y plegables | Fabricante OEM de paraguas a medida",
+    "seoDesc": "Paraguas de lluvia compactos, plegables, rectos, de golf e infantiles a medida para programas B2B, además de una pequeña gama de sombrillas de playa. Estructuras, tejidos e impresión personalizados bajo consulta."
+  },
+  "product": {
+    "builtTitle": "Fabricado según sus especificaciones",
+    "builtBody": "El material de la estructura, el vástago, el mango, el número de paneles, los remates y la impresión integral personalizada pueden especificarse según su mercado. Envíenos los archivos vectoriales y las referencias Pantone y le remitiremos una maqueta digital para su aprobación antes de producir la prueba de impresión.",
+    "specTitle": "Especificaciones y condiciones comerciales",
+    "table": [
+      ["MOQ", "Se confirma por escrito en el presupuesto."],
+      ["Plazo de entrega", "Se confirma tras la aprobación del diseño y la validación de las especificaciones."],
+      ["Condiciones comerciales", "EXW, FOB o CIF, según lo acordado."],
+      ["Hoja de especificaciones", "Disponible bajo consulta para este producto."]
+    ],
+    "disclaimer": "Las dimensiones, el MOQ y el plazo de entrega a nivel de producto no se publican como valores fijos: se confirman por escrito en el presupuesto, por lo que nada de lo aquí indicado constituye un compromiso público.",
+    "seoSuffix": "Fabricante OEM de paraguas a medida",
+    "seoDesc": "Opciones de impresión, estructura, tamaño y tejido a medida para programas B2B. Solicite un presupuesto y la hoja de especificaciones de este producto."
+  },
+  "form": {
+    "title": "Envíenos su consulta",
+    "intro": "Nuevos proyectos, pedidos recurrentes, solicitudes de muestras y consultas sobre especificaciones. Los campos marcados con * son obligatorios.",
+    "fields": {
+      "full_name": "Nombre completo",
+      "company": "Empresa",
+      "email": "Correo electrónico corporativo",
+      "country": "País / región",
+      "product_interest": "Producto de interés",
+      "estimated_quantity": "Cantidad estimada",
+      "target_market": "Mercado objetivo",
+      "annual_volume": "Volumen de compra anual",
+      "preferred_incoterm": "Incoterm preferido",
+      "message": "Sus requisitos"
+    },
+    "placeholders": {
+      "full_name": "Su nombre",
+      "company": "Nombre de la empresa",
+      "email": "name@company.com",
+      "country": "Su ubicación",
+      "estimated_quantity": "p. ej., 500 pcs",
+      "target_market": "p. ej., UE, EE. UU., complejos turísticos",
+      "annual_volume": "Opcional",
+      "message": "Tamaño, estructura, tejido, diseño, ubicación de la impresión, precio objetivo, plazo de entrega..."
+    },
+    "selectPlaceholder": "Seleccione un tipo de producto",
+    "notSure": "Aún no lo sé",
+    "productOptions": [
+      "Paraguas compacto / plegable",
+      "Paraguas de tres pliegues",
+      "Paraguas de cinco pliegues / ultracompacto",
+      "Paraguas recto / de bastón",
+      "Paraguas de golf",
+      "Paraguas infantil",
+      "Paraguas promocional / impreso",
+      "Sombrilla de playa / parasol",
+      "Aún no lo sé"
+    ],
+    "hints": {
+      "quantity": "En esta fase basta con una estimación.",
+      "message": "Su diseño y sus especificaciones se mantienen confidenciales y se utilizan únicamente para elaborar su presupuesto."
+    },
+    "honeypot": "Deje este campo vacío",
+    "submit": "Solicitar presupuesto",
+    "noteBefore": "Utilizamos estos datos únicamente para preparar su presupuesto. Normalmente respondemos en el plazo de un día laborable. También puede escribir a",
+    "noteAfter": "directamente."
+  },
+  "formJs": {
+    "sending": "Enviando su consulta...",
+    "sendingShort": "Enviando...",
+    "submit": "Solicitar presupuesto",
+    "received": "Gracias. Hemos recibido su consulta.",
+    "couldNotSend": "No hemos podido enviar su consulta. Inténtelo de nuevo.",
+    "couldNotSendShort": "No hemos podido enviar su consulta.",
+    "useOneClick": "Utilice el enlace de un clic que aparece a continuación: los datos que ha introducido ya están cumplimentados:",
+    "oneClick": "Un clic: enviar por correo los datos introducidos a {email}",
+    "pageLabel": "Página:",
+    "sentLabel": "Enviado:",
+    "subject": "Consulta B2B sobre paraguas - {name} ({company})"
+  },
+  "notFound": {
+    "title": "Página no encontrada | Fantastic Umbrella",
+    "h1": "Página no encontrada",
+    "body": "Esa dirección ya no forma parte de nuestro catálogo. Hemos migrado el sitio a una nueva plataforma y conservado las páginas principales de productos y de consultas.",
+    "home": "Inicio",
+    "products": "Todos los productos",
+    "contact": "Enviar una consulta",
+    "tagline": "Fantastic Umbrella · paraguas compactos y plegables a medida"
+  },
+  "seo": {
+    "home": { "title": "Fabricante de paraguas compactos a medida | Fantastic Umbrella", "description": "Fabricante OEM/ODM en Guangzhou de paraguas de lluvia compactos, plegables y rectos. Diseño, muestreo, producción e inspección en una sola cadena de suministro para compradores B2B." },
+    "contact": { "title": "Contacto | Fabricante OEM de paraguas de lluvia a medida", "description": "Envíenos una consulta sobre paraguas compactos, plegables o rectos a medida. Indíquenos sus especificaciones y la cantidad para recibir un presupuesto por escrito." },
+    "services": { "title": "Servicios OEM y ODM | Fabricante de paraguas a medida", "description": "Impresión digital, muestreo, marca propia y control de calidad en una sola cadena de suministro. Descubra nuestras capacidades OEM/ODM para paraguas de mano a medida." },
+    "faqs": { "title": "Preguntas frecuentes B2B | Pedidos OEM de paraguas a medida", "description": "Respuestas sobre MOQ, muestreo, diseño, condiciones de pago, plazos de entrega y certificaciones para pedidos de paraguas de lluvia a medida." },
+    "shipping-delivery": { "title": "Envío y entrega | Pedidos OEM de paraguas a medida", "description": "Muestras por mensajería urgente en 3-7 días y pedidos de gran volumen por mar o aire. Condiciones FOB, EXW y CIF con datos de embalaje confirmados por escrito." },
+    "quality-claims": { "title": "Calidad y reclamaciones | Proceso de control de calidad de paraguas a medida", "description": "Inspección AQL 2.5, auditorías de terceros y un proceso de reclamaciones claro. Descubra cómo gestionamos la calidad conforme a una muestra aprobada." }
+  }
+}

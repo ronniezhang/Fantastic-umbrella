@@ -1,0 +1,169 @@
+{
+  "lang": "de",
+  "localeName": "Deutsch",
+  "org": {
+    "description": "OEM- und ODM-Hersteller von Taschen-, Falt- und Stockschirmen für B2B-Kunden.",
+    "disambiguating": "Ein in Guangzhou, China, ansässiger Hersteller von Handregenschirmen für Großhandels- und Werbeprogramme."
+  },
+  "nav": {
+    "products": "Produkte",
+    "services": "OEM & ODM-Leistungen",
+    "shipping": "Versand und Lieferung",
+    "quality": "Qualität und Reklamationen",
+    "faq": "B2B-FAQ",
+    "contact": "Kontakt",
+    "quote": "Angebot anfordern",
+    "mainNav": "Hauptnavigation",
+    "language": "Sprache",
+    "languagePicker": "Sprache auswählen"
+  },
+  "footer": {
+    "brandDesc": "Maßgefertigte Taschen- und Faltschirme für B2B-Programme. Guangzhou, Guangdong, China.",
+    "capabilities": "Kompetenzen",
+    "productRange": "Produktsortiment",
+    "support": "Support",
+    "contactUs": "Kontakt",
+    "getInTouch": "Kontakt aufnehmen",
+    "whatsapp": "WhatsApp",
+    "copyright": "Alle Rechte vorbehalten.",
+    "platformNote": "B2B-Fertigungsstandort · Guangzhou, China"
+  },
+  "common": {
+    "requestQuote": "Angebot anfordern",
+    "exploreCapabilities": "Entdecken Sie unsere Kompetenzen",
+    "readFaq": "Lesen Sie die B2B-FAQ",
+    "viewEnquire": "Ansehen und anfragen →",
+    "allProducts": "Alle Produkte",
+    "seeAllProducts": "Alle {count} Produkte ansehen",
+    "imagePending": "Bild folgt",
+    "customOnRequest": "Individueller Druck und Spezifikation auf Anfrage.",
+    "backToProducts": "← Alle Produkte",
+    "greenmarkHome": "Suchen Sie Strandstühle, Cabanas, Sonnendächer oder Terrassenbeschattungen? Diese Produktlinien werden von unserer Schwesterseite GreenMark betreut.",
+    "greenmarkProducts": "Strandstühle, Cabanas, Sonnendächer, Pavillons und Terrassenbeschattungen gehören nicht zum Sortiment dieser Website — sie werden von unserer Schwesterseite GreenMark betreut."
+  },
+  "home": {
+    "eyebrow": "B2B-Fertigung · Guangzhou, China",
+    "h1": "Maßgefertigte Taschen- und Faltschirme, gefertigt nach Ihren Spezifikationen.",
+    "intro": "OEM- und ODM-Lieferung von Handregenschirmen für Distributoren, Handelsmarken und Werbeprogramme. Ergänzend zum Kernsortiment ist eine kleine Auswahl an Strandschirmen erhältlich. Druckvorlagen, Musterfertigung, Produktion, Prüfung und Exportdokumentation bündeln wir in einer einzigen Lieferkette — beginnend mit einem schriftlichen Angebot, nicht mit einem Warenkorb.",
+    "note": "MOQ, Lieferzeiten und Prüfstandards sind Richtwerte und werden mit Ihrem Angebot und Spezifikationsblatt schriftlich bestätigt.",
+    "supplyTitle": "Eine Lieferkette – von der Druckvorlage bis zum Versand",
+    "supplyBody": "Wir begannen im Digitaldruck und bieten heute die komplette Sonderfertigung aus einer Hand. Das heißt: Druck, Konstruktion und Endfertigung werden gemeinsam gesteuert, statt zwischen Lieferanten weitergereicht zu werden.",
+    "capabilities": [
+      { "title": "Digitaldruck", "text": "Vollflächiger Individualdruck, Pantone-Abstimmung und ein digitales Layout zur Freigabe, bevor ein Andruck erstellt wird." },
+      { "title": "Musterfertigung und Werkzeugbau", "text": "Bedruckter Andruck oder vollständiger Prototyp, wobei Änderungen vor Beginn der Serienproduktion schriftlich bestätigt werden." },
+      { "title": "Qualitätskontrolle", "text": "Laufende Kontrollen und Endkontrolle vor dem Versand anhand eines abgestimmten Spezifikationsblatts; Audits durch Dritte auf Anfrage." }
+    ],
+    "programmesTitle": "Für Programme konzipiert, nicht für Einzelbestellungen",
+    "programmesBody": "Alle folgenden Punkte werden vor Produktionsbeginn schriftlich vereinbart, damit Folgeaufträge konsistent bleiben.",
+    "programmes": [
+      { "title": "OEM & ODM", "text": "Ihr Design und Ihre Spezifikation – oder unsere Entwürfe, angepasst an Ihren Markt." },
+      { "title": "Eigenmarke", "text": "Individuelle Etiketten, Verpackungen und eine verkaufsfertige Präsentation." },
+      { "title": "Exportfertig", "text": "EXW-, FOB- und CIF-Bedingungen, Packdaten und Versanddokumente." }
+    ],
+    "rangeTitle": "Taschen- und Faltschirme",
+    "rangeBody": "Unser Kernsortiment sind Handregenschirme – dreifach, fünffach, Stock-, Golf- und Kinderschirme. Für Resort- und Werbeprogramme sind einige Strandschirme erhältlich. Jeder Artikel lässt sich in Größe, Gestell, Stoff und Druck anpassen.",
+    "ctaTitle": "Teilen Sie uns Ihren Bedarf mit",
+    "ctaBody": "Senden Sie uns ein Design, eine Menge und Ihren Zielmarkt – wir antworten mit einem schriftlichen Angebot und den nächsten Schritten."
+  },
+  "products": {
+    "eyebrow": "Produktsortiment",
+    "h1": "Taschen- und Faltschirme",
+    "intro": "{primary} Kernmodelle an Handregenschirmen sowie {secondary} Strandschirme. Jedes Modell lässt sich in Größe, Gestell, Stoff und Druck anpassen. Alle Produkte auf dieser Website sind Anfrageartikel – es gibt keinen Warenkorb für Endkunden.",
+    "coreTitle": "Kernsortiment · Handregenschirme",
+    "beachTitle": "Strandschirme und Sonnenschirme",
+    "beachIntro": "Ein kleines Ergänzungssortiment für Resort- und Werbeprogramme.",
+    "seoTitle": "Taschen- und Faltschirme | OEM-Hersteller für Sonderanfertigungen",
+    "seoDesc": "Maßgefertigte Taschen-, Falt-, Stock-, Golf- und Kinderschirme für B2B-Programme sowie ein kleines Sortiment an Strandschirmen. Individuelle Gestelle, Stoffe und Drucke auf Anfrage."
+  },
+  "product": {
+    "builtTitle": "Gefertigt nach Ihren Vorgaben",
+    "builtBody": "Gestellmaterial, Schaft, Griff, Anzahl der Schirmbahnen, Besatz und vollflächiger Individualdruck können für Ihren Markt spezifiziert werden. Senden Sie uns Vektordateien und Pantone-Referenzen; wir liefern ein digitales Layout zur Freigabe, bevor wir einen bedruckten Andruck erstellen.",
+    "specTitle": "Spezifikation und Handelsbedingungen",
+    "table": [
+      ["MOQ", "Wird mit Ihrem Angebot schriftlich bestätigt."],
+      ["Lieferzeit", "Wird nach Freigabe der Druckvorlagen und Bestätigung der Spezifikation festgelegt."],
+      ["Handelsbedingungen", "EXW, FOB oder CIF nach Vereinbarung."],
+      ["Spezifikationsblatt", "Für dieses Produkt auf Anfrage erhältlich."]
+    ],
+    "disclaimer": "Produktbezogene Abmessungen, MOQ und Lieferzeit werden nicht als feste Werte veröffentlicht – sie werden mit Ihrem Angebot schriftlich bestätigt; daher stellt keine Angabe hier eine verbindliche öffentliche Zusage dar.",
+    "seoSuffix": "OEM-Lieferant für maßgefertigte Schirme",
+    "seoDesc": "Individuelle Druck-, Gestell-, Größen- und Stoffoptionen für B2B-Programme. Fordern Sie Angebot und Spezifikationsblatt für dieses Produkt an."
+  },
+  "form": {
+    "title": "Senden Sie uns Ihre Anfrage",
+    "intro": "Neue Projekte, Folgeaufträge, Musteranfragen und Fragen zur Spezifikation. Mit * gekennzeichnete Felder sind Pflichtfelder.",
+    "fields": {
+      "full_name": "Vollständiger Name",
+      "company": "Unternehmen",
+      "email": "Geschäftliche E-Mail-Adresse",
+      "country": "Land / Region",
+      "product_interest": "Produktinteresse",
+      "estimated_quantity": "Geschätzte Menge",
+      "target_market": "Zielmarkt",
+      "annual_volume": "Jährliches Einkaufsvolumen",
+      "preferred_incoterm": "Bevorzugte Handelsbedingung",
+      "message": "Ihre Anforderungen"
+    },
+    "placeholders": {
+      "full_name": "Ihr Name",
+      "company": "Name des Unternehmens",
+      "email": "name@company.com",
+      "country": "Ihr Standort",
+      "estimated_quantity": "z. B. 500 Stk.",
+      "target_market": "z. B. EU, USA, Resortgruppen",
+      "annual_volume": "Optional",
+      "message": "Größe, Gestell, Stoff, Druckvorlage, Druckposition, Zielpreis, Lieferfenster ..."
+    },
+    "selectPlaceholder": "Produkttyp auswählen",
+    "notSure": "Noch nicht sicher",
+    "productOptions": [
+      "Taschen- / Faltschirm",
+      "Dreifach-Faltschirm",
+      "Fünffach- / Ultra-Kompaktschirm",
+      "Stockschirm",
+      "Golfschirm",
+      "Kinderschirm",
+      "Werbeschirm / bedruckter Schirm",
+      "Strandschirm / Sonnenschirm",
+      "Noch nicht sicher"
+    ],
+    "hints": {
+      "quantity": "In dieser Phase genügt eine Schätzung.",
+      "message": "Ihre Druckvorlagen und Spezifikationen werden vertraulich behandelt und ausschließlich für Ihr Angebot verwendet."
+    },
+    "honeypot": "Dieses Feld bitte leer lassen",
+    "submit": "Angebot anfordern",
+    "noteBefore": "Wir verwenden diese Angaben ausschließlich zur Erstellung Ihres Angebots. In der Regel antworten wir innerhalb eines Werktags. Sie können uns auch direkt per E-Mail an",
+    "noteAfter": "schreiben."
+  },
+  "formJs": {
+    "sending": "Ihre Anfrage wird gesendet ...",
+    "sendingShort": "Wird gesendet ...",
+    "submit": "Angebot anfordern",
+    "received": "Vielen Dank. Ihre Anfrage ist bei uns eingegangen.",
+    "couldNotSend": "Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "couldNotSendShort": "Ihre Anfrage konnte nicht gesendet werden.",
+    "useOneClick": "Nutzen Sie den folgenden Link mit einem Klick – Ihre eingegebenen Angaben sind bereits eingetragen:",
+    "oneClick": "Mit einem Klick: Ihre eingegebenen Angaben per E-Mail an {email} senden",
+    "pageLabel": "Seite:",
+    "sentLabel": "Gesendet:",
+    "subject": "B2B-Schirmanfrage – {name} ({company})"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden | Fantastic Umbrella",
+    "h1": "Seite nicht gefunden",
+    "body": "Diese Adresse ist nicht mehr Teil unseres Katalogs. Wir haben die Website auf eine neue Plattform umgestellt und die wichtigsten Produkt- und Anfrageseiten beibehalten.",
+    "home": "Startseite",
+    "products": "Alle Produkte",
+    "contact": "Anfrage senden",
+    "tagline": "Fantastic Umbrella · maßgefertigte Taschen- und Faltschirme"
+  },
+  "seo": {
+    "home": { "title": "Hersteller maßgefertigter Taschenschirme | Fantastic Umbrella", "description": "OEM-/ODM-Hersteller aus Guangzhou für Taschen-, Falt- und Stockschirme. Druckvorlagen, Muster, Produktion und Prüfung aus einer Lieferkette für B2B-Kunden." },
+    "contact": { "title": "Kontakt | OEM-Lieferant für maßgefertigte Regenschirme", "description": "Senden Sie eine Anfrage für maßgefertigte Taschen-, Falt- oder Stockschirme. Teilen Sie Spezifikation und Menge für ein schriftliches Angebot mit." },
+    "services": { "title": "OEM & ODM-Leistungen | Hersteller maßgefertigter Schirme", "description": "Digitaldruck, Musterfertigung, Eigenmarken und Qualitätskontrolle aus einer Lieferkette. Entdecken Sie unsere OEM-/ODM-Kompetenzen für Handregenschirme." },
+    "faqs": { "title": "B2B-FAQ | OEM-Bestellungen maßgefertigter Schirme", "description": "Antworten zu MOQ, Mustern, Druckvorlagen, Zahlungsbedingungen, Lieferzeiten und Zertifizierungen für Schirm-Sonderanfertigungen." },
+    "shipping-delivery": { "title": "Versand und Lieferung | OEM-Bestellungen maßgefertigter Schirme", "description": "Muster per Express in 3–7 Tagen, Großaufträge per See- oder Luftfracht. FOB, EXW und CIF mit schriftlich bestätigten Packdaten." },
+    "quality-claims": { "title": "Qualität und Reklamationen | QC-Prozess für Schirme", "description": "Prüfung nach AQL 2.5, Audits durch Dritte und ein klarer Reklamationsprozess. Erfahren Sie, wie wir Qualität anhand eines freigegebenen Musters sichern." }
+  }
+}

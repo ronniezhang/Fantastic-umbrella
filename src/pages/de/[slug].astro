@@ -1,0 +1,7 @@
+---
+import StaticPage from '../../components/pages/StaticPage.astro';
+import {staticPagePaths} from '../../i18n/routes.mjs';
+export function getStaticPaths() { return staticPagePaths(); }
+const { slug } = Astro.props;
+---
+<StaticPage locale="de" slug={slug} />

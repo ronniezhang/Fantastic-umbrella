@@ -1,0 +1,169 @@
+{
+  "lang": "en",
+  "localeName": "English",
+  "org": {
+    "description": "OEM and ODM manufacturer of compact, folding and straight rain umbrellas for B2B buyers.",
+    "disambiguating": "A Guangzhou, China based manufacturer of handheld rain umbrellas serving wholesale and promotional programmes."
+  },
+  "nav": {
+    "products": "Products",
+    "services": "OEM & ODM Services",
+    "shipping": "Shipping & Delivery",
+    "quality": "Quality & Claims",
+    "faq": "B2B FAQ",
+    "contact": "Contact",
+    "quote": "Request a Quote",
+    "mainNav": "Main navigation",
+    "language": "Language",
+    "languagePicker": "Select language"
+  },
+  "footer": {
+    "brandDesc": "Custom compact and folding umbrellas for B2B programmes. Guangzhou, Guangdong, China.",
+    "capabilities": "Capabilities",
+    "productRange": "Product Range",
+    "support": "Support",
+    "contactUs": "Contact Us",
+    "getInTouch": "Get in touch",
+    "whatsapp": "WhatsApp",
+    "copyright": "All rights reserved.",
+    "platformNote": "B2B manufacturing site · Guangzhou, China"
+  },
+  "common": {
+    "requestQuote": "Request a Quote",
+    "exploreCapabilities": "Explore our capabilities",
+    "readFaq": "Read the B2B FAQ",
+    "viewEnquire": "View & enquire →",
+    "allProducts": "All products",
+    "seeAllProducts": "See all {count} products",
+    "imagePending": "Image pending",
+    "customOnRequest": "Custom printing and specification on request.",
+    "backToProducts": "← All products",
+    "greenmarkHome": "Looking for beach chairs, cabanas, sun shelters or patio shade structures? Those product lines are handled by our GreenMark sister site.",
+    "greenmarkProducts": "Beach chairs, cabanas, sun shelters, gazebos and patio shade structures are not part of this site's range — they are handled by our GreenMark sister site."
+  },
+  "home": {
+    "eyebrow": "B2B manufacturing · Guangzhou, China",
+    "h1": "Custom compact and folding umbrellas, built to your specification.",
+    "intro": "OEM and ODM supply of handheld rain umbrellas for distributors, retail brands and promotional programmes. A small selection of beach umbrellas is available alongside the core range. We handle artwork, sampling, production, inspection and export documentation in one supply chain — starting with a written quotation, not a checkout.",
+    "note": "MOQ, lead times and inspection standards are indicative and are confirmed in writing with your quotation and specification sheet.",
+    "supplyTitle": "One supply chain, from artwork to shipment",
+    "supplyBody": "We started in digital printing and grew into full custom manufacturing. That means print, construction and finishing are managed together rather than handed between suppliers.",
+    "capabilities": [
+      { "title": "Digital printing", "text": "All-over custom print, Pantone matching and a digital layout for approval before any strike-off is produced." },
+      { "title": "Sampling & tooling", "text": "Printed strike-off or full prototype, with changes confirmed in writing before bulk production starts." },
+      { "title": "Quality control", "text": "In-line checks and pre-shipment inspection against an agreed specification sheet, with third-party audits on request." }
+    ],
+    "programmesTitle": "Built for programmes, not one-off orders",
+    "programmesBody": "Everything below is agreed in writing before production, so repeat orders stay consistent.",
+    "programmes": [
+      { "title": "OEM & ODM", "text": "Your design and specification, or ours adapted to your market." },
+      { "title": "Private label", "text": "Custom labels, packaging and retail-ready presentation." },
+      { "title": "Export-ready", "text": "EXW, FOB and CIF terms, packing data and shipment documents." }
+    ],
+    "rangeTitle": "Compact and folding umbrellas",
+    "rangeBody": "Our core range is handheld rain umbrellas — three-fold, five-fold, straight, golf and kids styles. A few beach umbrellas are available for resort and promotional programmes. Every item can be adapted in size, frame, fabric and print.",
+    "ctaTitle": "Tell us what you need",
+    "ctaBody": "Share a design, a quantity and your market — we reply with a written quotation and the next steps."
+  },
+  "products": {
+    "eyebrow": "Product range",
+    "h1": "Compact & folding umbrellas",
+    "intro": "{primary} core handheld umbrella styles, plus {secondary} beach umbrellas. Each can be adapted in size, frame, fabric and print. Every product on this site is an enquiry item — there is no retail checkout.",
+    "coreTitle": "Core range · handheld rain umbrellas",
+    "beachTitle": "Beach umbrellas & parasols",
+    "beachIntro": "A small supporting range for resort and promotional programmes.",
+    "seoTitle": "Compact & Folding Umbrellas | Custom Umbrella OEM Supplier",
+    "seoDesc": "Custom compact, folding, straight, golf and kids rain umbrellas for B2B programmes, plus a small beach umbrella range. Custom frames, fabric and printing on request."
+  },
+  "product": {
+    "builtTitle": "Built to your specification",
+    "builtBody": "Frame material, shaft, handle, panel count, trim and all-over custom printing can be specified for your market. Send vector artwork and Pantone references and we return a digital layout for approval before producing a printed strike-off.",
+    "specTitle": "Specification & commercial terms",
+    "table": [
+      ["MOQ", "Confirmed in writing with your quotation."],
+      ["Lead time", "Confirmed after artwork approval and specification sign-off."],
+      ["Trade terms", "EXW, FOB or CIF, as agreed."],
+      ["Specification sheet", "Available on request for this product."]
+    ],
+    "disclaimer": "Product-level dimensions, MOQ and lead time are not published as fixed values — they are confirmed in writing with your quotation, so nothing here is a public commitment.",
+    "seoSuffix": "Custom Umbrella OEM Supplier",
+    "seoDesc": "Custom printing, frame, size and fabric options for B2B programmes. Request a quotation and specification sheet for this product."
+  },
+  "form": {
+    "title": "Send us your enquiry",
+    "intro": "New projects, repeat orders, sampling requests and specification questions. Fields marked * are required.",
+    "fields": {
+      "full_name": "Full name",
+      "company": "Company",
+      "email": "Business email",
+      "country": "Country / region",
+      "product_interest": "Product interest",
+      "estimated_quantity": "Estimated quantity",
+      "target_market": "Target market",
+      "annual_volume": "Annual purchase volume",
+      "preferred_incoterm": "Preferred trade term",
+      "message": "Your requirements"
+    },
+    "placeholders": {
+      "full_name": "Your name",
+      "company": "Company name",
+      "email": "name@company.com",
+      "country": "Where you are based",
+      "estimated_quantity": "e.g. 500 pcs",
+      "target_market": "e.g. EU, US, resort groups",
+      "annual_volume": "Optional",
+      "message": "Size, frame, fabric, artwork, print placement, target price, delivery window..."
+    },
+    "selectPlaceholder": "Select a product type",
+    "notSure": "Not sure yet",
+    "productOptions": [
+      "Compact / folding umbrella",
+      "Three-fold umbrella",
+      "Five-fold / ultra-compact umbrella",
+      "Straight / stick umbrella",
+      "Golf umbrella",
+      "Kids umbrella",
+      "Promotional / printed umbrella",
+      "Beach umbrella / parasol",
+      "Not sure yet"
+    ],
+    "hints": {
+      "quantity": "An estimate is enough at this stage.",
+      "message": "Your artwork and specification stay confidential and are used only for your quotation."
+    },
+    "honeypot": "Leave this field empty",
+    "submit": "Request a Quote",
+    "noteBefore": "We use these details only to prepare your quotation. We normally reply within one business day. You can also email",
+    "noteAfter": "directly."
+  },
+  "formJs": {
+    "sending": "Sending your enquiry...",
+    "sendingShort": "Sending...",
+    "submit": "Request a Quote",
+    "received": "Thank you. Your enquiry has been received.",
+    "couldNotSend": "We could not send your enquiry. Please try again.",
+    "couldNotSendShort": "We could not send your enquiry.",
+    "useOneClick": "Use the one-click link below - your typed details are already filled in:",
+    "oneClick": "One-click: email your typed details to {email}",
+    "pageLabel": "Page:",
+    "sentLabel": "Sent:",
+    "subject": "B2B umbrella enquiry - {name} ({company})"
+  },
+  "notFound": {
+    "title": "Page not found | Fantastic Umbrella",
+    "h1": "Page not found",
+    "body": "That address is no longer part of our catalogue. We have moved the site to a new platform and kept the main product and enquiry pages.",
+    "home": "Home",
+    "products": "All products",
+    "contact": "Send an enquiry",
+    "tagline": "Fantastic Umbrella · custom compact & folding umbrellas"
+  },
+  "seo": {
+    "home": { "title": "Custom Compact Umbrella Manufacturer | Fantastic Umbrella", "description": "Guangzhou OEM/ODM manufacturer of compact, folding and straight rain umbrellas. Artwork, sampling, production and inspection in one supply chain for B2B buyers." },
+    "contact": { "title": "Contact Us | Custom Rain Umbrella OEM Supplier", "description": "Send an enquiry for custom compact, folding or straight umbrellas. Share your specification and quantity for a written quotation." },
+    "services": { "title": "OEM & ODM Services | Custom Umbrella Manufacturer", "description": "Digital printing, sampling, private label and QC in one supply chain. See our OEM/ODM capabilities for custom handheld umbrellas." },
+    "faqs": { "title": "B2B FAQ | Custom Umbrella OEM Orders", "description": "Answers on MOQ, sampling, artwork, payment terms, lead times and certifications for custom rain umbrella orders." },
+    "shipping-delivery": { "title": "Shipping & Delivery | Custom Umbrella OEM Orders", "description": "Samples by express in 3-7 days, bulk orders by sea or air. FOB, EXW and CIF terms with packing data confirmed in writing." },
+    "quality-claims": { "title": "Quality & Claims | Custom Umbrella QC Process", "description": "AQL 2.5 inspection, third-party audits and a clear claims process. See how we manage quality against an approved sample." }
+  }
+}

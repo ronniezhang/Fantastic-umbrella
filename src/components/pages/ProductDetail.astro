@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import products from '../../data/products.json';
+import { DEFAULT_LOCALE, localePath } from '../../i18n/config.mjs';
+import { ui, productCopy } from '../../i18n/dict.mjs';
+
+const { locale = DEFAULT_LOCALE, slug } = Astro.props;
+const product = products.find((p) => p.slug === slug);
+if (!product) throw new Error(`Unknown product slug: ${slug}`);
+
+const t = ui(locale);
+const d = t.product;
+const L = (href) => localePath(locale, href);
+const copy = productCopy(locale, slug) || { name: product.name, short: product.short };
+const title = `${copy.name.replace(/&amp;/g, '&')} | ${d.seoSuffix}`.slice(0, 70);
+---
+<Base path={`/product/${product.slug}/`} locale={locale} title={title} description={d.seoDesc}>
+  <article class="wrap prose">
+    <p class="eyebrow"><a href={L('/products/')}>{t.common.backToProducts}</a></p>
+    <h1 set:html={copy.name} />
+    {product.image && (
+      <p><img src={product.image} alt={copy.name} style="max-width:520px;border-radius:10px;border:1px solid var(--line)" /></p>
+    )}
+    {copy.short && <p>{copy.short}</p>}
+
+    <h2>{d.builtTitle}</h2>
+    <p>{d.builtBody}</p>
+
+    <h2>{d.specTitle}</h2>
+    <table>
+      <tbody>
+        {d.table.map(([label, value]) => <tr><th>{label}</th><td>{value}</td></tr>)}
+      </tbody>
+    </table>
+
+    <p><a class="wp-block-button__link btn" href={L(`/contact/?product=${product.slug}#enquiry-form`)}>{t.nav.quote}</a></p>
+    <blockquote>{d.disclaimer}</blockquote>
+  </article>
+</Base>

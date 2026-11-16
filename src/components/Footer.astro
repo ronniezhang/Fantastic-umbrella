@@ -1,4 +1,10 @@
 ---
+import { DEFAULT_LOCALE, localePath } from '../i18n/config.mjs';
+import { ui } from '../i18n/dict.mjs';
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const t = ui(locale);
+const L = (p) => localePath(locale, p);
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -6,42 +12,36 @@ const year = new Date().getFullYear();
     <div class="footer-grid">
       <div>
         <h3>Fantastic Umbrella</h3>
-        <p style="font-size:14px;margin:0;line-height:1.7">
-          Custom compact and folding umbrellas for B2B programmes.
-          Guangzhou, Guangdong, China.
-        </p>
+        <p style="font-size:14px;margin:0;line-height:1.7">{t.footer.brandDesc}</p>
       </div>
       <div>
-        <h3>Capabilities</h3>
+        <h3>{t.footer.capabilities}</h3>
         <ul>
-          <li><a href="/services/">OEM &amp; ODM Services</a></li>
-          <li><a href="/products/">Product Range</a></li>
-          <li><a href="/shipping-delivery/">Shipping &amp; Delivery</a></li>
-          <li><a href="/quality-claims/">Quality &amp; Claims</a></li>
+          <li><a href={L('/services/')}>{t.nav.services}</a></li>
+          <li><a href={L('/products/')}>{t.footer.productRange}</a></li>
+          <li><a href={L('/shipping-delivery/')}>{t.nav.shipping}</a></li>
+          <li><a href={L('/quality-claims/')}>{t.nav.quality}</a></li>
         </ul>
       </div>
       <div>
-        <h3>Support</h3>
+        <h3>{t.footer.support}</h3>
         <ul>
-          <li><a href="/faqs/">B2B FAQ</a></li>
-          <li><a href="/contact/">Contact Us</a></li>
-          <li><a href="/contact/#enquiry-form">Request a Quote</a></li>
+          <li><a href={L('/faqs/')}>{t.nav.faq}</a></li>
+          <li><a href={L('/contact/')}>{t.footer.contactUs}</a></li>
+          <li><a href={L('/contact/#enquiry-form')}>{t.nav.quote}</a></li>
         </ul>
       </div>
       <div>
-        <h3>Get in touch</h3>
+        <h3>{t.footer.getInTouch}</h3>
         <ul>
           <li><a href="mailto:sales@fantasticumbrella.com">sales@fantasticumbrella.com</a></li>
-          <li>WhatsApp: +86 137 2520 9358</li>
+          <li>{t.footer.whatsapp}: +86 137 2520 9358</li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; {year} Fantastic Umbrella. All rights reserved.</span>
-      <span>
-        <span class="prototype-badge">Astro prototype</span>
-        &nbsp; Content synced from the live site; enquiry endpoint not connected yet.
-      </span>
+      <span>&copy; {year} Fantastic Umbrella. {t.footer.copyright}</span>
+      <span>{t.footer.platformNote}</span>
     </div>
   </div>
 </footer>

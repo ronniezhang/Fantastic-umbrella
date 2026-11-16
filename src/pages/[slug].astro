@@ -1,25 +1,7 @@
 ---
-import Base from '../layouts/Base.astro';
-import EnquiryForm from '../components/EnquiryForm.astro';
-import pages from '../data/pages.json';
-
-export function getStaticPaths() {
-  return pages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
-}
-
-const { page } = Astro.props;
-const hasH1 = /<h1[\s>]/i.test(page.html);
-const parts = page.html.split('<!-- ASTRO_FORM_SLOT -->');
+import StaticPage from '../components/pages/StaticPage.astro';
+import {staticPagePaths} from '../i18n/routes.mjs';
+export function getStaticPaths() { return staticPagePaths(); }
+const { slug } = Astro.props;
 ---
-<Base seoKey={page.slug} path={`/${page.slug}/`}>
-  <article class="wrap prose">
-    {!hasH1 && <h1 set:html={page.title} />}
-    <div set:html={parts[0]} />
-    {parts.length > 1 && (
-      <>
-        <EnquiryForm />
-        <div set:html={parts[1]} />
-      </>
-    )}
-  </article>
-</Base>
+<StaticPage locale="en" slug={slug} />

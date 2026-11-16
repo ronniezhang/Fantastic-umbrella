@@ -1,22 +1,612 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://fantasticumbrella.com/</loc></url>
-  <url><loc>https://fantasticumbrella.com/products/</loc></url>
-  <url><loc>https://fantasticumbrella.com/contact/</loc></url>
-  <url><loc>https://fantasticumbrella.com/services/</loc></url>
-  <url><loc>https://fantasticumbrella.com/faqs/</loc></url>
-  <url><loc>https://fantasticumbrella.com/shipping-delivery/</loc></url>
-  <url><loc>https://fantasticumbrella.com/quality-claims/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/fan-spray-umbrella/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/ladies-umbrellas/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/childrens-umbrellas/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/straight-umbrellas/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/five-fold-umbrella/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/golf-umbrella/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/patio-umbrella/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/mens-umbrellas/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/boho-floral-beach-umbrella/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/</loc></url>
-  <url><loc>https://fantasticumbrella.com/product/beach-umbrella-with-tassile/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://fantasticumbrella.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/products/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/products/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/products/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/products/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/products/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/products/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/contact/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/contact/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/services/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/services/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/services/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/services/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/services/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/faqs/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/faqs/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/faqs/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/faqs/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/faqs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/faqs/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/shipping-delivery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/shipping-delivery/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/quality-claims/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/quality-claims/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/fan-spray-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/ladies-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/childrens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/straight-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/five-fold-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/golf-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/patio-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/mens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/boho-floral-beach-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/product/beach-umbrella-with-tassile/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/products/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/products/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/products/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/products/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/products/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/products/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/contact/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/contact/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/services/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/services/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/services/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/services/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/services/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/faqs/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/faqs/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/faqs/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/faqs/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/faqs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/faqs/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/shipping-delivery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/shipping-delivery/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/quality-claims/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/quality-claims/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/fan-spray-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/ladies-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/childrens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/straight-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/five-fold-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/golf-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/patio-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/mens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/boho-floral-beach-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/outdoor-beach-umbrella-stylish-shade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/es/product/beach-umbrella-with-tassile/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/products/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/products/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/products/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/products/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/products/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/products/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/contact/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/contact/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/services/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/services/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/services/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/services/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/services/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/faqs/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/faqs/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/faqs/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/faqs/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/faqs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/faqs/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/shipping-delivery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/shipping-delivery/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/quality-claims/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/quality-claims/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/fan-spray-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/ladies-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/childrens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/straight-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/five-fold-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/golf-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/patio-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/mens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/boho-floral-beach-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/outdoor-beach-umbrella-stylish-shade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/fr/product/beach-umbrella-with-tassile/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/products/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/products/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/products/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/products/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/products/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/products/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/contact/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/contact/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/contact/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/services/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/services/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/services/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/services/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/services/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/faqs/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/faqs/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/faqs/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/faqs/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/faqs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/faqs/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/shipping-delivery/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/shipping-delivery/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/shipping-delivery/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/quality-claims/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/quality-claims/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/quality-claims/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/fan-spray-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/fan-spray-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/fan-spray-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/ladies-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/ladies-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/ladies-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/childrens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/childrens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/childrens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/straight-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/straight-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/straight-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/five-fold-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/five-fold-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/five-fold-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/golf-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/golf-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/golf-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/patio-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/patio-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/patio-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/mens-umbrellas/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/mens-umbrellas/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/mens-umbrellas/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-fringe-vintage-scalloped-sunshade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/boho-floral-beach-umbrella/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/boho-floral-beach-umbrella/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/boho-floral-beach-umbrella/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/outdoor-beach-umbrella-stylish-shade/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/outdoor-beach-umbrella-stylish-shade/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/outdoor-beach-umbrella-stylish-shade/" />
+  </url>
+  <url>
+    <loc>https://fantasticumbrella.com/de/product/beach-umbrella-with-tassile/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://fantasticumbrella.com/es/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fantasticumbrella.com/fr/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://fantasticumbrella.com/de/product/beach-umbrella-with-tassile/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fantasticumbrella.com/product/beach-umbrella-with-tassile/" />
+  </url>
 </urlset>
