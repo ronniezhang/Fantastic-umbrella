@@ -514,20 +514,27 @@ push `main` → 远程 `7cf05f0`，Actions run `43791676708` **success**，Pages
 
 **`src/data/social.json` 是唯一的社媒配置源**。数组里每一项的 `href` 填上官方主页 URL 后，会自动出现在四语种页脚的「Follow us / Síguenos / Suivez-nous / Folgen Sie uns」徽章区，并自动写进 Organization schema 的 `sameAs`；空 `href` 不渲染任何东西。链接统一 `target="_blank" rel="noopener noreferrer"`，`aria-label` 用四语种词典 `footer.followOn`（含 `{name}` 占位符）。
 
-当前只配置了**已确认存在**的两个渠道：
+当前已配置**从旧站恢复**的渠道（2026-11-16 复查更正）：
 
-| 渠道 | 来源 | 状态 |
+| 渠道 | URL | 来源 |
 | --- | --- | --- |
-| 邮箱 `sales@fantasticumbrella.com` | Contact 页 / 表单收件人 | `mailto:` 链接 |
-| WhatsApp `+86 137 2520 9358` | Contact 页「Phone / WhatsApp」 | `https://wa.me/8613725209358` 直链 + WA 徽章 |
+| Facebook | `https://www.facebook.com/fantasticumbrella/` | 旧 WP 首页 Astra 页头社媒图标区 |
+| Instagram | `https://www.instagram.com/fantasticumbrella/` | 同上 |
+| YouTube | `https://www.youtube.com/@Fantasticumbrella` | 同上 |
+| WhatsApp | `https://wa.me/8613725209358` | 旧站用 `api.whatsapp.com/send?phone=13725209358`（缺国家码），改用规范的 `wa.me` 直链 |
+| 邮箱 | `mailto:sales@fantasticumbrella.com` | Contact 页 / 表单收件人 |
 
-`Facebook` / `Instagram` / `LinkedIn` / `YouTube` / `Pinterest` / `TikTok` / `X` 预留了条目但 `href` 为空。**不要凭搜索结果填**：品牌名与 1968 年罗德岛同名景点冲突（见 `Base.astro` 的实体消歧注释），搜到的账号很可能不是本公司的。拿到用户确认的官方主页 URL 后，只改这个 JSON → `npm run build` → push 即可，无需改组件。
+**证据来源**：NS 切换（2026-11-15）期间抓到的旧 WordPress 首页 HTML（Astra Header Builder `data-section="section-hb-social-icons-1"`），完整输出保存在会话的工具结果存档 `chatcmpl-tool-883c4d143a859eb6.txt`；上面的 URL 逐字取自该 HTML 的 `<a href>`。**不要凭搜索结果补**：品牌名与 1968 年罗德岛同名景点冲突（见 `Base.astro` 实体消歧注释）。
+
+**LinkedIn**：旧站页头确实有 LinkedIn 图标，但 `href` 为空（从未链接过账号），因此 `social.json` 里保留空条目、不渲染。拿到公司主页 URL 后只改这一个 `href` → `npm run build` → push 即自动出现徽章与 `sameAs`，无需改组件。
+
+**旧站两个误配，故意不迁移**：Twitter 图标指向第三方克隆站 `https://twitter-cl.vercel.app`（非官方账号）；Email 图标是 `mailto:https://mail.ym.163.com/...`（网易企业邮箱的网页登录地址，不是邮箱）。`Pinterest` / `TikTok` / `X` 旧站没有，保持空置。
 
 ### 分享标签与结构化数据
 
 `Base.astro` 全站输出：`og:site_name`、`og:image`（指向本地 `/images/products/fan-spray-umbrella.jpg`）、`og:image:alt`、`twitter:card=summary_large_image`、`twitter:title/description/image`；Organization JSON-LD 增加 `contactPoint`（sales 邮箱、电话、`availableLanguage: en/es/fr/de`），`sameAs` 只在配置了社媒主页时出现。
 
-**注意**：旧 WordPress 站审计明确记录**没有装 GA4 / GTM / gtag / 任何社媒像素**，本地备份、页脚 widget 备份与 DNS TXT 里也都没有社媒主页或域名验证记录，所以这里没有「可转移」的追踪标签。若需要 Meta Pixel / LinkedIn Insight Tag / TikTok Pixel / GA4，需提供对应 ID，且会引入第三方脚本（性能与隐私影响需单独确认），不属于本次静态迁移范围。
+**关于追踪标签**：旧 WordPress 站审计明确记录**没有装 GA4 / GTM / gtag / 任何社媒像素**，这一点复查后仍成立，所以没有「可转移」的追踪代码。之前误判「旧站没有社媒主页」的原因是：那几组图标属于 **Astra 主题页头 Builder / Elementor 模板 / 数据库 options**，不在当时备份的页面正文与页脚 widget 里；Wayback 与 Common Crawl 也没有该域的存档，直到翻出 NS 切换期间的旧首页 HTML 存档才恢复链接。若需要 Meta Pixel / LinkedIn Insight Tag / TikTok Pixel / GA4，需提供对应 ID，且会引入第三方脚本（性能与隐私影响需单独确认），不属于本次静态迁移范围。
 
 ---
 

@@ -1,11 +1,11 @@
 {
-  "_note": "Official social profile URLs. Every entry with a non-empty href is rendered as a footer badge and added to the Organization schema (sameAs). Empty entries stay hidden. Only add accounts you own: a same-named 1968 Rhode Island attraction exists, so never guess a URL from a web search.",
+  "_note": "Official social profile URLs. Every entry with a non-empty href is rendered as a footer badge and added to the Organization schema (sameAs); WhatsApp is a contact channel and is excluded from sameAs. Empty entries stay hidden. Source of the Facebook / Instagram / YouTube URLs: the pre-cutover WordPress homepage HTML captured during the nameserver change (Astra header social-icons block, data-section=section-hb-social-icons-1), preserved in the session tool-result archive chatcmpl-tool-883c4d143a859eb6.txt; values copied verbatim. LinkedIn existed there as an icon with an empty href (never linked) - supply the official company page URL to enable it. The old Twitter icon pointed at a third-party clone site and the Email icon at a 163.com webmail login URL; both are misconfigurations and are intentionally NOT migrated. Never guess URLs from a web search: a same-named 1968 Rhode Island attraction exists.",
   "profiles": [
     { "id": "whatsapp", "label": "WhatsApp", "badge": "WA", "href": "https://wa.me/8613725209358" },
-    { "id": "facebook", "label": "Facebook", "badge": "FB", "href": "" },
-    { "id": "instagram", "label": "Instagram", "badge": "IG", "href": "" },
+    { "id": "facebook", "label": "Facebook", "badge": "FB", "href": "https://www.facebook.com/fantasticumbrella/" },
+    { "id": "instagram", "label": "Instagram", "badge": "IG", "href": "https://www.instagram.com/fantasticumbrella/" },
     { "id": "linkedin", "label": "LinkedIn", "badge": "IN", "href": "" },
-    { "id": "youtube", "label": "YouTube", "badge": "YT", "href": "" },
+    { "id": "youtube", "label": "YouTube", "badge": "YT", "href": "https://www.youtube.com/@Fantasticumbrella" },
     { "id": "pinterest", "label": "Pinterest", "badge": "P", "href": "" },
     { "id": "tiktok", "label": "TikTok", "badge": "TT", "href": "" },
     { "id": "x", "label": "X", "badge": "X", "href": "" }
