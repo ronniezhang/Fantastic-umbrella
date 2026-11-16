@@ -514,6 +514,8 @@ push `main` → 远程 `7cf05f0`，Actions run `43791676708` **success**，Pages
 
 **`src/data/social.json` 是唯一的社媒配置源**。数组里每一项的 `href` 填上官方主页 URL 后，会自动出现在四语种页脚的「Follow us / Síguenos / Suivez-nous / Folgen Sie uns」徽章区，并自动写进 Organization schema 的 `sameAs`；空 `href` 不渲染任何东西。链接统一 `target="_blank" rel="noopener noreferrer"`，`aria-label` 用四语种词典 `footer.followOn`（含 `{name}` 占位符）。
 
+**图标实现（2026-11-16）**：徽章里是**内联 SVG 品牌图标**（不是文字缩写，也不是图标字体）。八个平台的路径统一放在 `src/data/social-icons.mjs`（Simple Icons v13.21.0，CC0 1.0），由 `src/components/SocialIcon.astro` 渲染 `viewBox="0 0 24 24"` 的单色 `<svg>`，`currentColor` 着色；`global.css` 的 `.social-icon` 控制尺寸，hover 时圆形底显示该平台品牌色，`prefers-reduced-motion` 下禁用过渡。**没有 CDN、图标字体、第三方脚本或额外网络请求**，符合全站零运行时脚本的约束。若新增平台没配 path，组件会回退显示 `social.json` 里的 `badge` 短码，页面不会破。
+
 当前已配置**从旧站恢复**的渠道（2026-11-16 复查更正）：
 
 | 渠道 | URL | 来源 |

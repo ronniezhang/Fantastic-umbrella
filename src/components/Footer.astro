@@ -2,6 +2,7 @@
 import { DEFAULT_LOCALE, localePath } from '../i18n/config.mjs';
 import { ui } from '../i18n/dict.mjs';
 import social from '../data/social.json';
+import SocialIcon from './SocialIcon.astro';
 
 const { locale = DEFAULT_LOCALE } = Astro.props;
 const t = ui(locale);
@@ -50,8 +51,8 @@ const ariaFor = (name) => t.footer.followOn.replace('{name}', name);
         <ul class="social-list">
           {profiles.map((p) => (
             <li>
-              <a href={p.href} target="_blank" rel="noopener noreferrer" aria-label={ariaFor(p.label)} title={p.label}>
-                <span class="social-badge" aria-hidden="true">{p.badge}</span>
+              <a class={`social-link social-link-${p.id}`} href={p.href} target="_blank" rel="noopener noreferrer" aria-label={ariaFor(p.label)} title={p.label}>
+                <span class="social-badge" aria-hidden="true"><SocialIcon id={p.id} badge={p.badge} /></span>
                 <span>{p.label}</span>
               </a>
             </li>

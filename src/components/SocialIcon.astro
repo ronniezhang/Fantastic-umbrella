@@ -1,0 +1,14 @@
+---
+import { socialIcons } from '../data/social-icons.mjs';
+
+// Renders a brand glyph as an inline SVG so the site stays free of icon fonts,
+// CDN requests and third-party scripts. Falls back to the short code from
+// social.json if a platform is ever added without a vendored glyph.
+const { id, badge = '' } = Astro.props;
+const path = socialIcons[id] || '';
+---
+{path ? (
+  <svg class="social-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d={path} /></svg>
+) : (
+  <span class="social-icon-fallback" aria-hidden="true">{badge || id.toUpperCase().slice(0, 2)}</span>
+)}
