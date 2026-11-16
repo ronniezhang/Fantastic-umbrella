@@ -486,6 +486,17 @@ npm run verify:enquiry -- --url https://fantasticumbrella.com   # 切主域后�
 5. push `main`，GitHub Actions 自动部署并自检；上线后抽查各语种首页、正文页、产品页与表单。
 6. 新增语种：在 `config.mjs` 的 `LOCALES` / `LOCALE_NAMES` / `LOCALE_MAIL_TAGS` 登记 → 补四份词典 → 复制一份 `src/pages/es/` 薄壳目录改 locale → 更新 CI 里的页面数断言（当前 76 = 19 × 4）。
 
+### 上线验收实测（2026-11-16）
+
+push `main` → 远程 `7cf05f0`，Actions run `43791676708` **success**，Pages 自动部署完成。线上逐项实测：
+
+- 主域 `/sitemap.xml` 200、**76 条 `<loc>`**，逐个 curl 验证 **76/76 全为 200**（19 条路径 × 4 语种），含 es/fr/de 与 hreflang alternates。
+- `/es/`、`/fr/`、`/de/` 首页均 200，`<html lang>` 正确，各含 4 条 `hreflang` + `x-default`，canonical 自指，产品图为本地 `/images/products/` 且无 `wp-content`；三语种正文与英文不同。
+- 译文抽查：西/法/德 `contact` 页 UI 文案命中本地词典译文，`golf-umbrella` 详情页产品名分别为 `Paraguas de golf con mango de madera` / `Parapluie golf à manche en bois` / `Golfschirm mit Holzgriff`。
+- 语言切换器在 `/es/contact/` 正确映射到同页的 en/es/fr/de 四个 URL；表单 `_locale` 分别为 `es`/`fr`/`de`/`en`，action 仍为 `/api/enquiry`。
+- 零回归：英文首页内容不变；主域 robots `Allow` / 预览域名 `Disallow`；`/api/enquiry` 仍 `verified-domain → sales@fantasticumbrella.com`；`/sw.js` 为合法 JS；`/wp-admin/` 404；`/shop/` 301。
+- **注意**：站点没有 `/about/` 页，5 个正文页 slug 为 `contact`、`faqs`、`quality-claims`、`services`、`shipping-delivery`（写验收脚本时别猜 slug，从 sitemap 取）。
+
 ### 已知边界
 
 - 译文为一次性批量生成，**建议由母语者抽校产品名、规格术语与询盘表单提示**，尤其是德语复合词与法语长句可能撑破按钮布局。
