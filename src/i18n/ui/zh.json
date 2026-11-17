@@ -1,0 +1,171 @@
+{
+  "lang": "zh",
+  "localeName": "简体中文",
+  "org": {
+    "description": "面向 B2B 采购商的折叠伞、直杆伞 OEM 与 ODM 制造商。",
+    "disambiguating": "位于中国广州的手持雨伞制造商，为批发与促销项目供货。"
+  },
+  "nav": {
+    "products": "产品中心",
+    "services": "OEM 与 ODM 服务",
+    "shipping": "运输与交付",
+    "quality": "质量与索赔",
+    "faq": "B2B 常见问题",
+    "contact": "联系我们",
+    "quote": "获取报价",
+    "mainNav": "主导航",
+    "language": "语言",
+    "languagePicker": "选择语言"
+  },
+  "footer": {
+    "brandDesc": "为 B2B 项目定制折叠伞与便携伞。中国广东广州。",
+    "capabilities": "服务能力",
+    "productRange": "产品范围",
+    "support": "支持",
+    "contactUs": "联系我们",
+    "getInTouch": "联系方式",
+    "whatsapp": "WhatsApp",
+    "followUs": "关注我们",
+    "followOn": "Fantastic Umbrella 的 {name} 主页",
+    "copyright": "保留所有权利。",
+    "platformNote": "B2B 制造型企业官网 · 中国广州"
+  },
+  "common": {
+    "requestQuote": "获取报价",
+    "exploreCapabilities": "了解我们的服务能力",
+    "readFaq": "阅读 B2B 常见问题",
+    "viewEnquire": "查看并询盘 →",
+    "allProducts": "全部产品",
+    "seeAllProducts": "查看全部 {count} 款产品",
+    "imagePending": "图片待补",
+    "customOnRequest": "定制印刷与规格可按要求提供。",
+    "backToProducts": "← 全部产品",
+    "greenmarkHome": "需要沙滩椅、凉亭、遮阳棚或庭院遮阳产品？这些产品线由我们的 GreenMark 姊妹站负责。",
+    "greenmarkProducts": "沙滩椅、凉亭、遮阳棚、帐篷与庭院遮阳结构不在本站产品范围内，由 GreenMark 姊妹站负责。"
+  },
+  "home": {
+    "eyebrow": "B2B 制造 · 中国广州",
+    "h1": "按您的规格定制折叠伞与便携伞。",
+    "intro": "为经销商、零售品牌与促销项目提供手持雨伞的 OEM 与 ODM 供货，核心产品线之外另有少量沙滩伞可选。图稿、打样、生产、验货与出口单证由同一条供应链完成——从一份书面报价开始，而不是购物车下单。",
+    "note": "MOQ、交期与验货标准仅为参考，以报价单与规格表书面确认为准。",
+    "supplyTitle": "从图稿到出货，一条供应链",
+    "supplyBody": "我们从数码印刷起步，逐步发展为完整的定制制造。印刷、伞架结构与后道整理由同一团队统筹，而不是在不同供应商之间来回转手。",
+    "capabilities": [
+      { "title": "数码印刷", "text": "满版定制印刷、潘通色比对，并在制作印花小样前提供数字排版稿供确认。" },
+      { "title": "打样与开模", "text": "提供印花小样或完整样品，修改意见在批量生产前书面确认。" },
+      { "title": "质量控制", "text": "按双方确认的规格表进行线上巡检与出货前验货，可安排第三方验货。" }
+    ],
+    "programmesTitle": "为长期项目而设，而非一次性订单",
+    "programmesBody": "以下内容均在投产前书面确认，确保返单保持一致。",
+    "programmes": [
+      { "title": "OEM 与 ODM", "text": "按您的设计与规格生产，或由我们按目标市场调整现有款式。" },
+      { "title": "自有品牌", "text": "定制标签、包装与零售陈列形式。" },
+      { "title": "出口配套", "text": "EXW、FOB、CIF 贸易条款，提供装箱数据与出货单证。" }
+    ],
+    "rangeTitle": "折叠伞与便携伞",
+    "rangeBody": "核心产品为手持雨伞——三折、五折、直杆、高尔夫与儿童伞，另有少量沙滩伞供度假村与促销项目选用。尺寸、伞架、面料与印刷均可调整。",
+    "ctaTitle": "告诉我们您的需求",
+    "ctaBody": "提供设计、数量与目标市场，我们会回复书面报价及后续步骤。"
+  },
+  "products": {
+    "eyebrow": "产品范围",
+    "h1": "折叠伞与便携伞",
+    "intro": "{primary} 款核心手持雨伞，另有 {secondary} 款沙滩伞。尺寸、伞架、面料与印刷均可调整。本站所有产品均为询盘商品，不设零售结算。",
+    "coreTitle": "核心产品 · 手持雨伞",
+    "beachTitle": "沙滩伞与遮阳伞",
+    "beachIntro": "为度假村与促销项目配套的小规模产品系列。",
+    "seoTitle": "折叠伞与便携伞 | 定制雨伞 OEM 供应商",
+    "seoDesc": "为 B2B 项目定制折叠伞、三折伞、五折伞、直杆伞、高尔夫伞与儿童雨伞，另有少量沙滩伞。伞架、面料与印刷均可按要求定制。"
+  },
+  "product": {
+    "builtTitle": "按您的规格生产",
+    "builtBody": "伞架材质、中棒、手柄、伞片数量、包边与满版印刷均可按目标市场指定。提供矢量图稿与潘通色号后，我们会先返回数字排版稿供确认，再制作印花小样。",
+    "specTitle": "规格与商务条款",
+    "table": [
+      ["最小起订量", "以报价单书面确认为准。"],
+      ["交期", "图稿确认与规格签署后书面确认。"],
+      ["贸易条款", "EXW、FOB 或 CIF，按双方约定。"],
+      ["规格表", "可按需提供本产品的规格表。"]
+    ],
+    "disclaimer": "产品级尺寸、MOQ 与交期不作为固定值公开，以报价单书面确认为准，本站内容不构成公开承诺。",
+    "seoSuffix": "定制雨伞 OEM 供应商",
+    "seoDesc": "为 B2B 项目提供印刷、伞架、尺寸与面料的定制选项。欢迎索取报价与产品规格表。"
+  },
+  "form": {
+    "title": "发送询盘",
+    "intro": "适用于新项目、返单、打样申请与规格咨询。带 * 的项目为必填。",
+    "fields": {
+      "full_name": "姓名",
+      "company": "公司",
+      "email": "商务邮箱",
+      "country": "国家 / 地区",
+      "product_interest": "意向产品",
+      "estimated_quantity": "预计数量",
+      "target_market": "目标市场",
+      "annual_volume": "年采购量",
+      "preferred_incoterm": "偏好贸易条款",
+      "message": "具体需求"
+    },
+    "placeholders": {
+      "full_name": "您的姓名",
+      "company": "公司名称",
+      "email": "name@company.com",
+      "country": "所在国家或地区",
+      "estimated_quantity": "例如 500 支",
+      "target_market": "例如 欧盟、美国、度假村集团",
+      "annual_volume": "选填",
+      "message": "尺寸、伞架、面料、图稿、印刷位置、目标价格、交货窗口……"
+    },
+    "selectPlaceholder": "请选择产品类型",
+    "notSure": "尚未确定",
+    "productOptions": [
+      "折叠伞 / 便携伞",
+      "三折伞",
+      "五折 / 超便携伞",
+      "直杆伞 / 长柄伞",
+      "高尔夫伞",
+      "儿童伞",
+      "促销 / 印刷伞",
+      "沙滩伞 / 遮阳伞",
+      "尚未确定"
+    ],
+    "hints": {
+      "quantity": "此阶段提供预估值即可。",
+      "message": "您的图稿与规格信息将被保密，仅用于本次报价。"
+    },
+    "honeypot": "此字段请留空",
+    "submit": "获取报价",
+    "noteBefore": "我们仅使用这些信息准备报价，通常在一个工作日内回复。您也可以直接发邮件至",
+    "noteAfter": "。"
+  },
+  "formJs": {
+    "sending": "正在发送询盘……",
+    "sendingShort": "发送中……",
+    "submit": "获取报价",
+    "received": "谢谢，我们已收到您的询盘。",
+    "couldNotSend": "询盘发送失败，请重试。",
+    "couldNotSendShort": "询盘发送失败。",
+    "useOneClick": "请使用下方一键链接，已为您填好输入的内容：",
+    "oneClick": "一键发送：把已填内容邮件发送至 {email}",
+    "pageLabel": "页面：",
+    "sentLabel": "发送时间：",
+    "subject": "雨伞 B2B 询盘 - {name}（{company}）"
+  },
+  "notFound": {
+    "title": "页面未找到 | Fantastic Umbrella",
+    "h1": "页面未找到",
+    "body": "该地址已不在我们的产品目录中。网站已迁移到新平台，主要产品页与询盘页面均已保留。",
+    "home": "首页",
+    "products": "全部产品",
+    "contact": "发送询盘",
+    "tagline": "Fantastic Umbrella · 定制折叠伞与便携伞"
+  },
+  "seo": {
+    "home": { "title": "定制折叠伞制造商 | Fantastic Umbrella", "description": "广州 OEM/ODM 折叠伞、三折伞与直杆雨伞制造商。图稿、打样、生产与验货由同一条供应链完成，服务 B2B 采购商。" },
+    "contact": { "title": "联系我们 | 定制雨伞 OEM 供应商", "description": "提交定制折叠伞、三折伞或直杆伞询盘，提供规格与数量即可获得书面报价。" },
+    "services": { "title": "OEM 与 ODM 服务 | 定制雨伞制造商", "description": "数码印刷、打样、自有品牌与质量控制由同一条供应链完成，了解手持雨伞定制能力。" },
+    "faqs": { "title": "B2B 常见问题 | 定制雨伞 OEM 订单", "description": "关于 MOQ、打样、图稿、付款方式、交期与认证的常见问题解答。" },
+    "shipping-delivery": { "title": "运输与交付 | 定制雨伞 OEM 订单", "description": "样品快递 3–7 天，大货海运或空运。支持 FOB、EXW、CIF，装箱数据书面确认。" },
+    "quality-claims": { "title": "质量与索赔 | 定制雨伞验货流程", "description": "AQL 2.5 验货、第三方验货与清晰的索赔流程，了解我们如何按确认样品管控质量。" }
+  }
+}

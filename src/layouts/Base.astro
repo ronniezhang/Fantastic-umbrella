@@ -19,7 +19,7 @@ const canonical = new URL(localePath(locale, path), Astro.site).href;
 const pageTitle = title || t.seo?.[seoKey]?.title || t.seo.home.title;
 const pageDesc = description || t.seo?.[seoKey]?.description || t.seo.home.description;
 const alts = alternates(path);
-const ogLocale = { en: 'en_US', es: 'es_ES', fr: 'fr_FR', de: 'de_DE' }[locale] || 'en_US';
+const ogLocale = { en: 'en_US', es: 'es_ES', fr: 'fr_FR', de: 'de_DE', zh: 'zh_CN' }[locale] || 'en_US';
 const ogImage = new URL('/images/products/fan-spray-umbrella.jpg', Astro.site).href;
 // Only real social profile URLs go into sameAs; WhatsApp is a contact channel.
 const socialProfiles = social.profiles.filter((p) => p.href && p.id !== 'whatsapp').map((p) => p.href);
@@ -47,7 +47,7 @@ const schema = {
     contactType: 'sales',
     email: 'sales@fantasticumbrella.com',
     telephone: '+86-137-2520-9358',
-    availableLanguage: ['en', 'es', 'fr', 'de'],
+    availableLanguage: ['en', 'es', 'fr', 'de', 'zh'],
   },
   ...(socialProfiles.length ? { sameAs: socialProfiles } : {}),
 };

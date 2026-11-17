@@ -7,18 +7,21 @@ import en from './ui/en.json';
 import es from './ui/es.json';
 import fr from './ui/fr.json';
 import de from './ui/de.json';
+import zh from './ui/zh.json';
 import enPages from './pages/en.json';
 import esPages from './pages/es.json';
 import frPages from './pages/fr.json';
 import dePages from './pages/de.json';
+import zhPages from './pages/zh.json';
 import enProducts from './products/en.json';
 import esProducts from './products/es.json';
 import frProducts from './products/fr.json';
 import deProducts from './products/de.json';
+import zhProducts from './products/zh.json';
 
-const UI = { en, es, fr, de };
-const PAGES = { en: enPages, es: esPages, fr: frPages, de: dePages };
-const PRODUCTS = { en: enProducts, es: esProducts, fr: frProducts, de: deProducts };
+const UI = { en, es, fr, de, zh };
+const PAGES = { en: enPages, es: esPages, fr: frPages, de: dePages, zh: zhPages };
+const PRODUCTS = { en: enProducts, es: esProducts, fr: frProducts, de: deProducts, zh: zhProducts };
 
 export function ui(locale = DEFAULT_LOCALE) {
   return UI[locale] || UI[DEFAULT_LOCALE];

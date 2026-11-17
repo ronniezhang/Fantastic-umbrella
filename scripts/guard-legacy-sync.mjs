@@ -4,7 +4,7 @@
  * sync-content.mjs and rebuild-scope.mjs rewrite src/data/*.json,
  * public/sitemap.xml, public/_redirects and public/robots.txt from the old
  * WordPress source. After the i18n rollout that would:
- *   - erase es/fr/de sitemap URLs and hreflang,
+ *   - erase es/fr/de/zh sitemap URLs and hreflang,
  *   - restore English-only SEO strings,
  *   - rewrite product images back to wp-content absolute URLs (broken images
  *     once WordPress is gone).

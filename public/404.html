@@ -56,17 +56,26 @@
         <a data-path="/contact/">Anfrage senden</a>
         <small>Fantastic Umbrella &middot; maßgefertigte Taschen- und Faltschirme</small>
       </div>
+      <div class="i18n" data-locale="zh" hidden>
+        <h1>页面未找到</h1>
+        <p>该地址已不在我们的产品目录中。网站已迁移到新平台，主要产品页与询盘页面均已保留。</p>
+        <a class="primary" data-path="/">首页</a>
+        <a data-path="/products/">全部产品</a>
+        <a data-path="/contact/">发送询盘</a>
+        <small>Fantastic Umbrella &middot; 定制折叠伞与便携伞</small>
+      </div>
     </main>
     <script>
       (function () {
-        var match = location.pathname.match(/^\/(es|fr|de)(\/|$)/);
+        var match = location.pathname.match(/^\/(es|fr|de|zh)(\/|$)/);
         var locale = match ? match[1] : 'en';
         var prefix = match ? '/' + locale : '';
         var titles = {
           en: 'Page not found | Fantastic Umbrella',
           es: 'Página no encontrada | Fantastic Umbrella',
           fr: 'Page introuvable | Fantastic Umbrella',
-          de: 'Seite nicht gefunden | Fantastic Umbrella'
+          de: 'Seite nicht gefunden | Fantastic Umbrella',
+          zh: '页面未找到 | Fantastic Umbrella'
         };
         document.documentElement.lang = locale;
         document.title = titles[locale];

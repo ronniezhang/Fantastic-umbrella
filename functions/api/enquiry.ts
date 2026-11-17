@@ -110,10 +110,23 @@ const MESSAGES = {
     success:
       'Vielen Dank. Ihre Anfrage ist eingegangen; wir antworten in der Regel innerhalb eines Werktags.',
   },
+  zh: {
+    invalid: '提交内容无效。',
+    received: '谢谢，我们已收到您的询盘。',
+    tooFast: '请核对信息后重新提交。',
+    missing: '请填写所有必填项。',
+    invalidEmail: '请输入有效的商务邮箱地址。',
+    tooLong: '有字段内容过长。',
+    notConfigured:
+      '在线提交尚未启用。请使用下方一键链接把信息发送至 sales@fantasticumbrella.com，我们会尽快回复。',
+    deliveryFailed:
+      '询盘暂时发送失败，请稍后重试，或使用下方一键链接联系 sales@fantasticumbrella.com。',
+    success: '谢谢，我们已收到您的询盘，通常在一个工作日内回复。',
+  },
 };
 
-const LOCALE_LABEL = { en: 'English', es: 'Spanish', fr: 'French', de: 'German' };
-const SUPPORTED_LOCALES = ['es', 'fr', 'de'];
+const LOCALE_LABEL = { en: 'English', es: 'Spanish', fr: 'French', de: 'German', zh: 'Chinese (Simplified)' };
+const SUPPORTED_LOCALES = ['es', 'fr', 'de', 'zh'];
 const messagesFor = (locale) => MESSAGES[locale] || MESSAGES.en;
 
 function reply(body, status = 200) {

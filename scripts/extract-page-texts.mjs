@@ -2,7 +2,7 @@
  * Regenerate src/i18n/pages/en.json from src/data/pages.json.
  *
  * This is the translation template: each page has a `texts` array whose
- * length and order must be matched by es.json / fr.json / de.json.
+ * length and order must be matched by es.json / fr.json / de.json / zh.json.
  * Read-only with respect to the source data; writes only the template.
  */
 import fs from 'node:fs';

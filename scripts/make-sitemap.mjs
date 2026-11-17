@@ -3,7 +3,7 @@
  *
  * Astro has no sitemap integration in this project, so the file is a static
  * asset. This script is wired to `prebuild` so every build (local and CI)
- * regenerates all 19 x 4 URLs with reciprocal hreflang annotations.
+ * regenerates all 19 x 5 URLs with reciprocal hreflang annotations.
  *
  * legacy scripts (sync-content.mjs / rebuild-scope.mjs) must NOT overwrite
  * this file - they are guarded by scripts/guard-legacy-sync.mjs.

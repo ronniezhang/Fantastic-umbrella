@@ -52,7 +52,7 @@ jobs:
       - name: Verify multilingual build output
         if: steps.guard.outputs.ready == 'true'
         run: |
-          for l in es fr de; do
+          for l in es fr de zh; do
             test -f "dist/$l/index.html" || { echo "::error::missing /$l/ home"; exit 1; }
             test -f "dist/$l/contact/index.html" || { echo "::error::missing /$l/contact/"; exit 1; }
             test -f "dist/$l/products/index.html" || { echo "::error::missing /$l/products/"; exit 1; }
@@ -61,8 +61,8 @@ jobs:
             grep -q 'hreflang="x-default"' "dist/$l/index.html" || { echo "::error::missing x-default on /$l/"; exit 1; }
           done
           urls=$(grep -c '<loc>' dist/sitemap.xml || true)
-          test "$urls" -eq 76 || { echo "::error::sitemap has $urls URLs, expected 76"; exit 1; }
-          echo "Multilingual build OK: 76 pages, 76 sitemap URLs"
+          test "$urls" -eq 95 || { echo "::error::sitemap has $urls URLs, expected 95"; exit 1; }
+          echo "Multilingual build OK: 95 pages, 95 sitemap URLs"
 
       - name: Sync Pages environment variables
         if: steps.guard.outputs.ready == 'true'
@@ -138,7 +138,7 @@ jobs:
       - name: Verify localized pages are live
         if: steps.guard.outputs.ready == 'true'
         run: |
-          for l in es fr de; do
+          for l in es fr de zh; do
             ok=0
             for attempt in $(seq 1 12); do
               body=$(curl -s -H 'Cache-Control: no-cache' --max-time 20 \
@@ -156,5 +156,5 @@ jobs:
           sitemap=$(curl -s -H 'Cache-Control: no-cache' --max-time 20 \
             https://fantasticumbrella.com/sitemap.xml)
           count=$(printf '%s' "$sitemap" | grep -c '<loc>' || true)
-          test "$count" -eq 76 || { echo "::error::live sitemap has $count URLs, expected 76"; exit 1; }
+          test "$count" -eq 95 || { echo "::error::live sitemap has $count URLs, expected 95"; exit 1; }
           echo "Live multilingual sitemap OK: $count URLs"
