@@ -521,7 +521,7 @@ push `main` → 远程 `7cf05f0`，Actions run `43791676708` **success**，Pages
 - **中文页与其它语种一样对外可访问、可被收录**（未加 `noindex`，否则会与 hreflang alternates 冲突）。若日后只想内部查看，再单独决定是否加 `noindex` 或从 sitemap 排除。
 - 本地校验：`npm run verify:i18n` 通过（zh 246/246），构建 95 页 / 95 sitemap URL，五语种 × 5 类路由共 100+ 项结构、译文、下拉映射、schema、404、字体校验全通过。
 
-**线上实测**：> 部署完成后补录。
+**线上实测（2026-11-17）**：本地 `e2f0922` → API 通道推送 → 远程 `84273112`，Actions `43993762019` **success**。五语种首页全部 200，`<html lang>`、自指 canonical、5 条 hreflang + `x-default`、下拉 5 项、4 个内联社媒图标均正确；`/zh/` 的首页、contact、products、产品详情、services、faqs、quality-claims、shipping-delivery 共 8 类页面全部 200；中文首页 / 正文 / 产品名 / 表单译文均生效，正文内部链接已加 `/zh/` 前缀，`og:locale=zh_CN`、schema `availableLanguage` 含 `zh`、CJK 字体 CSS 已部署。`/api/enquiry` POST `_locale=zh` 返回 `{"ok":false,"error":"missing_field","message":"请填写所有必填项。"}`（无效 payload，未发邮件），GET 诊断仍为 `verified-domain → sales@fantasticumbrella.com`。sitemap **95 条 URL**、含 `/zh/`、每条 6 个 alternates；404 页中文块生效。零回归：英文 / 西语页、robots `Allow`、`/wp-admin/` 404、`/shop/` 301、og:image 200。
 
 ---
 
