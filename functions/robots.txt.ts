@@ -20,8 +20,31 @@ const PRODUCTION_HOSTS = new Set([
 // file, so a broken routing configuration can never silently de-index us.
 const MARKER = '# served-by: pages-function';
 
+/**
+ * Answer-engine / AI crawlers are named explicitly for auditability.
+ * `User-agent: *` + `Allow: /` already permits every one of them, and no
+ * Cloudflare "Block AI Scrapers and Crawlers" rule is enabled (verified
+ * 2026-11-17: GPTBot, Google-Extended, PerplexityBot, ClaudeBot and CCBot
+ * all return HTTP 200 on /). Listing them is policy documentation, not a
+ * fix: it lets us tighten a single bot later without de-indexing the site.
+ * Google-Extended is a Gemini grounding/training token, not a fetcher UA.
+ */
+const AI_CRAWLERS = [
+  'GPTBot',
+  'OAI-SearchBot',
+  'ChatGPT-User',
+  'Google-Extended',
+  'PerplexityBot',
+  'ClaudeBot',
+  'anthropic-ai',
+  'CCBot',
+];
+
 const ALLOW = [
   MARKER,
+  AI_CRAWLERS.map((ua) => `User-agent: ${ua}`).join('\n'),
+  'Allow: /',
+  '',
   'User-agent: *',
   'Allow: /',
   'Sitemap: https://fantasticumbrella.com/sitemap.xml',

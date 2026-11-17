@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import products from '../../data/products.json';
 import { DEFAULT_LOCALE, localePath } from '../../i18n/config.mjs';
 import { ui, productCopy } from '../../i18n/dict.mjs';
+import { productSchema, cleanText } from '../../i18n/schema.mjs';
 
 const { locale = DEFAULT_LOCALE, slug } = Astro.props;
 const product = products.find((p) => p.slug === slug);
@@ -13,8 +14,9 @@ const d = t.product;
 const L = (href) => localePath(locale, href);
 const copy = productCopy(locale, slug) || { name: product.name, short: product.short };
 const title = `${copy.name.replace(/&amp;/g, '&')} | ${d.seoSuffix}`.slice(0, 70);
+const productNode = productSchema(locale, product, cleanText(copy.name), cleanText(copy.short));
 ---
-<Base path={`/product/${product.slug}/`} locale={locale} title={title} description={d.seoDesc}>
+<Base path={`/product/${product.slug}/`} locale={locale} title={title} description={d.seoDesc} structuredData={[productNode]}>
   <article class="wrap prose">
     <p class="eyebrow"><a href={L('/products/')}>{t.common.backToProducts}</a></p>
     <h1 set:html={copy.name} />

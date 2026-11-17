@@ -5,6 +5,8 @@ import pages from '../../data/pages.json';
 import { DEFAULT_LOCALE } from '../../i18n/config.mjs';
 import { pageTexts, pageTitle } from '../../i18n/dict.mjs';
 import { localizeHtml, localizeLinks } from '../../i18n/html.mjs';
+import { faqSchema } from '../../i18n/schema.mjs';
+import enPages from '../../i18n/pages/en.json';
 
 const { locale = DEFAULT_LOCALE, slug } = Astro.props;
 const page = pages.find((p) => p.slug === slug);
@@ -20,8 +22,15 @@ if (locale !== 'en' && used < expected - 12) {
 const hasH1 = /<h1[\s>]/i.test(body);
 const parts = body.split('<!-- ASTRO_FORM_SLOT -->');
 const heading = pageTitle(locale, slug) || page.title;
+
+// The FAQ page already contains 12 real Q&A pairs with concrete figures
+// (MOQ, lead times, payment terms). Exposing them as FAQPage makes those
+// facts machine-readable for ChatGPT / Gemini without writing new copy.
+const faqNode = page.slug === 'faqs'
+  ? faqSchema(locale, enPages.pages.faqs.texts, translated)
+  : null;
 ---
-<Base seoKey={page.slug} path={`/${page.slug}/`} locale={locale}>
+<Base seoKey={page.slug} path={`/${page.slug}/`} locale={locale} structuredData={faqNode ? [faqNode] : []}>
   <article class="wrap prose">
     {!hasH1 && <h1 set:html={heading} />}
     <div set:html={parts[0]} />
