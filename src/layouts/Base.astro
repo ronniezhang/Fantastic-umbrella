@@ -30,14 +30,35 @@ const socialProfiles = social.profiles.filter((p) => p.href && p.id !== 'whatsap
 // (fantasticumbrellafactory.com) dominates the bare brand phrase in search.
 // Explicitly state who we are and where we operate so search engines keep the
 // two entities separate. No reference to the other site is needed.
-// Entity graph: one stable Organization id is referenced by every page and
-// by the Product manufacturer field, so answer engines can resolve the brand
-// as a single entity instead of five disconnected locale variants.
+// Entity facts are deliberately kept in two separate registers:
+//  - foundingDate    = the date printed on the business licence, so answer
+//    engines can cross-check it against the public registry (gsxt.gov.cn).
+//  - business origin = April 2010, when the predecessor 广州添奇广告喷画厂
+//    started as a digital-printing business and later moved into umbrellas.
+//    That is brand history, not the registration date of this legal person,
+//    so it is exposed as additionalProperty instead of overwriting
+//    foundingDate. Mixing the two would create a conflicting entity signal.
+// The licence still carries the former registered address; the current
+// address is pending a licence update at year end, so only city-level
+// address data is published until then.
 const organization = {
   '@type': 'Organization',
   '@id': ORG_ID,
   name: 'Guangzhou Fantastic Umbrella Co., Ltd.',
+  legalName: '广州添奇雨伞有限公司',
   alternateName: 'Fantastic Umbrella',
+  foundingDate: '2017-07-31',
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: 'Unified Social Credit Code',
+    value: '91440101MA59R5PE9E',
+  },
+  additionalProperty: {
+    '@type': 'PropertyValue',
+    name: 'Business origin',
+    value: 'April 2010',
+    description: 'Doing business since April 2010: started as 广州添奇广告喷画厂 (digital printing) in Guangzhou, later moved into umbrella manufacturing and was renamed 广州添奇雨伞有限公司. The present legal entity was registered on 2017-07-31 after two licence changes.',
+  },
   url: 'https://fantasticumbrella.com/',
   description: t.org.description,
   disambiguatingDescription: t.org.disambiguating,
