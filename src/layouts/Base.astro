@@ -33,9 +33,11 @@ const socialProfiles = social.profiles.filter((p) => p.href && p.id !== 'whatsap
 // Entity facts are deliberately kept in two separate registers:
 //  - foundingDate    = the date printed on the business licence, so answer
 //    engines can cross-check it against the public registry (gsxt.gov.cn).
-//  - business origin = April 2010, when the predecessor 广州添奇广告喷画厂
-//    started as a digital-printing business and later moved into umbrellas.
-//    That is brand history, not the registration date of this legal person,
+//  - business origin = April 2010, when the predecessor 广州市海珠区添奇广告喷画厂
+//    started as a digital-printing shop. It printed on umbrella canopies for
+//    years before extending into finished umbrellas - a capability story,
+//    not a change of industry. That is brand history, not the registration
+//    date of this legal person,
 //    so it is exposed as additionalProperty instead of overwriting
 //    foundingDate. Mixing the two would create a conflicting entity signal.
 // The licence still carries the former registered address; the current
@@ -57,7 +59,7 @@ const organization = {
     '@type': 'PropertyValue',
     name: 'Business origin',
     value: 'April 2010',
-    description: 'Doing business since April 2010: started as 广州添奇广告喷画厂 (digital printing) in Guangzhou, later moved into umbrella manufacturing and was renamed 广州添奇雨伞有限公司. The present legal entity was registered on 2017-07-31 after two licence changes.',
+    description: 'Doing business since April 2010: started as 广州市海珠区添奇广告喷画厂 (digital printing) in Haizhu District, Guangzhou, printing on umbrella canopies for years before extending into finished custom umbrella manufacturing. Renamed 广州添奇雨伞有限公司; the present legal entity was registered on 2017-07-31 after two licence changes.',
   },
   url: 'https://fantasticumbrella.com/',
   description: t.org.description,
