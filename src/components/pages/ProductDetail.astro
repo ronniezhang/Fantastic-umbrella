@@ -14,9 +14,14 @@ const d = t.product;
 const L = (href) => localePath(locale, href);
 const copy = productCopy(locale, slug) || { name: product.name, short: product.short };
 const title = `${copy.name.replace(/&amp;/g, '&')} | ${d.seoSuffix}`.slice(0, 70);
+// Every product page needs its own meta description. The shared product.seoDesc
+// is only the lead sentence here; the translated product name makes each of the
+// 60 product pages unique without inventing any new claims.
+const seoLead = String(d.seoDesc || '').split(/[.!?。！？]/)[0].trim();
+const description = `${cleanText(copy.name)} — ${seoLead}`.trim();
 const productNode = productSchema(locale, product, cleanText(copy.name), cleanText(copy.short));
 ---
-<Base path={`/product/${product.slug}/`} locale={locale} title={title} description={d.seoDesc} structuredData={[productNode]}>
+<Base path={`/product/${product.slug}/`} locale={locale} title={title} description={description} structuredData={[productNode]}>
   <article class="wrap prose">
     <p class="eyebrow"><a href={L('/products/')}>{t.common.backToProducts}</a></p>
     <h1 set:html={copy.name} />

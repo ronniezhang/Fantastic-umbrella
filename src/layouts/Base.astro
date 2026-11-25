@@ -19,7 +19,25 @@ const {
 const t = ui(locale);
 const canonical = new URL(localePath(locale, path), Astro.site).href;
 const pageTitle = title || t.seo?.[seoKey]?.title || t.seo.home.title;
-const pageDesc = description || t.seo?.[seoKey]?.description || t.seo.home.description;
+const rawDesc = description || t.seo?.[seoKey]?.description || t.seo.home.description;
+// Search snippets and on-page audits use a ~155-160 character window. Trim at
+// a sentence boundary so translated copy is never rewritten or cut mid-word;
+// CJK descriptions are naturally shorter and pass through untouched.
+const MAX_DESC = 158;
+const compactDesc = String(rawDesc).replace(/\s+/g, ' ').trim();
+let pageDesc = compactDesc;
+if ([...compactDesc].length > MAX_DESC) {
+  const cut = [...compactDesc].slice(0, MAX_DESC).join('');
+  const boundary = Math.max(
+    cut.lastIndexOf('. '),
+    cut.lastIndexOf('。'),
+    cut.lastIndexOf('! '),
+    cut.lastIndexOf('? '),
+  );
+  pageDesc = boundary > MAX_DESC * 0.55
+    ? cut.slice(0, boundary + 1).trim()
+    : cut.replace(/\s+\S*$/, '').trim() + '…';
+}
 const alts = alternates(path);
 const ogLocale = { en: 'en_US', es: 'es_ES', fr: 'fr_FR', de: 'de_DE', zh: 'zh_CN' }[locale] || 'en_US';
 const ogImage = new URL('/images/products/fan-spray-umbrella.jpg', Astro.site).href;
@@ -102,6 +120,9 @@ const schema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
     <link rel="canonical" href={canonical} />
